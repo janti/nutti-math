@@ -9,21 +9,21 @@ export const metadata: Metadata = {
   title: 'Nutti – Math Game',
   description: 'AI-assisted multiplication game for kids.',
   icons: {
-    icon: '/nutte.png',
-    shortcut: '/nutte.png',
-    apple: '/nutte.png',
+    icon: '/nutti.png',
+    shortcut: '/nutti.png',
+    apple: '/nutti.png',
   },
   openGraph: {
     title: 'Nutti – Math Game',
     description: 'AI-assisted multiplication game for kids.',
-    images: ['/nutte.png'],
+    images: ['/nutti.png'],
     type: 'website',
   },
   twitter: {
     card: 'summary',
     title: 'Nutti – Math Game',
     description: 'AI-assisted multiplication game for kids.',
-    images: ['/nutte.png'],
+    images: ['/nutti.png'],
   }
 }
 
