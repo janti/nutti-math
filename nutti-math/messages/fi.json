@@ -1,0 +1,125 @@
+{
+  "app": {
+    "title": "Nutti Orava – Kertotaulupeli"
+  },
+  "home": {
+    "heading": "Nutti Orava – Kertotaulupeli",
+    "subtitle": "100 kertolaskua • 10 erää • palaute tauoilla",
+    "alias": "Nimimerkki",
+    "difficulty": "Vaikeus",
+    "start": "Aloita peli",
+    "mix": "Sekoitus",
+    "kb": "Näppäimistö: 0–9, Enter, Backspace, H (vihje).",
+    "kbStart": "Vihje: Kirjoita nimi ja paina Enter aloittaaksesi!",
+    "roundCount": "Erämäärä",
+    "gameInfo": "10 tehtävää per erä • Nutin palaute tauoilla",
+    "rounds": "Erämäärä"
+  },
+  "play": {
+    "round": "Erä {n} / 10",
+    "answer": "Vastaus",
+    "submit": "Lähetä",
+    "hint": "Vihje (H)"
+  },
+  "keypad": {
+    "title": "Numeronäppäimistö",
+    "number": "Numero",
+    "delete": "Poista",
+    "submit": "Vastaa (Enter)",
+    "hint": "Vihje (H)"
+  },
+  "break": {
+    "done": "Erä valmis!",
+    "stats": "Oikein {correct}/{total}, kokonaisaika {totalTime} s, keskimäärin {avg} s.",
+    "generating": "Luodaan palautetta…",
+    "continue": "Jatka seuraavaan erään",
+    "stop": "Lopeta",
+    "allRounds": "Kaikki erät:",
+    "roundResult": "Erä {round}: {seconds} s",
+    "currentStats": "Tämän erän tilastot",
+    "totalCorrect": "Oikein yhteensä",
+    "totalTime": "Kokonaisaika",
+    "averageTime": "Keskiarvo",
+    "previousRounds": "Edelliset erät",
+    "nuttiSays": "Nutti sanoo",
+    "skipAiFeedback": "Nutin palaute ohitettu",
+    "correct": "{correct}/{total} oikein",
+    "roundNumber": "Erä {round}"
+  },
+  "results": {
+    "title": "Hieno harjoitus!",
+    "summary": "Yhteensä {total} tehtävää, oikein {correct}. Aikaa kului {seconds} s.",
+    "tasks": "Tehtävää",
+    "correct": "Oikein",
+    "accuracy": "Tarkkuus",
+    "totalTime": "Kokonaisaika",
+    "roundDetails": "Erätiedot",
+    "round": "Erä {number}",
+    "newGame": "Uusi peli",
+    "finalFeedback": "Nutin loppupalaute",
+    "generatingFinalFeedback": "Nutti miettii...",
+    "finalFeedbackSkipped": "Loppupalaute ohitettu"
+  },
+  "alias": {
+    "placeholder": "esim. Tähdistö"
+  },
+  "difficulty": {
+    "1-5": "1–5",
+    "1-10": "1–10", 
+    "6-10": "6–10",
+    "2-12": "2–12"
+  },
+  "nutti": {
+    "name": "Nutti Orava",
+    "fallbackIcon": "🐿️",
+    "moods": {
+      "happy": "🍯 Valmis auttamaan!",
+      "thinking": "🧮 Lasketaan yhdessä!",
+      "excited": "🎉 Mahtavaa työtä!"
+    }
+  },
+  "icons": {
+    "celebration": "🏆🎉🌟",
+    "gameTitle": "🌟🎯🚀",
+    "gameInfo": "🧮✨",
+    "alias": "🏷️",
+    "rounds": "🎯",
+    "difficulty": "⚡",
+    "start": "🚀",
+    "keyboard": "⌨️",
+    "target": "🎯",
+    "calculator": "🧮",
+    "sparkles": "✨",
+    "honey": "🍯",
+    "lightning": "⚡",
+    "lightbulb": "💡",
+    "breakCelebration": "🎉🍭🎊",
+    "star": "🌟",
+    "candy": "🍬",
+    "timer": "⏱️",
+    "trophy": "🏆",
+    "cookie": "🍪",
+    "squirrel": "🐿️",
+    "hourglass": "⏳🍭",
+    "rocket": "🚀",
+    "finish": "🏁",
+    "candyMix": "🍭🍪🧁🍬🍫",
+    "books": "📚",
+    "checkmark": "✅",
+    "bullseye": "🎯",
+    "chart": "📊",
+    "party": "🎊",
+    "medal": "🎖️",
+    "gameEnd": "🎮🍭🏆🎯🌟",
+    "roundNumbers": {
+      "1": "1️⃣",
+      "2": "2️⃣", 
+      "3": "3️⃣",
+      "5": "5️⃣",
+      "10": "🔟"
+    },
+    "difficulty6to10": "🌟",
+    "difficulty2to12": "🍪",
+    "difficultyMix": "🍬"
+  }
+}

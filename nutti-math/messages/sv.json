@@ -1,0 +1,125 @@
+{
+  "app": {
+    "title": "Nutti Ekorre – Mattespel"
+  },
+  "home": {
+    "heading": "Nutti Ekorre – Mattespel",
+    "subtitle": "100 multiplikationer • 10 omgångar • feedback i pauser",
+    "alias": "Smeknamn",
+    "difficulty": "Svårighetsgrad",
+    "start": "Starta spelet",
+    "mix": "Mix",
+    "kb": "Tangentbord: 0–9, Enter, Backspace, H (tips).",
+    "kbStart": "Tips: Skriv ditt namn och tryck Enter för att starta!",
+    "roundCount": "Antal omgångar",
+    "gameInfo": "10 uppgifter per omgång • Nuttis feedback i pauser",
+    "rounds": "Omgångar"
+  },
+  "play": {
+    "round": "Omgång {n} / 10",
+    "answer": "Svar",
+    "submit": "Skicka",
+    "hint": "Tips (H)"
+  },
+  "keypad": {
+    "title": "Numerisk knappsats",
+    "number": "Nummer",
+    "delete": "Radera",
+    "submit": "Skicka (Enter)",
+    "hint": "Tips (H)"
+  },
+  "break": {
+    "done": "Omgång klar!",
+    "stats": "Rätt {correct}/{total}, total tid {totalTime} s, genomsnitt {avg} s.",
+    "generating": "Skapar feedback…",
+    "continue": "Fortsätt till nästa omgång",
+    "stop": "Avsluta",
+    "allRounds": "Alla omgångar:",
+    "roundResult": "Omgång {round}: {seconds} s",
+    "currentStats": "Denna omgångs statistik",
+    "totalCorrect": "Totalt rätt",
+    "totalTime": "Total tid",
+    "averageTime": "Genomsnitt",
+    "previousRounds": "Tidigare omgångar",
+    "nuttiSays": "Nutti säger",
+    "skipAiFeedback": "Nuttis feedback överhoppad",
+    "correct": "{correct}/{total} rätt",
+    "roundNumber": "Omgång {round}"
+  },
+  "results": {
+    "title": "Bra övning!",
+    "summary": "Totalt {total} uppgifter, rätt {correct}. Tidsåtgång {seconds} s.",
+    "tasks": "Uppgifter",
+    "correct": "Rätt",
+    "accuracy": "Träffsäkerhet",
+    "totalTime": "Total tid",
+    "roundDetails": "Omgångsdetaljer",
+    "round": "Omgång {number}",
+    "newGame": "Nytt spel",
+    "finalFeedback": "Nuttis slutord",
+    "generatingFinalFeedback": "Nutti tänker...",
+    "finalFeedbackSkipped": "Slutfeedback överhoppad"
+  },
+  "alias": {
+    "placeholder": "t.ex. Stjärna"
+  },
+  "difficulty": {
+    "1-5": "1–5",
+    "1-10": "1–10",
+    "6-10": "6–10",
+    "2-12": "2–12"
+  },
+  "nutti": {
+    "name": "Nutti Ekorre",
+    "fallbackIcon": "🐿️",
+    "moods": {
+      "happy": "🍯 Redo att hjälpa!",
+      "thinking": "🧮 Vi räknar tillsammans!",
+      "excited": "🎉 Fantastiskt arbete!"
+    }
+  },
+  "icons": {
+    "celebration": "🏆🎉🌟",
+    "gameTitle": "🌟🎯🚀",
+    "gameInfo": "🧮✨",
+    "alias": "🏷️",
+    "rounds": "🎯",
+    "difficulty": "⚡",
+    "start": "🚀",
+    "keyboard": "⌨️",
+    "target": "🎯",
+    "calculator": "🧮",
+    "sparkles": "✨",
+    "honey": "🍯",
+    "lightning": "⚡",
+    "lightbulb": "💡",
+    "breakCelebration": "🎉🍭🎊",
+    "star": "🌟",
+    "candy": "🍬",
+    "timer": "⏱️",
+    "trophy": "🏆",
+    "cookie": "🍪",
+    "squirrel": "🐿️",
+    "hourglass": "⏳🍭",
+    "rocket": "🚀",
+    "finish": "🏁",
+    "candyMix": "🍭🍪🧁🍬🍫",
+    "books": "📚",
+    "checkmark": "✅",
+    "bullseye": "🎯",
+    "chart": "📊",
+    "party": "🎊",
+    "medal": "🎖️",
+    "gameEnd": "🎮🍭🏆🎯🌟",
+    "roundNumbers": {
+      "1": "1️⃣",
+      "2": "2️⃣", 
+      "3": "3️⃣",
+      "5": "5️⃣",
+      "10": "🔟"
+    },
+    "difficulty6to10": "🌟",
+    "difficulty2to12": "🍪",
+    "difficultyMix": "🍬"
+  }
+}

@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root{ color-scheme: light; }
+html,body{ height:100%; }
+body{ @apply bg-[#FFF8F1] text-slate-900; font-feature-settings:"cv11","ss01"; }
+.btn{ @apply rounded-xl px-4 py-3 font-semibold shadow-sm transition bg-nutti-teal text-white hover:brightness-110 focus:outline-none focus:ring-4 focus:ring-nutti-teal/30; }
+.card{ @apply rounded-2xl bg-white shadow-lg p-5 border border-orange-100; }

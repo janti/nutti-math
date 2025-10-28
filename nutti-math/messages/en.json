@@ -1,0 +1,125 @@
+{
+  "app": {
+    "title": "Nutti the Squirrel – Math Trainer"
+  },
+  "home": {
+    "heading": "Nutti the Squirrel – Math Trainer",
+    "subtitle": "100 multiplications • 10 rounds • feedback in breaks",
+    "alias": "Nickname",
+    "difficulty": "Difficulty",
+    "start": "Start game",
+    "mix": "Mix",
+    "kb": "Keyboard: 0–9, Enter, Backspace, H (hint).",
+    "kbStart": "Tip: Type your name and press Enter to start!",
+    "roundCount": "Number of rounds",
+    "gameInfo": "10 tasks per round • Nutti's feedback in breaks",
+    "rounds": "Rounds"
+  },
+  "play": {
+    "round": "Round {n} / 10",
+    "answer": "Answer",
+    "submit": "Submit",
+    "hint": "Hint (H)"
+  },
+  "keypad": {
+    "title": "Number keypad",
+    "number": "Number",
+    "delete": "Delete",
+    "submit": "Submit (Enter)",
+    "hint": "Hint (H)"
+  },
+  "break": {
+    "done": "Round complete!",
+    "stats": "Correct {correct}/{total}, total time {totalTime} s, average {avg} s.",
+    "generating": "Generating feedback…",
+    "continue": "Continue to next round",
+    "stop": "Finish",
+    "allRounds": "All rounds:",
+    "roundResult": "Round {round}: {seconds} s",
+    "currentStats": "This round's stats",
+    "totalCorrect": "Total correct",
+    "totalTime": "Total time",
+    "averageTime": "Average",
+    "previousRounds": "Previous rounds",
+    "nuttiSays": "Nutti says",
+    "skipAiFeedback": "Nutti's feedback skipped",
+    "correct": "{correct}/{total} correct",
+    "roundNumber": "Round {round}"
+  },
+  "results": {
+    "title": "Great practice!",
+    "summary": "Total {total} tasks, correct {correct}. Time spent {seconds} s.",
+    "tasks": "Tasks",
+    "correct": "Correct",
+    "accuracy": "Accuracy",
+    "totalTime": "Total time",
+    "roundDetails": "Round details",
+    "round": "Round {number}",
+    "newGame": "New game",
+    "finalFeedback": "Nutti's Final Words",
+    "generatingFinalFeedback": "Nutti is thinking...",
+    "finalFeedbackSkipped": "Final feedback skipped"
+  },
+  "alias": {
+    "placeholder": "e.g., Starry"
+  },
+  "difficulty": {
+    "1-5": "1–5",
+    "1-10": "1–10",
+    "6-10": "6–10", 
+    "2-12": "2–12"
+  },
+  "nutti": {
+    "name": "Nutti the Squirrel",
+    "fallbackIcon": "🐿️",
+    "moods": {
+      "happy": "🍯 Ready to help!",
+      "thinking": "🧮 Let's calculate together!",
+      "excited": "🎉 Great work!"
+    }
+  },
+  "icons": {
+    "celebration": "🏆🎉🌟",
+    "gameTitle": "🌟🎯🚀",
+    "gameInfo": "🧮✨",
+    "alias": "🏷️",
+    "rounds": "🎯",
+    "difficulty": "⚡",
+    "start": "🚀",
+    "keyboard": "⌨️",
+    "target": "🎯",
+    "calculator": "🧮",
+    "sparkles": "✨",
+    "honey": "🍯",
+    "lightning": "⚡",
+    "lightbulb": "💡",
+    "breakCelebration": "🎉🍭🎊",
+    "star": "🌟",
+    "candy": "🍬",
+    "timer": "⏱️",
+    "trophy": "🏆",
+    "cookie": "🍪",
+    "squirrel": "🐿️",
+    "hourglass": "⏳🍭",
+    "rocket": "🚀",
+    "finish": "🏁",
+    "candyMix": "🍭🍪🧁🍬🍫",
+    "books": "📚",
+    "checkmark": "✅",
+    "bullseye": "🎯",
+    "chart": "📊",
+    "party": "🎊",
+    "medal": "🎖️",
+    "gameEnd": "🎮🍭🏆🎯🌟",
+    "roundNumbers": {
+      "1": "1️⃣",
+      "2": "2️⃣", 
+      "3": "3️⃣",
+      "5": "5️⃣",
+      "10": "🔟"
+    },
+    "difficulty6to10": "🌟",
+    "difficulty2to12": "🍪",
+    "difficultyMix": "🍬"
+  }
+}
