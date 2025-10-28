@@ -16,7 +16,7 @@ function client(){
   throw new Error('Missing OPENAI_API_KEY or AZURE_OPENAI_* env')
 }
 
-const MODEL = hasOpenAI ? 'gpt-3.5-turbo' : ''
+const MODEL = hasOpenAI ? 'gpt-3.5-turbo' : (process.env.AZURE_OPENAI_DEPLOYMENT || 'gpt-35-turbo')
 
 type Locale = 'fi'|'en'|'sv'
 

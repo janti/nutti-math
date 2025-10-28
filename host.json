@@ -1,0 +1,10 @@
+{
+  "version": "0.2.0",
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true
+      }
+    }
+  }
+}
