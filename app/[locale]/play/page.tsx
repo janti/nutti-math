@@ -157,14 +157,14 @@ export default function Play() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="text-3xl mb-2">{t('icons.calculator')}</div>
-          <p className="text-nutti-teal font-semibold">Ladataan tehtäviä...</p>
+          <p className="text-nutti-teal font-semibold">{t('play.loading')}</p>
         </div>
       </div>
     )
   }
   
   if (!current) {
-    return <div className="card text-center"><p>Ei tehtäviä</p></div>
+    return <div className="card text-center"><p>{t('play.noTasks')}</p></div>
   }
   
   return (

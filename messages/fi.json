@@ -86,13 +86,22 @@
     "roundNumber": "Erä {number}",
     "totalRounds": "Eriä yhteensä: {count}",
     "questionsPerRound": "tehtävää/erä",
-    "roundStats": "{correct}/{total} oikein, {time}s, {hints} vihje"
+    "roundStats": "{correct}/{total} oikein, {time}s, {hints} vihje",
+    "perGame": "peli",
+    "allStudentsStats": "Kaikki oppilaat - Tilastot",
+    "allGames": "Kaikki pelit",
+    "studentStats": "{student} - Tilastot",
+    "studentHistory": "{student} - Pelihistoria",
+    "noGamesYet": "Ei vielä pelattuja pelejä. Pelaa peli ensin!",
+    "resultsWillShow": "Tulokset näkyvät täällä kun oppilaat ovat pelanneet pelejä."
   },
   "play": {
     "round": "Erä {n} / 10",
     "answer": "Vastaus",
     "submit": "Lähetä",
-    "hint": "Vihje (H)"
+    "hint": "Vihje (H)",
+    "loading": "Ladataan tehtäviä...",
+    "noTasks": "Ei tehtäviä"
   },
   "keypad": {
     "title": "Numeronäppäimistö",
@@ -117,7 +126,9 @@
     "nuttiSays": "Nutti sanoo",
     "skipAiFeedback": "Nutin palaute ohitettu",
     "correct": "{correct}/{total} oikein",
-    "roundNumber": "Erä {round}"
+    "roundNumber": "Erä {round}",
+    "average": "Keskimäärin {seconds}s",
+    "total": "Yhteensä {seconds}s"
   },
   "results": {
     "title": "Hieno harjoitus!",
@@ -142,9 +153,16 @@
     "6-10": "6–10",
     "2-12": "2–12"
   },
+  "common": {
+    "unknown": "Tuntematon"
+  },
+  "layout": {
+    "nuttiAlt": "Nutti Orava -maskotti"
+  },
   "nutti": {
     "name": "Nutti Orava",
     "fallbackIcon": "🐿️",
+    "screenReader": "Maskotti: Nutti Orava, tila {mood}",
     "moods": {
       "happy": "🍯 Valmis auttamaan!",
       "thinking": "🧮 Lasketaan yhdessä!",

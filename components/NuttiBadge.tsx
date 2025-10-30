@@ -40,7 +40,7 @@ export default function NuttiBadge({ mood='happy' }: { mood?: 'happy'|'thinking'
           {t(`nutti.moods.${mood}`)}
         </div>
       </div>
-      <span className="sr-only">Maskotti: Nutti Orava, tila {mood}</span>
+      <span className="sr-only">{t('nutti.screenReader', { mood })}</span>
     </div>
   )
 }

@@ -128,7 +128,7 @@ export default function Results() {
       const settings = JSON.parse(localStorage.getItem('nutti.settings') || '{}')
       
       // Create a unique game identifier based on game content
-      const gameIdentifier = `${allRounds[0]?.alias || 'Tuntematon'}-${total}-${correct}-${Math.round(summary.timeMs)}-${allRounds.length}`
+      const gameIdentifier = `${allRounds[0]?.alias || t('common.unknown')}-${total}-${correct}-${Math.round(summary.timeMs)}-${allRounds.length}`
       const alreadySaved = localStorage.getItem(`nutti.game-saved.${gameIdentifier}`)
       
       if (!alreadySaved) {
@@ -162,7 +162,7 @@ export default function Results() {
         
         const gameResult: GameResult = {
           id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-          nickname: allRounds[0]?.alias || 'Tuntematon',
+          nickname: allRounds[0]?.alias || t('common.unknown'),
           timestamp: Date.now(),
           range: settings.range || '1-5',
           totalQuestions: total,

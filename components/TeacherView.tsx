@@ -69,7 +69,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
   }
 
   const clearData = () => {
-    if (confirm('Haluatko varmasti poistaa kaikki tulokset? Tätä ei voi perua.')) {
+    if (confirm(t('teacher.clearConfirm'))) {
       GameStorage.clearAllData()
       setNicknames([])
       setResults([])
@@ -116,17 +116,17 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
             {stats && (
               <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
                 <h3 className="font-semibold mb-3">
-                  {selectedNickname ? `${selectedNickname} - Tilastot` : 'Kaikki oppilaat - Tilastot'}
+                  {selectedNickname ? t('teacher.studentStats', { student: selectedNickname }) : t('teacher.allStudentsStats')}
                 </h3>
                 <div className="space-y-2 text-sm">
-                  <div>🎮 Pelejä: <strong>{stats.totalGames}</strong></div>
-                  <div>❓ Tehtäviä: <strong>{stats.totalQuestions}</strong></div>
-                  <div>✅ Oikein: <strong>{stats.totalCorrect}</strong></div>
-                  <div>❌ Väärin: <strong>{stats.totalWrong}</strong></div>
-                  <div>🎯 Tarkkuus: <strong>{stats.averageAccuracy.toFixed(1)}%</strong></div>
-                  <div>💡 Vihjeitä: <strong>{stats.totalHints}</strong></div>
-                  <div>⏱️ Keskiaika: <strong>{formatTime(stats.averageTime)}/peli</strong></div>
-                  <div>⏰ Kokonaisaika: <strong>{formatTime(stats.totalTime)}</strong></div>
+                  <div>🎮 {t('teacher.games')}: <strong>{stats.totalGames}</strong></div>
+                  <div>❓ {t('teacher.questions')}: <strong>{stats.totalQuestions}</strong></div>
+                  <div>✅ {t('teacher.correct')}: <strong>{stats.totalCorrect}</strong></div>
+                  <div>❌ {t('teacher.wrong')}: <strong>{stats.totalWrong}</strong></div>
+                  <div>🎯 {t('teacher.accuracy')}: <strong>{stats.averageAccuracy.toFixed(1)}%</strong></div>
+                  <div>💡 {t('teacher.hints')}: <strong>{stats.totalHints}</strong></div>
+                  <div>⏱️ {t('teacher.averageTime')}: <strong>{formatTime(stats.averageTime)}/{t('teacher.perGame')}</strong></div>
+                  <div>⏰ {t('teacher.time')}: <strong>{formatTime(stats.totalTime)}</strong></div>
                 </div>
               </div>
             )}
@@ -136,13 +136,13 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                 onClick={exportData}
                 className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
               >
-                📥 Vie tiedot
+                📥 {t('teacher.exportData')}
               </button>
               <button 
                 onClick={clearData}
                 className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
               >
-                🗑️ Poista kaikki
+                🗑️ {t('teacher.clearAll')}
               </button>
             </div>
           </div>
@@ -153,22 +153,22 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
               <div className="text-center text-gray-500 mt-20">
                 <div className="mb-4">
                   {selectedNickname 
-                    ? `Ei tuloksia oppilaalle: ${selectedNickname}`
+                    ? `${t('teacher.noResults')} ${selectedNickname}`
                     : nicknames.length === 0 
-                      ? 'Ei vielä pelattuja pelejä. Pelaa peli ensin!'
-                      : 'Valitse oppilas nähdäksesi tulokset'
+                      ? t('teacher.noGamesYet')
+                      : t('teacher.selectToView')
                   }
                 </div>
                 {nicknames.length === 0 && (
                   <div className="text-sm text-gray-400">
-                    Tulokset näkyvät täällä kun oppilaat ovat pelanneet pelejä.
+                    {t('teacher.resultsWillShow')}
                   </div>
                 )}
               </div>
             ) : (
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">
-                  {selectedNickname ? `${selectedNickname} - Pelihistoria` : 'Kaikki pelit'}
+                  {selectedNickname ? t('teacher.studentHistory', { student: selectedNickname }) : t('teacher.allGames')}
                 </h3>
                 
                 {results.map((result) => (

@@ -86,13 +86,22 @@
     "roundNumber": "Round {number}",
     "totalRounds": "Total rounds: {count}",
     "questionsPerRound": "questions/round",
-    "roundStats": "{correct}/{total} correct, {time}s, {hints} hints"
+    "roundStats": "{correct}/{total} correct, {time}s, {hints} hints",
+    "perGame": "game",
+    "allStudentsStats": "All students - Statistics",
+    "allGames": "All games",
+    "studentStats": "{student} - Statistics",
+    "studentHistory": "{student} - Game history",
+    "noGamesYet": "No games played yet. Play a game first!",
+    "resultsWillShow": "Results will appear here when students have played games."
   },
   "play": {
     "round": "Round {n} / 10",
     "answer": "Answer",
     "submit": "Submit",
-    "hint": "Hint (H)"
+    "hint": "Hint (H)",
+    "loading": "Loading tasks...",
+    "noTasks": "No tasks"
   },
   "keypad": {
     "title": "Number keypad",
@@ -117,7 +126,9 @@
     "nuttiSays": "Nutti says",
     "skipAiFeedback": "Nutti's feedback skipped",
     "correct": "{correct}/{total} correct",
-    "roundNumber": "Round {round}"
+    "roundNumber": "Round {round}",
+    "average": "Average {seconds}s",
+    "total": "Total {seconds}s"
   },
   "results": {
     "title": "Great practice!",
@@ -138,13 +149,20 @@
   },
   "difficulty": {
     "1-5": "1–5",
-    "1-10": "1–10",
-    "6-10": "6–10", 
+    "1-10": "1–10", 
+    "6-10": "6–10",
     "2-12": "2–12"
+  },
+  "common": {
+    "unknown": "Unknown"
+  },
+  "layout": {
+    "nuttiAlt": "Nutti the Squirrel mascot"
   },
   "nutti": {
     "name": "Nutti the Squirrel",
     "fallbackIcon": "🐿️",
+    "screenReader": "Mascot: Nutti the Squirrel, mood {mood}",
     "moods": {
       "happy": "🍯 Ready to help!",
       "thinking": "🧮 Let's calculate together!",

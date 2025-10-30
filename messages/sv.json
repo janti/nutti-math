@@ -86,13 +86,22 @@
     "roundNumber": "Omgång {number}",
     "totalRounds": "Totalt omgångar: {count}",
     "questionsPerRound": "frågor/omgång",
-    "roundStats": "{correct}/{total} rätt, {time}s, {hints} tips"
+    "roundStats": "{correct}/{total} rätt, {time}s, {hints} tips",
+    "perGame": "spel",
+    "allStudentsStats": "Alla elever - Statistik",
+    "allGames": "Alla spel",
+    "studentStats": "{student} - Statistik",
+    "studentHistory": "{student} - Spelhistorik",
+    "noGamesYet": "Inga spel spelade än. Spela ett spel först!",
+    "resultsWillShow": "Resultat visas här när elever har spelat spel."
   },
   "play": {
     "round": "Omgång {n} / 10",
     "answer": "Svar",
     "submit": "Skicka",
-    "hint": "Tips (H)"
+    "hint": "Tips (H)",
+    "loading": "Laddar uppgifter...",
+    "noTasks": "Inga uppgifter"
   },
   "keypad": {
     "title": "Numerisk knappsats",
@@ -117,7 +126,9 @@
     "nuttiSays": "Nutti säger",
     "skipAiFeedback": "Nuttis feedback överhoppad",
     "correct": "{correct}/{total} rätt",
-    "roundNumber": "Omgång {round}"
+    "roundNumber": "Omgång {round}",
+    "average": "Genomsnitt {seconds}s",
+    "total": "Totalt {seconds}s"
   },
   "results": {
     "title": "Bra övning!",
@@ -138,13 +149,20 @@
   },
   "difficulty": {
     "1-5": "1–5",
-    "1-10": "1–10",
+    "1-10": "1–10", 
     "6-10": "6–10",
     "2-12": "2–12"
+  },
+  "common": {
+    "unknown": "Okänd"
+  },
+  "layout": {
+    "nuttiAlt": "Nutti Ekorre maskot"
   },
   "nutti": {
     "name": "Nutti Ekorre",
     "fallbackIcon": "🐿️",
+    "screenReader": "Maskot: Nutti Ekorre, stämning {mood}",
     "moods": {
       "happy": "🍯 Redo att hjälpa!",
       "thinking": "🧮 Vi räknar tillsammans!",
