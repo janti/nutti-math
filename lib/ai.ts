@@ -110,3 +110,36 @@ export async function aiFinalFeedback(stats:any, locale:Locale='fi'){
   })
   return r.choices?.[0]?.message?.content?.trim() ?? ''
 }
+
+// Text-to-speech using OpenAI TTS API
+export async function aiTextToSpeech(text: string, locale: Locale = 'fi'): Promise<ArrayBuffer> {
+  const c = client()
+  
+  // Map locale to OpenAI voice
+  let voice: string
+  switch(locale) {
+    case 'en': 
+      voice = 'alloy' // Clear English voice
+      break
+    case 'sv': 
+      voice = 'echo' // Good for Swedish
+      break
+    default: // 'fi'
+      voice = 'nova' // Works well for Finnish
+      break
+  }
+
+  try {
+    const response = await (c as any).audio.speech.create({
+      model: 'tts-1',
+      voice: voice,
+      input: text,
+      speed: 0.9 // Slightly slower for children
+    })
+
+    return await response.arrayBuffer()
+  } catch (error) {
+    console.error('TTS API error:', error)
+    throw error
+  }
+}

@@ -137,7 +137,7 @@ export default function Results() {
         sum + (round.answers?.reduce((roundSum: number, answer: Answer) => 
           roundSum + ((answer as any).hintsUsed || 0), 0) || 0), 0)
       
-      // Create FactResults from all answers
+      // Create FactResults from all answers with round numbers
       const facts: FactResult[] = allRounds.flatMap((round: Round) => 
         round.answers?.map((answer: Answer) => ({
           a: answer.a,
@@ -146,9 +146,19 @@ export default function Results() {
           correctAnswer: answer.a * answer.b,
           isCorrect: answer.isCorrect,
           timeSpent: answer.ms / 1000,
-          hintsUsed: (answer as any).hintsUsed || 0 // Get actual hints used
+          hintsUsed: (answer as any).hintsUsed || 0, // Get actual hints used
+          roundNo: round.roundNo // Add round number to each fact
         })) || []
       )
+      
+      // Calculate round-by-round results
+      const roundResults = allRounds.map((round: Round) => ({
+        roundNo: round.roundNo,
+        questionsInRound: round.answers?.length || 0,
+        correctInRound: round.answers?.filter((a: Answer) => a.isCorrect).length || 0,
+        timeSpentInRound: (round.answers?.reduce((sum: number, a: Answer) => sum + a.ms, 0) || 0) / 1000,
+        hintsInRound: round.answers?.reduce((sum: number, a: Answer) => sum + ((a as any).hintsUsed || 0), 0) || 0
+      }))
         
         const gameResult: GameResult = {
           id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
@@ -160,7 +170,9 @@ export default function Results() {
           wrongAnswers: total - correct,
           hintsUsed: totalHints,
           timeSpent: timeMs / 1000,
-          facts: facts
+          totalRounds: allRounds.length,
+          facts: facts,
+          roundResults: roundResults
         }
         
         console.log('Saving game result (first time):', gameResult)

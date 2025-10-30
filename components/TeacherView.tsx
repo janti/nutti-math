@@ -190,50 +190,123 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                     
                     <div className="grid grid-cols-4 gap-4 text-sm">
                       <div>
-                        <span className="text-gray-600">Vaikeus:</span>
+                        <span className="text-gray-600">{t('teacher.difficulty')}:</span>
                         <div className="font-medium">{result.range}</div>
                       </div>
                       <div>
-                        <span className="text-gray-600">Aika:</span>
+                        <span className="text-gray-600">{t('teacher.time')}:</span>
                         <div className="font-medium">{formatTime(result.timeSpent)}</div>
                       </div>
                       <div>
-                        <span className="text-gray-600">Vihjeet:</span>
+                        <span className="text-gray-600">{t('teacher.hints')}:</span>
                         <div className="font-medium">{result.hintsUsed}</div>
                       </div>
                       <div>
-                        <span className="text-gray-600">Nopeus:</span>
+                        <span className="text-gray-600">{t('teacher.speed')}:</span>
                         <div className="font-medium">
-                          {(result.timeSpent / result.totalQuestions).toFixed(1)}s/tehtävä
+                          {(result.timeSpent / result.totalQuestions).toFixed(1)}s/{t('teacher.perQuestion')}
                         </div>
                       </div>
                     </div>
 
+                    {/* Round breakdown - only show if more than 1 round */}
+                    {result.totalRounds > 1 && result.roundResults && (
+                      <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                        <h5 className="font-semibold text-sm mb-2">
+                          {t('teacher.roundBreakdown')} ({t('teacher.totalRounds', { count: result.totalRounds })})
+                        </h5>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 text-sm">
+                          {result.roundResults.map((round, index) => (
+                            <div key={index} className="bg-white p-2 rounded border">
+                              <div className="font-medium text-blue-600">
+                                {t('teacher.roundNumber', { number: round.roundNo })}
+                              </div>
+                              <div className="text-xs text-gray-600">
+                                {t('teacher.roundStats', {
+                                  correct: round.correctInRound,
+                                  total: round.questionsInRound,
+                                  time: round.timeSpentInRound.toFixed(1),
+                                  hints: round.hintsInRound
+                                })}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     {/* Detailed facts */}
                     <details className="mt-3">
                       <summary className="cursor-pointer text-blue-600 hover:text-blue-800">
-                        Näytä yksityiskohdat
+                        {t('teacher.showDetails')}
                       </summary>
-                      <div className="mt-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 text-sm">
-                        {result.facts.map((fact, index) => (
-                          <div 
-                            key={index}
-                            className={`p-2 rounded ${
-                              fact.isCorrect ? 'bg-green-100' : 'bg-red-100'
-                            }`}
-                          >
-                            <div className="font-mono">
-                              {fact.a} × {fact.b} = {fact.userAnswer}
-                              {!fact.isCorrect && (
-                                <span className="text-red-600"> (oikea: {fact.correctAnswer})</span>
-                              )}
-                            </div>
-                            <div className="text-xs text-gray-600">
-                              {fact.timeSpent.toFixed(1)}s
-                              {fact.hintsUsed > 0 && `, ${fact.hintsUsed} vihje`}
-                            </div>
+                      <div className="mt-2">
+                        {/* Group facts by rounds if round info is available */}
+                        {result.totalRounds > 1 && result.facts.some(f => f.roundNo) ? (
+                          (() => {
+                            // Group facts by round number
+                            const factsByRound = result.facts.reduce((groups, fact) => {
+                              const roundKey = fact.roundNo || 1;
+                              if (!groups[roundKey]) groups[roundKey] = [];
+                              groups[roundKey].push(fact);
+                              return groups;
+                            }, {} as Record<number, typeof result.facts>);
+
+                            return Object.entries(factsByRound)
+                              .sort(([a], [b]) => parseInt(a) - parseInt(b))
+                              .map(([roundNo, facts]) => (
+                                <div key={roundNo} className="mb-4">
+                                  <h6 className="font-semibold text-sm mb-2 text-blue-700">
+                                    {t('teacher.roundNumber', { number: roundNo })}
+                                  </h6>
+                                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 text-sm">
+                                    {facts.map((fact, index) => (
+                                      <div 
+                                        key={index}
+                                        className={`p-2 rounded ${
+                                          fact.isCorrect ? 'bg-green-100' : 'bg-red-100'
+                                        }`}
+                                      >
+                                        <div className="font-mono">
+                                          {fact.a} × {fact.b} = {fact.userAnswer}
+                                          {!fact.isCorrect && (
+                                            <span className="text-red-600"> ({t('teacher.correct_answer')}: {fact.correctAnswer})</span>
+                                          )}
+                                        </div>
+                                        <div className="text-xs text-gray-600">
+                                          {fact.timeSpent.toFixed(1)}s
+                                          {fact.hintsUsed > 0 && `, ${fact.hintsUsed} ${t('teacher.hint_count')}`}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              ));
+                          })()
+                        ) : (
+                          // Show all facts without round grouping for single round games
+                          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 text-sm">
+                            {result.facts.map((fact, index) => (
+                              <div 
+                                key={index}
+                                className={`p-2 rounded ${
+                                  fact.isCorrect ? 'bg-green-100' : 'bg-red-100'
+                                }`}
+                              >
+                                <div className="font-mono">
+                                  {fact.a} × {fact.b} = {fact.userAnswer}
+                                  {!fact.isCorrect && (
+                                    <span className="text-red-600"> ({t('teacher.correct_answer')}: {fact.correctAnswer})</span>
+                                  )}
+                                </div>
+                                <div className="text-xs text-gray-600">
+                                  {fact.timeSpent.toFixed(1)}s
+                                  {fact.hintsUsed > 0 && `, ${fact.hintsUsed} ${t('teacher.hint_count')}`}
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        ))}
+                        )}
                       </div>
                     </details>
                   </div>

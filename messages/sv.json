@@ -27,6 +27,8 @@
     "unmute": "🔊 Ljud på",
     "readAgain": "🎤 Läs igen",
     "reading": "🎤 Läser...",
+    "loading": "⏳ Laddar...",
+    "muted": "🔇 Tystad",
     "stopReading": "⏹️ Sluta läsa",
     "pages": {
       "1": {
@@ -54,6 +56,37 @@
       "page3": "Visste du? 7 × 8 = 56 nötter! Det skulle räcka för Nutti i nästan två veckor.",
       "page5": "Tips: Använd tangentbordet: 0-9, Enter, Backspace och H (tips)!"
     }
+  },
+  "teacher": {
+    "title": "Lärarvy",
+    "selectStudent": "Välj elev:",
+    "allStudents": "Alla elever",
+    "stats": "Statistik",
+    "games": "Spel",
+    "questions": "Frågor",
+    "correct": "Rätt",
+    "wrong": "Fel",
+    "accuracy": "Noggrannhet",
+    "hints": "Tips",
+    "time": "Tid",
+    "averageTime": "Genomsnittlig tid",
+    "gameHistory": "Spelhistorik",
+    "difficulty": "Svårighetsgrad",
+    "speed": "Hastighet",
+    "perQuestion": "per fråga",
+    "showDetails": "Visa detaljer",
+    "correct_answer": "rätt",
+    "hint_count": "tips",
+    "exportData": "Exportera data",
+    "clearAll": "Rensa alla",
+    "clearConfirm": "Är du säker på att du vill radera alla resultat? Detta kan inte ångras.",
+    "noResults": "Inga resultat för elev:",
+    "selectToView": "Välj en elev för att se resultat",
+    "roundBreakdown": "Omgångsuppdelning",
+    "roundNumber": "Omgång {number}",
+    "totalRounds": "Totalt omgångar: {count}",
+    "questionsPerRound": "frågor/omgång",
+    "roundStats": "{correct}/{total} rätt, {time}s, {hints} tips"
   },
   "play": {
     "round": "Omgång {n} / 10",

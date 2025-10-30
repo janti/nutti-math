@@ -15,7 +15,9 @@ export default function MathStory({ onStoryComplete }: MathStoryProps) {
   const [currentPage, setCurrentPage] = useState(0)
   const [isMuted, setIsMuted] = useState(false)
   const [isReading, setIsReading] = useState(false)
-  const speechRef = useRef<SpeechSynthesisUtterance | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const storyPages = [
     {
@@ -53,49 +55,105 @@ export default function MathStory({ onStoryComplete }: MathStoryProps) {
     }
   }, [])
 
-  // Speech synthesis functions
-  const speakText = (text: string, title: string) => {
-    if (isMuted || !('speechSynthesis' in window)) return
-
-    // Stop any ongoing speech
-    speechSynthesis.cancel()
-
-    const utterance = new SpeechSynthesisUtterance()
+  // Function to make text more speech-friendly for Finnish
+  const prepareFinnishText = (text: string): string => {
+    if (locale !== 'fi') return text
     
-    // Configure voice based on locale
-    const getVoiceSettings = () => {
-      switch (locale) {
-        case 'en':
-          return { lang: 'en-US', rate: 0.9, pitch: 1.2 }
-        case 'sv':
-          return { lang: 'sv-SE', rate: 0.9, pitch: 1.2 }
-        default:
-          return { lang: 'fi-FI', rate: 0.9, pitch: 1.2 }
-      }
+    return text
+      // Replace numbers with Finnish words
+      .replace(/\b7\b/g, 'seitsemän')
+      .replace(/\b8\b/g, 'kahdeksan')
+      .replace(/\b56\b/g, 'viisikymmentäkuusi')
+      // Make mathematical expressions more natural
+      .replace(/7\s*×\s*8\s*=\s*56/g, 'seitsemän kertaa kahdeksan on viisikymmentäkuusi')
+      .replace(/×/g, 'kertaa')
+      .replace(/=/g, 'on')
+      // Add natural pauses
+      .replace(/\./g, '. ')
+      .replace(/!/g, '! ')
+      .replace(/\?/g, '? ')
+  }
+
+  // AI-powered Text-to-Speech functions
+  const speakText = async (text: string, title: string) => {
+    if (isMuted || !text || isLoading || isReading) {
+      return
     }
 
-    const voiceSettings = getVoiceSettings()
-    
-    // Combine title and text for better flow
-    const fullText = `${title}. ${text}`
-    
-    utterance.text = fullText
-    utterance.lang = voiceSettings.lang
-    utterance.rate = voiceSettings.rate // Slightly slower for story-telling
-    utterance.pitch = voiceSettings.pitch // Higher pitch for friendly squirrel voice
-    utterance.volume = 0.8
+    // Stop any ongoing audio
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current = null
+    }
 
-    utterance.onstart = () => setIsReading(true)
-    utterance.onend = () => setIsReading(false)
-    utterance.onerror = () => setIsReading(false)
+    setIsLoading(true)
+    setIsReading(true)
 
-    speechRef.current = utterance
-    speechSynthesis.speak(utterance)
+    try {
+      // Only include title for the first page (page 0)
+      const rawText = currentPage === 0 ? `${title}. ${text}` : text
+      const processedText = prepareFinnishText(rawText)
+      
+      const response = await fetch('/api/ai/tts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: processedText,
+          locale: locale
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('TTS request failed')
+      }
+
+      const audioBlob = await response.blob()
+      const audioUrl = URL.createObjectURL(audioBlob)
+      
+      const audio = new Audio(audioUrl)
+      audioRef.current = audio
+      
+      audio.onended = () => {
+        setIsReading(false)
+        URL.revokeObjectURL(audioUrl)
+        audioRef.current = null
+      }
+      
+      audio.onerror = () => {
+        setIsReading(false)
+        URL.revokeObjectURL(audioUrl)
+        audioRef.current = null
+        console.error('Audio playback failed')
+      }
+
+      await audio.play()
+    } catch (error) {
+      console.error('TTS error:', error)
+      setIsReading(false)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const stopSpeaking = () => {
-    speechSynthesis.cancel()
+    // Cancel any pending auto-read timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    
+    // Stop current audio if playing
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+      audioRef.current = null
+    }
+    
+    // Reset all states
     setIsReading(false)
+    setIsLoading(false)
   }
 
   const stopReading = stopSpeaking
@@ -110,37 +168,65 @@ export default function MathStory({ onStoryComplete }: MathStoryProps) {
     }
   }
 
-  // Auto-read when page changes (if not muted)
+  // Auto-read when page changes (only on currentPage change)
   useEffect(() => {
-    if (!isMuted && storyPages[currentPage]) {
-      // Small delay to let the page render
-      setTimeout(() => {
-        speakText(storyPages[currentPage].text, storyPages[currentPage].title)
-      }, 500)
+    // Clear any existing timeout first
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
     }
-  }, [currentPage, isMuted])
+    
+    if (!isMuted && storyPages[currentPage]) {
+      // Delay to ensure previous audio is fully stopped and page is rendered
+      timeoutRef.current = setTimeout(() => {
+        // Only start if not currently playing and not muted
+        if (!isMuted && !isReading && !isLoading && timeoutRef.current) {
+          speakText(storyPages[currentPage].text, storyPages[currentPage].title)
+        }
+        timeoutRef.current = null
+      }, 600)
+    }
+  }, [currentPage]) // Only depend on currentPage to avoid loops
 
-  // Cleanup speech on unmount
+  // Cleanup audio on unmount
   useEffect(() => {
     return () => {
-      speechSynthesis.cancel()
+      // Clear timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+        timeoutRef.current = null
+      }
+      
+      // Stop audio
+      if (audioRef.current) {
+        audioRef.current.pause()
+        audioRef.current = null
+      }
     }
   }, [])
 
   const nextPage = () => {
     stopSpeaking() // Stop current speech before moving
-    if (currentPage < storyPages.length - 1) {
-      setCurrentPage(currentPage + 1)
-    } else {
-      onStoryComplete()
-    }
+    
+    // Shorter delay for forward navigation - auto-read will start
+    setTimeout(() => {
+      if (currentPage < storyPages.length - 1) {
+        setCurrentPage(currentPage + 1)
+      } else {
+        onStoryComplete()
+      }
+    }, 50)
   }
 
   const prevPage = () => {
     stopSpeaking() // Stop current speech before moving
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1)
-    }
+    
+    // Shorter delay for backward navigation - auto-read will start  
+    setTimeout(() => {
+      if (currentPage > 0) {
+        setCurrentPage(currentPage - 1)
+      }
+    }, 50)
   }
 
   const skipStory = () => {
@@ -197,19 +283,17 @@ export default function MathStory({ onStoryComplete }: MathStoryProps) {
           </p>
           
           {/* Read aloud button */}
-          {!isMuted && 'speechSynthesis' in window && (
-            <button
-              onClick={() => speakText(currentStory.text, currentStory.title)}
-              disabled={isReading}
-              className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-                isReading 
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
-              }`}
-            >
-              {isReading ? t('story.reading') : t('story.readAgain')}
-            </button>
-          )}
+          <button
+            onClick={() => speakText(currentStory.text, currentStory.title)}
+            disabled={isReading || isLoading || isMuted}
+            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
+              isReading || isLoading || isMuted
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+            }`}
+          >
+            {isMuted ? t('story.muted') : isLoading ? t('story.loading') : isReading ? t('story.reading') : t('story.readAgain')}
+          </button>
         </div>
 
         {/* Progress dots */}

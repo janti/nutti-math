@@ -27,6 +27,8 @@
     "unmute": "🔊 Ääni päälle",
     "readAgain": "🎤 Lue uudelleen",
     "reading": "🎤 Lukee...",
+    "loading": "⏳ Ladataan...",
+    "muted": "🔇 Hiljennetty",
     "stopReading": "⏹️ Lopeta lukeminen",
     "pages": {
       "1": {
@@ -34,7 +36,7 @@
         "text": "Olipa kerran vilkas orava nimeltä Nutti, joka asui suuressa tammessa. Nutti oli erilainen kuin muut oravat - hän rakasti matematiikkaa!"
       },
       "2": {
-        "title": "Talven Valmistautuminen",
+        "title": "Talveen Valmistautuminen",
         "text": "Syksy oli tulossa ja Nutti tiesi, että hänen piti kerätä pähkinöitä talvea varten. Mutta kuinka monta pähkinää hänen oikein tarvitsisi?"
       },
       "3": {
@@ -79,7 +81,12 @@
     "clearAll": "Poista kaikki",
     "clearConfirm": "Haluatko varmasti poistaa kaikki tulokset? Tätä ei voi perua.",
     "noResults": "Ei tuloksia oppilaalle:",
-    "selectToView": "Valitse oppilas nähdäksesi tulokset"
+    "selectToView": "Valitse oppilas nähdäksesi tulokset",
+    "roundBreakdown": "Eräjako",
+    "roundNumber": "Erä {number}",
+    "totalRounds": "Eriä yhteensä: {count}",
+    "questionsPerRound": "tehtävää/erä",
+    "roundStats": "{correct}/{total} oikein, {time}s, {hints} vihje"
   },
   "play": {
     "round": "Erä {n} / 10",

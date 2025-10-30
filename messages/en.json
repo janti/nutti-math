@@ -27,6 +27,8 @@
     "unmute": "🔊 Unmute",
     "readAgain": "🎤 Read again",
     "reading": "🎤 Reading...",
+    "loading": "⏳ Loading...",
+    "muted": "🔇 Muted",
     "stopReading": "⏹️ Stop reading",
     "pages": {
       "1": {
@@ -54,6 +56,37 @@
       "page3": "Did you know? 7 × 8 = 56 nuts! That would last Nutti almost two weeks.",
       "page5": "Tip: Use the keyboard: 0-9, Enter, Backspace and H (hint)!"
     }
+  },
+  "teacher": {
+    "title": "Teacher View",
+    "selectStudent": "Select student:",
+    "allStudents": "All students",
+    "stats": "Statistics",
+    "games": "Games",
+    "questions": "Questions",
+    "correct": "Correct",
+    "wrong": "Wrong",
+    "accuracy": "Accuracy",
+    "hints": "Hints",
+    "time": "Time",
+    "averageTime": "Average time",
+    "gameHistory": "Game history",
+    "difficulty": "Difficulty",
+    "speed": "Speed",
+    "perQuestion": "per question",
+    "showDetails": "Show details",
+    "correct_answer": "correct",
+    "hint_count": "hint",
+    "exportData": "Export data",
+    "clearAll": "Clear all",
+    "clearConfirm": "Are you sure you want to delete all results? This cannot be undone.",
+    "noResults": "No results for student:",
+    "selectToView": "Select a student to view results",
+    "roundBreakdown": "Round breakdown",
+    "roundNumber": "Round {number}",
+    "totalRounds": "Total rounds: {count}",
+    "questionsPerRound": "questions/round",
+    "roundStats": "{correct}/{total} correct, {time}s, {hints} hints"
   },
   "play": {
     "round": "Round {n} / 10",

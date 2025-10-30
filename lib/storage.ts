@@ -9,7 +9,15 @@ export interface GameResult {
   wrongAnswers: number
   hintsUsed: number
   timeSpent: number // in seconds
+  totalRounds: number // number of rounds played
   facts: FactResult[]
+  roundResults?: Array<{
+    roundNo: number
+    questionsInRound: number
+    correctInRound: number
+    timeSpentInRound: number
+    hintsInRound: number
+  }>
 }
 
 export interface FactResult {
@@ -20,6 +28,7 @@ export interface FactResult {
   isCorrect: boolean
   timeSpent: number
   hintsUsed: number
+  roundNo?: number // Which round this fact belongs to
 }
 
 // LocalStorage management
