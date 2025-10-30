@@ -1,6 +1,6 @@
 # 🐿️ Nutti Math - AI-Powered Multiplication Trainer
 
-A modern, interactive multiplication table trainer featuring AI feedback, multiple languages, and a delightful candy-themed UI. Built with Next.js, TypeScript, and Tailwind CSS.
+A comprehensive, modern multiplication table trainer featuring AI-powered feedback, interactive storytelling, text-to-speech, teacher analytics, and complete multilingual support. Built with Next.js 15, TypeScript, and Tailwind CSS.
 
 ## ✨ Features
 
@@ -14,12 +14,22 @@ A modern, interactive multiplication table trainer featuring AI feedback, multip
   - 🎲 Mix (1-12 tables)
 - **10 Questions per Round**: Perfectly balanced practice sessions
 - **Real-time Progress**: Visual progress bar and statistics
+- **Round-by-Round Analytics**: Detailed performance tracking per round
 
 ### 🤖 AI Integration
 - **Smart Hints**: Context-aware multiplication hints during gameplay
 - **Round Feedback**: Personalized AI feedback after each round
 - **Final Assessment**: Comprehensive AI analysis of overall performance
 - **Multi-language AI**: AI responds in Finnish, English, or Swedish
+- **AI-Powered Text-to-Speech**: High-quality narration using OpenAI TTS API
+- **Locale-Specific Voices**: Optimized voice selection for each language
+
+### 📚 Interactive Story Feature
+- **Math Story Introduction**: Engaging story about Nutti the Squirrel learning multiplication
+- **5-Page Interactive Story**: Beautiful illustrated narrative in 3 languages
+- **AI Text-to-Speech Narration**: Professional-quality voice acting
+- **User-Controlled Audio**: Play, pause, mute controls with automatic playback options
+- **Smart Audio Management**: Respects user preferences and browser autoplay policies
 
 ### 🌍 Internationalization
 - **3 Languages**: Finnish (fi), English (en), Swedish (sv)
@@ -27,25 +37,39 @@ A modern, interactive multiplication table trainer featuring AI feedback, multip
 - **Language Switching**: Easy language selection in header
 - **Localized AI**: AI feedback matches selected language
 
-### 🍬 User Experience
-- **Candy Theme**: Delightful candy and emoji decorations
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Accessibility**: Proper ARIA labels and keyboard navigation
-- **Performance Optimized**: Fact caching and smooth transitions
-- **Enter Key Support**: Quick game start and answer submission
+### 👩‍� Teacher Analytics
+- **Comprehensive Dashboard**: Complete teacher view with student performance tracking
+- **Student Data Storage**: LocalStorage-based analytics with 1000+ result capacity
+- **Round Breakdown**: Detailed round-by-round performance analysis
+- **Multi-Student Support**: Track multiple students with nickname-based filtering
+- **Performance Statistics**: Accuracy, time spent, hints used, and detailed fact analysis
+- **Data Export Ready**: Structured data format for future export capabilities
+
+### �🍬 User Experience
+- **Nutti Theme**: Delightful squirrel mascot with candy and nature decorations
+- **Responsive Design**: Optimized for desktop, tablet, and mobile
+- **Accessibility**: Complete ARIA labels, keyboard navigation, and screen reader support
+- **Performance Optimized**: Smart caching, precomputation, and smooth transitions
+- **Multi-Input Support**: Virtual keypad, physical keyboard, and touch interaction
+- **Professional UI**: Modern design with gradient backgrounds and shadow effects
 
 ### ⚡ Technical Features
-- **TypeScript**: Full type safety throughout the application
+- **Next.js 15**: Latest React framework with App Router and server components
+- **TypeScript**: Full type safety throughout the application with strict configuration
 - **Performance Caching**: Smart fact precomputation and localStorage optimization
-- **Duplicate Prevention**: Prevents double-submission and data duplication
-- **Error Handling**: Graceful error handling with timeouts
+- **Duplicate Prevention**: Advanced deduplication systems with unique game identifiers
+- **Error Handling**: Comprehensive error handling with timeouts and fallbacks
 - **Modern Architecture**: Clean component structure with proper separation of concerns
+- **OpenAI Integration**: Both OpenAI API and Azure OpenAI Service support
+- **Audio Management**: Sophisticated audio lifecycle management with cleanup
+- **State Management**: Optimized React hooks with performance considerations
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+ 
 - npm or yarn
+- OpenAI API key or Azure OpenAI Service access
 
 ### Installation
 
@@ -63,14 +87,16 @@ npm install
 3. **Set up environment variables**
 Create a `.env.local` file:
 ```env
-# OpenAI Configuration
+# OpenAI Configuration (Recommended)
 OPENAI_API_KEY=your_openai_api_key_here
 
 # Or Azure OpenAI Configuration
 AZURE_OPENAI_API_KEY=your_azure_key_here
 AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
-AZURE_OPENAI_API_VERSION=2024-02-15-preview
-AZURE_OPENAI_DEPLOYMENT_NAME=your-deployment-name
+AZURE_OPENAI_DEPLOYMENT=your-deployment-name
+
+# Optional: Production URL for metadata
+NEXT_PUBLIC_BASE_URL=https://your-domain.com
 ```
 
 4. **Run the development server**
@@ -87,36 +113,48 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ├── app/
 │   ├── [locale]/           # Internationalized routes
 │   │   ├── page.tsx        # Home page with game setup
-│   │   ├── play/           # Main gameplay
-│   │   ├── break/          # Round break with AI feedback
-│   │   ├── results/        # Final results and statistics
-│   │   └── layout.tsx      # Locale-specific layout
+│   │   ├── play/           # Main gameplay with virtual keypad
+│   │   ├── break/          # Round break with AI feedback and statistics
+│   │   ├── results/        # Final results and comprehensive analytics
+│   │   └── layout.tsx      # Locale-specific layout with metadata
 │   ├── api/
 │   │   └── ai/             # AI API endpoints
-│   │       ├── hint/       # Hint generation
-│   │       └── feedback/   # Round feedback
-│   └── globals.css         # Global styles
+│   │       ├── hint/       # Smart hint generation
+│   │       ├── feedback/   # Round feedback analysis
+│   │       ├── final/      # Final game assessment
+│   │       └── tts/        # Text-to-speech generation
+│   └── globals.css         # Global styles with Tailwind
 ├── components/
-│   ├── Keypad.tsx          # Virtual number keypad
-│   ├── NuttiBadge.tsx      # Character badge component
-│   └── Progress.tsx        # Progress bar component
+│   ├── Keypad.tsx          # Virtual number keypad with keyboard support
+│   ├── NuttiBadge.tsx      # Dynamic character badge with moods
+│   ├── Progress.tsx        # Animated progress bar component
+│   ├── MathStory.tsx       # Interactive story with AI narration
+│   ├── TeacherView.tsx     # Comprehensive analytics dashboard
+│   └── UI/
+│       ├── LangSwitcher.tsx # Language switching component
+│       └── Header.tsx      # Application header with navigation
 ├── lib/
-│   ├── ai.ts              # AI integration utilities
-│   └── game.ts            # Game logic and fact generation
-├── messages/              # Internationalization files
-│   ├── en.json           # English translations
-│   ├── fi.json           # Finnish translations
-│   └── sv.json           # Swedish translations
-└── i18n.ts               # i18n configuration
+│   ├── ai.ts              # AI integration with OpenAI/Azure support
+│   ├── game.ts            # Game logic and fact generation
+│   └── storage.ts         # LocalStorage management for teacher analytics
+├── messages/              # Complete internationalization
+│   ├── en.json           # English translations (216 keys)
+│   ├── fi.json           # Finnish translations (216 keys)  
+│   └── sv.json           # Swedish translations (216 keys)
+├── i18n/
+│   └── request.ts        # Next-intl configuration with Next.js 15 support
+└── i18n.ts               # Locale configuration and routing
 ```
 
 ## 🎯 Game Flow
 
-1. **Setup**: Choose nickname, difficulty, and number of rounds
-2. **Play**: Solve 10 multiplication problems per round
-3. **Break**: Review statistics and receive AI feedback
-4. **Repeat**: Continue for selected number of rounds
-5. **Results**: Final statistics and comprehensive AI assessment
+1. **Welcome Story**: Optional interactive story introduction with AI narration
+2. **Setup**: Choose nickname, difficulty, and number of rounds
+3. **Play**: Solve 10 multiplication problems per round with hints available
+4. **Break**: Review round statistics and receive personalized AI feedback
+5. **Repeat**: Continue for selected number of rounds with progress tracking
+6. **Results**: Final statistics, round breakdown, and comprehensive AI assessment
+7. **Teacher Analytics**: Optional teacher dashboard with detailed performance data
 
 ## 🤖 AI Features
 
@@ -124,16 +162,26 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 - Context-aware multiplication strategies
 - Encourages mental math techniques
 - Available via 'H' key or hint button
+- Tracks hint usage for teacher analytics
 
 ### Round Feedback
-- Analyzes performance patterns
-- Provides encouraging feedback
-- Suggests improvements
+- Analyzes performance patterns with specific statistics
+- Provides encouraging, personalized feedback
+- Suggests targeted improvements
+- Adapts to student's difficulty level and progress
 
 ### Final Assessment
-- Comprehensive performance review
-- Celebrates achievements
-- Motivational conclusion
+- Comprehensive performance review across all rounds
+- Celebrates achievements and progress made
+- Motivational conclusion tailored to individual performance
+- Incorporates round-by-round analysis
+
+### Text-to-Speech Integration
+- **Professional Voice Quality**: OpenAI TTS-1 model
+- **Multi-language Support**: Native voices for Finnish, English, Swedish
+- **Interactive Story Narration**: Full story reading with user controls
+- **Smart Audio Management**: Respects user interaction patterns
+- **Accessibility Enhancement**: Screen reader friendly audio controls
 
 ## 🌐 Supported Languages
 
@@ -163,11 +211,13 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## ⌨️ Keyboard Shortcuts
 
-- **0-9**: Enter digits
-- **Enter**: Submit answer / Start game
-- **Backspace**: Delete digit
-- **H**: Request hint
-- **Tab**: Navigate between elements
+- **0-9**: Enter digits during gameplay
+- **Enter**: Submit answer / Start game / Continue story
+- **Backspace**: Delete digit / Clear input
+- **H**: Request AI hint during questions
+- **Tab**: Navigate between interactive elements
+- **Esc**: Close modals and return to main menu
+- **Arrow Keys**: Navigate story pages (when story is active)
 
 ## 🔧 Configuration
 
@@ -192,20 +242,20 @@ Stored in localStorage as `nutti.settings`:
 ### Available Scripts
 
 ```bash
-# Development server
+# Development server with hot reload
 npm run dev
 
-# Production build
+# Production build with optimization
 npm run build
 
 # Start production server
 npm start
 
-# Type checking
-npm run type-check
-
-# Linting
+# Linting and code quality
 npm run lint
+
+# Fix linting issues automatically
+npm run lint:fix
 ```
 
 ### Code Quality
@@ -226,17 +276,32 @@ npm run lint
 ### Common Issues
 
 **AI not working**
-- Check environment variables
-- Verify API key validity
-- Check network connectivity
+- Check environment variables in `.env.local`
+- Verify OpenAI API key validity and billing status
+- Check network connectivity and firewall settings
+- Monitor browser console for API errors
+
+**Audio/TTS not working**
+- Ensure OpenAI API key has TTS model access
+- Check browser audio permissions
+- Verify autoplay policies are respected
+- Clear audio cache and try manual play button
 
 **Language switching issues**
-- Clear browser cache
-- Check locale routing configuration
+- Clear browser cache and localStorage
+- Check locale routing configuration in `i18n.ts`
+- Verify all translation files are present
 
 **Performance issues**
 - Clear localStorage: `localStorage.clear()`
 - Check browser console for errors
+- Clear Next.js cache: `rm -rf .next`
+- Restart development server
+
+**Teacher view not showing data**
+- Play at least one complete game
+- Check localStorage for saved results
+- Verify nickname was entered during game setup
 
 ## 🤝 Contributing
 
@@ -252,21 +317,52 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-- **Next.js** - React framework
-- **Tailwind CSS** - Utility-first CSS framework
-- **next-intl** - Internationalization for Next.js
-- **OpenAI** - AI-powered feedback system
-- **Vercel** - Deployment platform
+- **Next.js 15** - Latest React framework with App Router
+- **Tailwind CSS** - Utility-first CSS framework for beautiful styling
+- **next-intl** - Comprehensive internationalization for Next.js
+- **OpenAI** - AI-powered feedback and text-to-speech system
+- **TypeScript** - Type safety and developer experience
+- **Vercel** - Deployment and hosting platform
+- **React** - User interface library
+
+## 🎯 Recent Updates
+
+### Version History
+- **v0.2.0** - AI Text-to-Speech, Interactive Story, Teacher Analytics
+- **v0.1.5** - Complete localization, Round breakdown analytics
+- **v0.1.0** - Core multiplication trainer with AI feedback
+
+### Latest Features (October 2025)
+- ✅ **Interactive Math Story**: 5-page illustrated story with AI narration
+- ✅ **AI Text-to-Speech**: Professional quality voice narration in 3 languages
+- ✅ **Teacher Analytics**: Comprehensive dashboard with round-by-round breakdown
+- ✅ **Next.js 15 Upgrade**: Latest framework features and performance improvements
+- ✅ **Enhanced Audio Controls**: Smart autoplay management and user preferences
+- ✅ **Complete Localization**: Every UI element translated across all languages
 
 ## 🎯 Future Enhancements
 
-- [ ] Additional difficulty levels
-- [ ] Progress tracking over time
-- [ ] Multiplayer competitions
-- [ ] More AI personality options
-- [ ] Achievement system
-- [ ] Export progress reports
+- [ ] Data export functionality for teacher reports
+- [ ] Extended story chapters and characters
+- [ ] Achievement badges and progress certificates
+- [ ] Parent/teacher email reporting
+- [ ] Offline mode support
+- [ ] Additional math operations (addition, subtraction, division)
+- [ ] Gamification elements and rewards system
+- [ ] Student progress tracking over time
+- [ ] Customizable AI personality settings
+
+## 🏆 Key Metrics
+
+- **3 Languages**: Complete localization support
+- **216 Translation Keys**: Comprehensive language coverage  
+- **1000+ Results**: Teacher analytics storage capacity
+- **10 Questions/Round**: Optimal learning session length
+- **AI-Powered**: 4 different AI interaction types
+- **100% Accessible**: Full ARIA compliance and keyboard navigation
 
 ---
 
-Made with ❤️ for young mathematicians learning multiplication tables!
+Made with ❤️ and 🤖 AI for young mathematicians learning multiplication tables!
+
+**Nutti the Squirrel** 🐿️ is ready to help students master their multiplication tables through engaging, AI-enhanced learning experiences.
