@@ -14,7 +14,8 @@ interface Answer {
   ms: number; 
   correct: number; 
   child: number; 
-  isCorrect: boolean 
+  isCorrect: boolean;
+  hintsUsed?: number; // Track hints per answer
 }
 
 interface GameSettings {
@@ -44,9 +45,13 @@ export default function Play() {
   const [answers, setAnswers] = useState<Answer[]>([])
   const [hint, setHint] = useState<string>('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [currentHints, setCurrentHints] = useState(0) // Track hints for current question
   const t0 = useRef<number>(performance.now())
   
   useEffect(() => {
+    // Reset hint counter when component mounts or facts change
+    setCurrentHints(0)
+    
     // Optimized initialization - no heavy computation
     const savedSettings: GameSettings = JSON.parse(
       localStorage.getItem('nutti.settings') || 
@@ -92,13 +97,17 @@ export default function Play() {
       ms,
       correct,
       child,
-      isCorrect
+      isCorrect,
+      hintsUsed: currentHints
     }
+    
+    console.log('Saving answer:', current.a, 'x', current.b, '=', child, 'hints used:', currentHints, 'time:', ms, 'ms')
     // Update state and prepare for next question
     const nextAnswers = [...answers, entry]
     setAnswers(nextAnswers)
     setInput('')
     setHint('')
+    setCurrentHints(0) // Reset hint counter for next question
     t0.current = performance.now()
     
     // Check if round is complete
@@ -121,17 +130,25 @@ export default function Play() {
       // Re-enable submit for next question
       setIsSubmitting(false)
     }
+    
+    console.log('Question completed. Moving to next question, hints reset to 0')
   }
   
   const askHint = async () => {
     if (!current) return
     
-    const res = await fetch('/api/ai/hint', {
-      method: 'POST', 
-      body: JSON.stringify({ ...current, locale: loc })
-    })
-    const { hint } = await res.json()
-    setHint(hint)
+    try {
+      const res = await fetch('/api/ai/hint', {
+        method: 'POST', 
+        body: JSON.stringify({ ...current, locale: loc })
+      })
+      const { hint } = await res.json()
+      setHint(hint)
+      setCurrentHints(prev => prev + 1) // Increment hint counter
+      console.log('Hint requested for', current.a, 'x', current.b, '- Total hints for this question:', currentHints + 1)
+    } catch (error) {
+      console.error('Error fetching hint:', error)
+    }
   }
   
   // Optimized loading - show only if facts are actually missing

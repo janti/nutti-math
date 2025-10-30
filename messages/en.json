@@ -13,7 +13,47 @@
     "kbStart": "Tip: Type your name and press Enter to start!",
     "roundCount": "Number of rounds",
     "gameInfo": "10 tasks per round • Nutti's feedback in breaks",
-    "rounds": "Rounds"
+    "rounds": "Rounds",
+    "teacherView": "Teacher View",
+    "readStory": "Read story"
+  },
+  "story": {
+    "skip": "Skip story",
+    "previous": "Previous",
+    "next": "Next",
+    "start": "Let's start!",
+    "page": "Page",
+    "mute": "🔇 Mute",
+    "unmute": "🔊 Unmute",
+    "readAgain": "🎤 Read again",
+    "reading": "🎤 Reading...",
+    "stopReading": "⏹️ Stop reading",
+    "pages": {
+      "1": {
+        "title": "Nutti the Squirrel and the Secret of Nuts",
+        "text": "Once upon a time there was a lively squirrel named Nutti who lived in a big oak tree. Nutti was different from other squirrels - he loved mathematics!"
+      },
+      "2": {
+        "title": "Preparing for Winter",
+        "text": "Autumn was coming and Nutti knew he had to collect nuts for the winter. But how many nuts would he really need?"
+      },
+      "3": {
+        "title": "The Power of Multiplication Tables",
+        "text": "Nutti remembered that his grandmother had taught him multiplication tables. 'If you collect 7 nuts a day for 8 days, how many will you have in total?' grandma had asked."
+      },
+      "4": {
+        "title": "The Adventure Begins",
+        "text": "Nutti decided he would learn all the multiplication tables perfectly. This way he could quickly calculate how many nuts he would have at any time!"
+      },
+      "5": {
+        "title": "Join Nutti's Adventure!",
+        "text": "Now you can help Nutti learn the multiplication tables! Every correct answer helps Nutti collect nuts for the winter. Are you ready?"
+      }
+    },
+    "funFacts": {
+      "page3": "Did you know? 7 × 8 = 56 nuts! That would last Nutti almost two weeks.",
+      "page5": "Tip: Use the keyboard: 0-9, Enter, Backspace and H (hint)!"
+    }
   },
   "play": {
     "round": "Round {n} / 10",

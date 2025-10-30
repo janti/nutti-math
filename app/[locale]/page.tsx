@@ -1,8 +1,10 @@
 'use client'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import NuttiBadge from '@/components/NuttiBadge'
+import TeacherView from '@/components/TeacherView'
+import MathStory from '@/components/MathStory'
 
 // TypeScript interfaces
 interface GameSettings {
@@ -19,6 +21,22 @@ export default function HomePage() {
   const [alias, setAlias] = useState('')
   const [range, setRange] = useState<GameSettings['range']>('1-5')
   const [rounds, setRounds] = useState<GameSettings['rounds']>(1)
+  const [showTeacherView, setShowTeacherView] = useState(false)
+  const [showStory, setShowStory] = useState(false)
+
+  // Check if story should be shown on first visit
+  useEffect(() => {
+    const storyShown = localStorage.getItem('nutti-story-shown')
+    if (!storyShown) {
+      setShowStory(true)
+    }
+  }, [])
+
+  const handleStoryComplete = () => {
+    localStorage.setItem('nutti-story-shown', 'true')
+    setShowStory(false)
+  }
+  
   const goPlay = () => {
     const loc = (window.location.pathname.split('/')[1] || 'fi')
     
@@ -27,9 +45,9 @@ export default function HomePage() {
     localStorage.removeItem('nutti.all-rounds')
     localStorage.removeItem('nutti.roundNo')
     
-    // Clear old fact caches
+    // Clear old fact caches and game save markers
     Object.keys(localStorage).forEach(key => {
-      if (key.startsWith('nutti.facts.')) {
+      if (key.startsWith('nutti.facts.') || key.startsWith('nutti.game-saved.')) {
         localStorage.removeItem(key)
       }
     })
@@ -209,10 +227,38 @@ export default function HomePage() {
               <p className="text-sm text-slate-600 font-medium mt-2">{t('home.kb')}</p>
             )}
           </div>
+
+          {/* Additional buttons */}
+          <div className="text-center space-y-2">
+            <div>
+              <button 
+                onClick={() => setShowStory(true)}
+                className="text-sm px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg transition-colors mr-2"
+              >
+                📖 {t('home.readStory')}
+              </button>
+              <button 
+                onClick={() => setShowTeacherView(true)}
+                className="text-sm px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg transition-colors"
+              >
+                👨‍🏫 {t('home.teacherView')}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
         </div>
       </div>
+
+      {/* Story Modal */}
+      {showStory && (
+        <MathStory onStoryComplete={handleStoryComplete} />
+      )}
+
+      {/* Teacher View Modal */}
+      {showTeacherView && (
+        <TeacherView onClose={() => setShowTeacherView(false)} />
+      )}
     </div>
   )
 }

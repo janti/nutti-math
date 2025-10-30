@@ -13,7 +13,73 @@
     "kbStart": "Vihje: Kirjoita nimi ja paina Enter aloittaaksesi!",
     "roundCount": "Erämäärä",
     "gameInfo": "10 tehtävää per erä • Nutin palaute tauoilla",
-    "rounds": "Erämäärä"
+    "rounds": "Erämäärä",
+    "teacherView": "Opettajanäkymä",
+    "readStory": "Kuuntele tarina"
+  },
+  "story": {
+    "skip": "Ohita tarina",
+    "previous": "Edellinen",
+    "next": "Seuraava",
+    "start": "Aloitetaan!",
+    "page": "Sivu",
+    "mute": "🔇 Hiljennä",
+    "unmute": "🔊 Ääni päälle",
+    "readAgain": "🎤 Lue uudelleen",
+    "reading": "🎤 Lukee...",
+    "stopReading": "⏹️ Lopeta lukeminen",
+    "pages": {
+      "1": {
+        "title": "Nutti Orava ja Pähkinöiden Salaisuus",
+        "text": "Olipa kerran vilkas orava nimeltä Nutti, joka asui suuressa tammessa. Nutti oli erilainen kuin muut oravat - hän rakasti matematiikkaa!"
+      },
+      "2": {
+        "title": "Talven Valmistautuminen",
+        "text": "Syksy oli tulossa ja Nutti tiesi, että hänen piti kerätä pähkinöitä talvea varten. Mutta kuinka monta pähkinää hänen oikein tarvitsisi?"
+      },
+      "3": {
+        "title": "Kertotaulujen Voima",
+        "text": "Nutti muisti, että hänen mummonsa oli opettanut hänelle kertotaulut. 'Jos keräät 7 pähkinää päivässä 8 päivän ajan, montako sinulla on yhteensä?' mummo oli kysynyt."
+      },
+      "4": {
+        "title": "Seikkailu Alkaa",
+        "text": "Nutti päätti, että hän oppisi kaikki kertotaulut täydellisesti. Näin hän voisi laskea nopeasti kuinka monta pähkinää hänellä olisi milloin tahansa!"
+      },
+      "5": {
+        "title": "Liity Nutin Seikkailuun!",
+        "text": "Nyt sinä voit auttaa Nuttia oppimaan kertotaulut! Jokainen oikea vastaus auttaa Nuttia keräämään pähkinöitä talvea varten. Oletko valmis?"
+      }
+    },
+    "funFacts": {
+      "page3": "Tiesitkö? 7 × 8 = 56 pähkinää! Se riittäisi Nutille melkein kahdeksi viikoksi.",
+      "page5": "Vihje: Käytä näppäimistöä: 0-9, Enter, Backspace ja H (vihje)!"
+    }
+  },
+  "teacher": {
+    "title": "Opettajanäkymä",
+    "selectStudent": "Valitse oppilas:",
+    "allStudents": "Kaikki oppilaat",
+    "stats": "Tilastot",
+    "games": "Pelejä",
+    "questions": "Tehtäviä",
+    "correct": "Oikein",
+    "wrong": "Väärin",
+    "accuracy": "Tarkkuus",
+    "hints": "Vihjeitä",
+    "time": "Aika",
+    "averageTime": "Keskiaika",
+    "gameHistory": "Pelihistoria",
+    "difficulty": "Vaikeus",
+    "speed": "Nopeus",
+    "perQuestion": "tehtävä",
+    "showDetails": "Näytä yksityiskohdat",
+    "correct_answer": "oikea",
+    "hint_count": "vihje",
+    "exportData": "Vie tiedot",
+    "clearAll": "Poista kaikki",
+    "clearConfirm": "Haluatko varmasti poistaa kaikki tulokset? Tätä ei voi perua.",
+    "noResults": "Ei tuloksia oppilaalle:",
+    "selectToView": "Valitse oppilas nähdäksesi tulokset"
   },
   "play": {
     "round": "Erä {n} / 10",

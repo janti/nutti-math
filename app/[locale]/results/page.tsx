@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl'
 import { useEffect, useState, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import NuttiBadge from '@/components/NuttiBadge'
+import { GameStorage, GameResult, FactResult } from '@/lib/storage'
 
 // TypeScript interfaces
 interface GameSummary {
@@ -16,6 +17,7 @@ interface Answer {
   b: number
   ms: number
   isCorrect: boolean
+  hintsUsed?: number // Add hints field
 }
 
 interface Round {
@@ -121,6 +123,63 @@ export default function Results() {
       }, 500)
     }
     
+    // Save game results to localStorage for teacher view (only once per unique game)
+    if (total > 0 && allRounds.length > 0) {
+      const settings = JSON.parse(localStorage.getItem('nutti.settings') || '{}')
+      
+      // Create a unique game identifier based on game content
+      const gameIdentifier = `${allRounds[0]?.alias || 'Tuntematon'}-${total}-${correct}-${Math.round(summary.timeMs)}-${allRounds.length}`
+      const alreadySaved = localStorage.getItem(`nutti.game-saved.${gameIdentifier}`)
+      
+      if (!alreadySaved) {
+      // Count hints used from all answers
+      const totalHints = allRounds.reduce((sum: number, round: Round) => 
+        sum + (round.answers?.reduce((roundSum: number, answer: Answer) => 
+          roundSum + ((answer as any).hintsUsed || 0), 0) || 0), 0)
+      
+      // Create FactResults from all answers
+      const facts: FactResult[] = allRounds.flatMap((round: Round) => 
+        round.answers?.map((answer: Answer) => ({
+          a: answer.a,
+          b: answer.b,
+          userAnswer: (answer as any).child || 0, // Get user's actual answer
+          correctAnswer: answer.a * answer.b,
+          isCorrect: answer.isCorrect,
+          timeSpent: answer.ms / 1000,
+          hintsUsed: (answer as any).hintsUsed || 0 // Get actual hints used
+        })) || []
+      )
+        
+        const gameResult: GameResult = {
+          id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+          nickname: allRounds[0]?.alias || 'Tuntematon',
+          timestamp: Date.now(),
+          range: settings.range || '1-5',
+          totalQuestions: total,
+          correctAnswers: correct,
+          wrongAnswers: total - correct,
+          hintsUsed: totalHints,
+          timeSpent: timeMs / 1000,
+          facts: facts
+        }
+        
+        console.log('Saving game result (first time):', gameResult)
+        console.log('Time calculation: timeMs =', timeMs, 'seconds =', timeMs / 1000)
+        console.log('Total hints calculated:', totalHints)
+        console.log('All answers with time and hints:', allAnswers.map(a => ({
+          problem: `${a.a}×${a.b}`, 
+          timeMs: a.ms, 
+          hints: (a as any).hintsUsed || 0
+        })))
+        GameStorage.saveResult(gameResult)
+        
+        // Mark this game as saved
+        localStorage.setItem(`nutti.game-saved.${gameIdentifier}`, 'true')
+      } else {
+        console.log('Game already saved, skipping duplicate save')
+      }
+    }
+
     // Siivoa localStorage kun peli on päättynyt
     localStorage.removeItem('nutti.roundNo')
     localStorage.removeItem('nutti.last-round')
