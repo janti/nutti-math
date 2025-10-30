@@ -6,12 +6,11 @@ import {defaultLocale, type Locale} from '@/i18n'
 import Header from '@/components/Header'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'),
   title: 'Nutti – Math Game',
-  description: 'AI-assisted multiplication game for kids.',
+  description: 'AI-assisted multiplication game for kids',
   icons: {
-    icon: '/nutti.png',
-    shortcut: '/nutti.png',
-    apple: '/nutti.png',
+    icon: '/nutti.png'
   },
   openGraph: {
     title: 'Nutti – Math Game',
@@ -29,8 +28,8 @@ export const metadata: Metadata = {
 
 export default async function LocaleLayout({
   children, params
-}:{ children: React.ReactNode; params: { locale: Locale } }){
-  const locale = params.locale || defaultLocale
+}:{ children: React.ReactNode; params: Promise<{ locale: Locale }> }){
+  const { locale } = await params
   const messages = await getMessages()
   return (
     <html lang={locale}>

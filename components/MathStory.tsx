@@ -16,6 +16,8 @@ export default function MathStory({ onStoryComplete }: MathStoryProps) {
   const [isMuted, setIsMuted] = useState(false)
   const [isReading, setIsReading] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [userHasInteracted, setUserHasInteracted] = useState(false)
+  const [autoReadDisabled, setAutoReadDisabled] = useState(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -159,6 +161,7 @@ export default function MathStory({ onStoryComplete }: MathStoryProps) {
   const stopReading = stopSpeaking
 
   const toggleMute = () => {
+    setUserHasInteracted(true) // Mark user interaction
     const newMuteState = !isMuted
     setIsMuted(newMuteState)
     localStorage.setItem('nutti-story-muted', JSON.stringify(newMuteState))
@@ -168,7 +171,7 @@ export default function MathStory({ onStoryComplete }: MathStoryProps) {
     }
   }
 
-  // Auto-read when page changes (only on currentPage change)
+  // Auto-read when page changes (only after user interaction)
   useEffect(() => {
     // Clear any existing timeout first
     if (timeoutRef.current) {
@@ -176,39 +179,56 @@ export default function MathStory({ onStoryComplete }: MathStoryProps) {
       timeoutRef.current = null
     }
     
-    if (!isMuted && storyPages[currentPage]) {
+    // Only auto-read if user has already interacted with the page and auto-read is not disabled
+    if (!isMuted && storyPages[currentPage] && userHasInteracted && !autoReadDisabled) {
       // Delay to ensure previous audio is fully stopped and page is rendered
       timeoutRef.current = setTimeout(() => {
-        // Only start if not currently playing and not muted
-        if (!isMuted && !isReading && !isLoading && timeoutRef.current) {
+        // Only start if not currently playing and not muted and auto-read still enabled
+        if (!isMuted && !isReading && !isLoading && timeoutRef.current && !autoReadDisabled) {
           speakText(storyPages[currentPage].text, storyPages[currentPage].title)
         }
         timeoutRef.current = null
       }, 600)
     }
-  }, [currentPage]) // Only depend on currentPage to avoid loops
+  }, [currentPage, userHasInteracted, autoReadDisabled]) // Depend on currentPage, user interaction, and auto-read status
 
-  // Cleanup audio on unmount
+  // Cleanup audio on unmount - ensure all audio stops when story is closed
   useEffect(() => {
     return () => {
-      // Clear timeout
+      // Clear any pending timeouts
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
         timeoutRef.current = null
       }
       
-      // Stop audio
+      // Stop and cleanup audio
       if (audioRef.current) {
         audioRef.current.pause()
+        audioRef.current.currentTime = 0
         audioRef.current = null
       }
+      
+      // Reset all audio states
+      setIsReading(false)
+      setIsLoading(false)
+      
+      // Stop any other audio elements that might be playing
+      const audioElements = document.querySelectorAll('audio')
+      audioElements.forEach(audio => {
+        if (!audio.paused) {
+          audio.pause()
+          audio.currentTime = 0
+        }
+      })
     }
   }, [])
 
   const nextPage = () => {
+    setUserHasInteracted(true) // Mark user interaction
+    setAutoReadDisabled(true) // Disable auto-read when user navigates manually
     stopSpeaking() // Stop current speech before moving
     
-    // Shorter delay for forward navigation - auto-read will start
+    // Navigate to next page without auto-read
     setTimeout(() => {
       if (currentPage < storyPages.length - 1) {
         setCurrentPage(currentPage + 1)
@@ -219,9 +239,11 @@ export default function MathStory({ onStoryComplete }: MathStoryProps) {
   }
 
   const prevPage = () => {
+    setUserHasInteracted(true) // Mark user interaction
+    setAutoReadDisabled(true) // Disable auto-read when user navigates manually
     stopSpeaking() // Stop current speech before moving
     
-    // Shorter delay for backward navigation - auto-read will start  
+    // Navigate to previous page without auto-read
     setTimeout(() => {
       if (currentPage > 0) {
         setCurrentPage(currentPage - 1)
@@ -230,7 +252,26 @@ export default function MathStory({ onStoryComplete }: MathStoryProps) {
   }
 
   const skipStory = () => {
-    stopSpeaking()
+    setUserHasInteracted(true) // Mark user interaction
+    stopSpeaking() // Stop any current audio
+    
+    // Force stop all audio and clear any pending timeouts
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    
+    // Ensure audio is completely stopped
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+      audioRef.current = null
+    }
+    
+    // Reset audio states
+    setIsReading(false)
+    setIsLoading(false)
+    
     onStoryComplete()
   }
 
@@ -284,7 +325,10 @@ export default function MathStory({ onStoryComplete }: MathStoryProps) {
           
           {/* Read aloud button */}
           <button
-            onClick={() => speakText(currentStory.text, currentStory.title)}
+            onClick={() => {
+              setUserHasInteracted(true) // Mark user interaction
+              speakText(currentStory.text, currentStory.title)
+            }}
             disabled={isReading || isLoading || isMuted}
             className={`px-4 py-2 rounded-lg text-sm transition-colors ${
               isReading || isLoading || isMuted

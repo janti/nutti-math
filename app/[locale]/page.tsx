@@ -28,8 +28,19 @@ export default function HomePage() {
 
   /**
    * Check if the math story should be shown on first visit
+   * Also ensure any leftover audio is stopped when reaching game menu
    */
   useEffect(() => {
+    // Stop any playing audio when component mounts (user returned to menu)
+    const audioElements = document.querySelectorAll('audio')
+    audioElements.forEach(audio => {
+      if (!audio.paused) {
+        audio.pause()
+        audio.currentTime = 0
+      }
+    })
+    
+    // Check if story should be shown
     const storyShown = localStorage.getItem('nutti-story-shown')
     if (!storyShown) {
       setShowStory(true)
@@ -38,8 +49,19 @@ export default function HomePage() {
 
   /**
    * Handle story completion and mark it as shown
+   * Ensures all audio is stopped when returning to game menu
    */
   const handleStoryComplete = () => {
+    // Stop any playing audio elements
+    const audioElements = document.querySelectorAll('audio')
+    audioElements.forEach(audio => {
+      if (!audio.paused) {
+        audio.pause()
+        audio.currentTime = 0
+      }
+    })
+    
+    // Mark story as completed and hide it
     localStorage.setItem('nutti-story-shown', 'true')
     setShowStory(false)
   }
@@ -94,6 +116,23 @@ export default function HomePage() {
       console.log('Home: Precomputed round 1 facts')
     })
   }
+
+  /**
+   * Cleanup effect to ensure all audio is stopped when leaving the page
+   */
+  useEffect(() => {
+    return () => {
+      // Stop any playing audio when component unmounts
+      const audioElements = document.querySelectorAll('audio')
+      audioElements.forEach(audio => {
+        if (!audio.paused) {
+          audio.pause()
+          audio.currentTime = 0
+        }
+      })
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-nutti-beige/30 via-white to-cyan-50/40 py-4">
       <div className="max-w-4xl mx-auto">
