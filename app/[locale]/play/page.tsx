@@ -32,21 +32,29 @@ interface Fact {
 export default function Play() {
   const params = useParams()
   const router = useRouter()
-  const loc = params.locale as string || 'fi'
+  const locale = params.locale as string || 'fi'
   const t = useTranslations()
   
-  // State management with proper TypeScript types
+  // Game configuration state
   const [settings, setSettings] = useState<GameSettings>({ alias: 'Guest', range: '2-12', rounds: 10 })
   const [roundNo, setRoundNo] = useState(1)
+  
+  // Question data and progress
   const [facts, setFacts] = useState<Fact[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
-  const [idx, setIdx] = useState(0)
-  const [input, setInput] = useState('')
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  
+  // User input and feedback
+  const [userInput, setUserInput] = useState('')
   const [answers, setAnswers] = useState<Answer[]>([])
   const [hint, setHint] = useState<string>('')
+  const [currentHints, setCurrentHints] = useState(0)
+  
+  // UI state
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [currentHints, setCurrentHints] = useState(0) // Track hints for current question
-  const t0 = useRef<number>(performance.now())
+  
+  // Performance tracking
+  const questionStartTime = useRef<number>(performance.now())
   
   useEffect(() => {
     // Reset hint counter when component mounts or facts change
@@ -77,93 +85,119 @@ export default function Play() {
     document.body.tabIndex = -1
     document.body.focus()
   }, [])
-  const current = facts[idx]
   
-  const submit = () => {
-    if (!current || isSubmitting) return
+  const currentQuestion = facts[currentQuestionIndex]
+  
+  /**
+   * Submit the current answer and move to next question
+   */
+  const submitAnswer = () => {
+    if (!currentQuestion || isSubmitting) return
     
     // Prevent multiple submits
     setIsSubmitting(true)
     
     // Calculate answer metrics
-    const ms = Math.round(performance.now() - t0.current)
-    const child = Number(input || NaN)
-    const correct = current.a * current.b
-    const isCorrect = child === correct
+    const timeSpentMs = Math.round(performance.now() - questionStartTime.current)
+    const userAnswer = Number(userInput || NaN)
+    const correctAnswer = currentQuestion.a * currentQuestion.b
+    const isCorrect = userAnswer === correctAnswer
     
-    const entry: Answer = {
-      a: current.a,
-      b: current.b,
-      ms,
-      correct,
-      child,
+    const answerEntry: Answer = {
+      a: currentQuestion.a,
+      b: currentQuestion.b,
+      ms: timeSpentMs,
+      correct: correctAnswer,
+      child: userAnswer,
       isCorrect,
       hintsUsed: currentHints
     }
     
-    console.log('Saving answer:', current.a, 'x', current.b, '=', child, 'hints used:', currentHints, 'time:', ms, 'ms')
+    console.log('Saving answer:', currentQuestion.a, 'x', currentQuestion.b, '=', userAnswer, 'hints used:', currentHints, 'time:', timeSpentMs, 'ms')
+    
     // Update state and prepare for next question
-    const nextAnswers = [...answers, entry]
-    setAnswers(nextAnswers)
-    setInput('')
-    setHint('')
-    setCurrentHints(0) // Reset hint counter for next question
-    t0.current = performance.now()
+    const updatedAnswers = [...answers, answerEntry]
+    setAnswers(updatedAnswers)
     
     // Check if round is complete
-    if (idx + 1 >= facts.length) {
-      // Save round data and navigate
-      localStorage.setItem('nutti.last-round', JSON.stringify({
-        roundNo,
-        answers: nextAnswers,
-        alias: settings.alias
-      }))
-      console.log('Play: Round', roundNo, 'complete. Next:', roundNo >= settings.rounds ? 'Results' : 'Break')
-      
-      if (roundNo >= settings.rounds) {
-        router.push(`/${loc}/results`)
-      } else {
-        router.push(`/${loc}/break`)
-      }
+    if (currentQuestionIndex + 1 >= facts.length) {
+      saveRoundAndNavigate(updatedAnswers)
     } else {
-      setIdx(idx + 1)
-      // Re-enable submit for next question
-      setIsSubmitting(false)
+      moveToNextQuestion()
     }
     
     console.log('Question completed. Moving to next question, hints reset to 0')
   }
+
+  /**
+   * Reset UI state for the next question
+   */
+  const resetForNextQuestion = () => {
+    setUserInput('')
+    setHint('')
+    setCurrentHints(0)
+    questionStartTime.current = performance.now()
+  }
+
+  /**
+   * Save current round data and navigate to next screen
+   */
+  const saveRoundAndNavigate = (finalAnswers: Answer[]) => {
+    localStorage.setItem('nutti.last-round', JSON.stringify({
+      roundNo,
+      answers: finalAnswers,
+      alias: settings.alias
+    }))
+    console.log('Play: Round', roundNo, 'complete. Next:', roundNo >= settings.rounds ? 'Results' : 'Break')
+    
+    const nextRoute = roundNo >= settings.rounds ? 'results' : 'break'
+    router.push(`/${locale}/${nextRoute}`)
+  }
+
+  /**
+   * Move to the next question in the current round
+   */
+  const moveToNextQuestion = () => {
+    setCurrentQuestionIndex(prev => prev + 1)
+    resetForNextQuestion()
+    setIsSubmitting(false)
+  }
   
-  const askHint = async () => {
-    if (!current) return
+  /**
+   * Request an AI hint for the current question
+   */
+  const requestHint = async () => {
+    if (!currentQuestion) return
     
     try {
-      const res = await fetch('/api/ai/hint', {
+      const response = await fetch('/api/ai/hint', {
         method: 'POST', 
-        body: JSON.stringify({ ...current, locale: loc })
+        body: JSON.stringify({ ...currentQuestion, locale })
       })
-      const { hint } = await res.json()
+      const { hint } = await response.json()
       setHint(hint)
-      setCurrentHints(prev => prev + 1) // Increment hint counter
-      console.log('Hint requested for', current.a, 'x', current.b, '- Total hints for this question:', currentHints + 1)
+      setCurrentHints(prev => prev + 1)
+      console.log('Hint requested for', currentQuestion.a, 'x', currentQuestion.b, '- Total hints for this question:', currentHints + 1)
     } catch (error) {
       console.error('Error fetching hint:', error)
     }
   }
   
-  // Optimized loading - show only if facts are actually missing
+  // Show loading screen if facts are not ready
   if (!isLoaded || facts.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="text-3xl mb-2">{t('icons.calculator')}</div>
-          <p className="text-nutti-teal font-semibold">{t('play.loading')}</p>
+      <div className="min-h-screen bg-gradient-to-br from-nutti-beige/30 via-white to-cyan-50/40 py-8">
+        <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg text-center">
+          <div className="flex items-center justify-center space-x-2 text-lg">
+            <span>{t('icons.loading')}</span>
+            <span>{t('play.loading')}</span>
+          </div>
         </div>
       </div>
     )
   }
   
-  if (!current) {
+  if (!currentQuestion) {
     return <div className="card text-center"><p>{t('play.noTasks')}</p></div>
   }
   
@@ -174,7 +208,7 @@ export default function Play() {
           {/* Header section - compact */}
           <div className="flex items-center justify-between py-2">
             <NuttiBadge mood="thinking" />
-            <div className="w-1/3"><Progress value={(idx/facts.length)*100} /></div>
+            <div className="w-1/3"><Progress value={(currentQuestionIndex/facts.length)*100} /></div>
           </div>
       
       {/* Main game area - flexible grid layout */}
@@ -194,7 +228,7 @@ export default function Play() {
           <div className="p-6 bg-gradient-to-br from-white to-blue-50 rounded-2xl border-3 border-nutti-teal/40 text-center shadow-lg transform hover:scale-[1.02] transition-all">
             <div className="text-4xl mb-3">{t('icons.calculator')}</div>
             <div className="text-6xl lg:text-7xl font-black tracking-tight text-nutti-teal select-none mb-3 drop-shadow-sm">
-              {current.a} × {current.b}
+              {currentQuestion.a} × {currentQuestion.b}
             </div>
             <div className="text-3xl">{t('icons.sparkles')}</div>
           </div>
@@ -206,11 +240,11 @@ export default function Play() {
               <input 
                 aria-label={t('play.answer')} 
                 inputMode="numeric" 
-                value={input}
-                onChange={e=>setInput(e.target.value.replace(/\D/g,'').slice(0,3))}
+                value={userInput}
+                onChange={e=>setUserInput(e.target.value.replace(/\D/g,'').slice(0,3))}
                 onKeyDown={e => {
                   if (e.key === 'Enter' && !isSubmitting) {
-                    submit()
+                    submitAnswer()
                   }
                 }}
                 disabled={isSubmitting}
@@ -227,7 +261,7 @@ export default function Play() {
                     ? 'bg-gray-400 cursor-not-allowed opacity-50' 
                     : 'bg-gradient-to-r from-nutti-teal to-cyan-500 hover:from-nutti-teal/90 hover:to-cyan-500/90 transform hover:scale-110 focus:ring-nutti-teal/30'
                 }`}
-                onClick={submit}
+                onClick={submitAnswer}
                 disabled={isSubmitting}
               >
                 {isSubmitting ? '⏳' : t('icons.lightning')} {t('play.submit')}
@@ -249,7 +283,7 @@ export default function Play() {
         {/* Right column: Keypad - less prominent */}
         <div className="flex flex-col">
           <div className={`transition-opacity ${isSubmitting ? 'opacity-30 pointer-events-none' : 'opacity-75 hover:opacity-100'}`}>
-            <Keypad value={input} onChange={setInput} onSubmit={submit} onHint={askHint} />
+            <Keypad value={userInput} onChange={setUserInput} onSubmit={submitAnswer} onHint={requestHint} />
           </div>
           
           {/* Instructions - compact */}

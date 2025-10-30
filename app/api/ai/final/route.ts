@@ -10,7 +10,7 @@ export async function POST(req: NextRequest){
     locale?: 'fi'|'en'|'sv' 
   }
   
-  // Laske kokonaisstatistiikka
+  // Calculate overall statistics
   const allAnswers = rounds.flatMap(r => r.answers)
   const totalCorrect = allAnswers.filter(a => a.isCorrect).length
   const totalQuestions = allAnswers.length

@@ -192,7 +192,7 @@ export default function Results() {
       }
     }
 
-    // Siivoa localStorage kun peli on päättynyt
+    // Clean up localStorage when game is completed
     localStorage.removeItem('nutti.roundNo')
     localStorage.removeItem('nutti.last-round')
   },[])

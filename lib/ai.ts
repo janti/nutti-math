@@ -1,25 +1,33 @@
 import OpenAI from 'openai'
 
+// Configuration constants
+const REQUEST_TIMEOUT_MS = 8000
 const hasOpenAI = !!process.env.OPENAI_API_KEY
 const hasAzure = !!process.env.AZURE_OPENAI_API_KEY
 
-function client(){
-  if(hasOpenAI){ 
+/**
+ * Creates OpenAI client instance based on available API configuration
+ * Supports both OpenAI API and Azure OpenAI Service
+ */
+function createOpenAIClient(): OpenAI {
+  if (hasOpenAI) { 
     return new OpenAI({ 
       apiKey: process.env.OPENAI_API_KEY,
-      timeout: 8000 // 8s timeout
+      timeout: REQUEST_TIMEOUT_MS
     }) 
   }
-  if(hasAzure){
+  
+  if (hasAzure) {
     return new OpenAI({
       apiKey: process.env.AZURE_OPENAI_API_KEY,
       baseURL: `${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/${process.env.AZURE_OPENAI_DEPLOYMENT}`,
       defaultQuery: { 'api-version': '2024-02-15-preview' },
       defaultHeaders: { 'api-key': process.env.AZURE_OPENAI_API_KEY! },
-      timeout: 8000 // 8s timeout
+      timeout: REQUEST_TIMEOUT_MS
     } as any)
   }
-  throw new Error('Missing OPENAI_API_KEY or AZURE_OPENAI_* env')
+  
+  throw new Error('Missing OPENAI_API_KEY or AZURE_OPENAI_* environment variables')
 }
 
 const MODEL = hasOpenAI ? 'gpt-3.5-turbo' : (process.env.AZURE_OPENAI_DEPLOYMENT || 'gpt-35-turbo')
@@ -58,7 +66,7 @@ function userFeedback(stats:any, locale:Locale){
 }
 
 export async function aiHint(a:number,b:number, locale:Locale='fi'){
-  const c = client()
+  const c = createOpenAIClient()
   const r = await (c as any).chat.completions.create({
     model: MODEL,
     messages:[{role:'user',content:`${sysHint(locale)} ${userHint(a,b,locale)}`}],
@@ -71,7 +79,7 @@ export async function aiHint(a:number,b:number, locale:Locale='fi'){
 }
 
 export async function aiRoundFeedback(stats:{correct:number,total:number,avgMs:number,mistakes:Array<{a:number,b:number}>}, locale:Locale='fi'){
-  const c = client()
+  const c = createOpenAIClient()
   const r = await (c as any).chat.completions.create({
     model: MODEL,
     messages:[{role:'user',content:`${sysFeedback(locale)} ${userFeedback(stats,locale)}`}],
@@ -100,7 +108,7 @@ function userFinalFeedback(stats:any, locale:Locale){
 }
 
 export async function aiFinalFeedback(stats:any, locale:Locale='fi'){
-  const c = client()
+  const c = createOpenAIClient()
   const r = await (c as any).chat.completions.create({
     model: MODEL,
     messages:[{role:'user',content:`${sysFinalFeedback(locale)} ${userFinalFeedback(stats,locale)}`}],
@@ -111,23 +119,23 @@ export async function aiFinalFeedback(stats:any, locale:Locale='fi'){
   return r.choices?.[0]?.message?.content?.trim() ?? ''
 }
 
-// Text-to-speech using OpenAI TTS API
+/**
+ * Generate speech audio from text using OpenAI TTS API
+ * @param text - Text to convert to speech
+ * @param locale - Language locale for voice selection
+ * @returns Audio data as ArrayBuffer
+ */
 export async function aiTextToSpeech(text: string, locale: Locale = 'fi'): Promise<ArrayBuffer> {
-  const c = client()
+  const c = createOpenAIClient()
   
-  // Map locale to OpenAI voice
-  let voice: string
-  switch(locale) {
-    case 'en': 
-      voice = 'alloy' // Clear English voice
-      break
-    case 'sv': 
-      voice = 'echo' // Good for Swedish
-      break
-    default: // 'fi'
-      voice = 'nova' // Works well for Finnish
-      break
+  // Map locale to appropriate OpenAI voice for optimal pronunciation
+  const voiceMap: Record<Locale, string> = {
+    'en': 'alloy', // Clear English voice
+    'sv': 'echo',  // Good for Swedish pronunciation
+    'fi': 'nova'   // Works well for Finnish
   }
+  
+  const voice = voiceMap[locale] || voiceMap.fi
 
   try {
     const response = await (c as any).audio.speech.create({

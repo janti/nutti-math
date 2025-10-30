@@ -1,47 +1,84 @@
-// Types for game results
+/**
+ * Represents a complete game session result for teacher analytics
+ */
 export interface GameResult {
+  /** Unique identifier for the game session */
   id: string
+  /** Student's chosen nickname/alias */
   nickname: string
+  /** Timestamp when the game was completed */
   timestamp: number
+  /** Multiplication table range played */
   range: '1-5'|'1-10'|'6-10'|'2-12'|'mix'
+  /** Total number of questions answered */
   totalQuestions: number
+  /** Number of correct answers */
   correctAnswers: number
+  /** Number of incorrect answers */
   wrongAnswers: number
+  /** Total hints used across all questions */
   hintsUsed: number
-  timeSpent: number // in seconds
-  totalRounds: number // number of rounds played
-  facts: FactResult[]
-  roundResults?: Array<{
-    roundNo: number
-    questionsInRound: number
-    correctInRound: number
-    timeSpentInRound: number
-    hintsInRound: number
-  }>
-}
-
-export interface FactResult {
-  a: number
-  b: number
-  userAnswer: number
-  correctAnswer: number
-  isCorrect: boolean
+  /** Total time spent in seconds */
   timeSpent: number
-  hintsUsed: number
-  roundNo?: number // Which round this fact belongs to
+  /** Number of rounds played */
+  totalRounds: number
+  /** Detailed results for each multiplication fact */
+  facts: FactResult[]
+  /** Round-by-round breakdown for multi-round games */
+  roundResults?: RoundResult[]
 }
 
-// LocalStorage management
+/**
+ * Statistics for a single round in a multi-round game
+ */
+export interface RoundResult {
+  roundNo: number
+  questionsInRound: number
+  correctInRound: number
+  timeSpentInRound: number
+  hintsInRound: number
+}
+
+/**
+ * Result data for a single multiplication fact/question
+ */
+export interface FactResult {
+  /** First multiplicand */
+  a: number
+  /** Second multiplicand */
+  b: number
+  /** Student's answer */
+  userAnswer: number
+  /** Correct answer */
+  correctAnswer: number
+  /** Whether the student answered correctly */
+  isCorrect: boolean
+  /** Time spent on this question in seconds */
+  timeSpent: number
+  /** Number of hints used for this question */
+  hintsUsed: number
+  /** Which round this fact belongs to (for multi-round games) */
+  roundNo?: number
+}
+
+/**
+ * LocalStorage management for game results and teacher analytics
+ */
 export class GameStorage {
   private static readonly STORAGE_KEY = 'nutti-math-results'
+  private static readonly MAX_STORED_RESULTS = 1000
   
+  /**
+   * Save a game result to localStorage
+   * Automatically manages storage size by keeping only the most recent results
+   */
   static saveResult(result: GameResult): void {
     try {
       const existing = this.getAllResults()
       existing.push(result)
       
-      // Keep only last 1000 results to prevent storage overflow
-      const limited = existing.slice(-1000)
+      // Prevent storage overflow by keeping only recent results
+      const limited = existing.slice(-this.MAX_STORED_RESULTS)
       
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(limited))
     } catch (error) {
@@ -49,6 +86,10 @@ export class GameStorage {
     }
   }
   
+  /**
+   * Retrieve all stored game results
+   * @returns Array of all game results, or empty array if none found
+   */
   static getAllResults(): GameResult[] {
     try {
       const data = localStorage.getItem(this.STORAGE_KEY)
@@ -59,6 +100,11 @@ export class GameStorage {
     }
   }
   
+  /**
+   * Get all game results for a specific student nickname
+   * @param nickname - Student's nickname to filter by
+   * @returns Array of game results for the specified student
+   */
   static getResultsByNickname(nickname: string): GameResult[] {
     return this.getAllResults().filter(result => 
       result.nickname.toLowerCase() === nickname.toLowerCase()

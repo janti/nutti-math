@@ -17,14 +17,18 @@ export default function HomePage() {
   const t = useTranslations()
   const router = useRouter()
   
-  // State management with proper types
+  // Game configuration state
   const [alias, setAlias] = useState('')
   const [range, setRange] = useState<GameSettings['range']>('1-5')
   const [rounds, setRounds] = useState<GameSettings['rounds']>(1)
+  
+  // UI state for modals
   const [showTeacherView, setShowTeacherView] = useState(false)
   const [showStory, setShowStory] = useState(false)
 
-  // Check if story should be shown on first visit
+  /**
+   * Check if the math story should be shown on first visit
+   */
   useEffect(() => {
     const storyShown = localStorage.getItem('nutti-story-shown')
     if (!storyShown) {
@@ -32,40 +36,63 @@ export default function HomePage() {
     }
   }, [])
 
+  /**
+   * Handle story completion and mark it as shown
+   */
   const handleStoryComplete = () => {
     localStorage.setItem('nutti-story-shown', 'true')
     setShowStory(false)
   }
   
-  const goPlay = () => {
-    const loc = (window.location.pathname.split('/')[1] || 'fi')
+  /**
+   * Clear localStorage and start a new game with current settings
+   */
+  const startNewGame = () => {
+    const currentLocale = window.location.pathname.split('/')[1] || 'fi'
     
-    // Clear game-specific localStorage data when starting new game  
+    clearPreviousGameData()
+    saveGameSettings()
+    precomputeFirstRoundFacts()
+    
+    console.log('Home: Started new game:', rounds, 'rounds,', range, 'multiplication tables')
+    router.push(`/${currentLocale}/play`)
+  }
+
+  /**
+   * Clear all game-specific localStorage data from previous sessions
+   */
+  const clearPreviousGameData = () => {
+    // Remove round tracking data
     localStorage.removeItem('nutti.last-round')
     localStorage.removeItem('nutti.all-rounds')
     localStorage.removeItem('nutti.roundNo')
     
-    // Clear old fact caches and game save markers
+    // Clear cached facts and game save markers
     Object.keys(localStorage).forEach(key => {
       if (key.startsWith('nutti.facts.') || key.startsWith('nutti.game-saved.')) {
         localStorage.removeItem(key)
       }
     })
-    
-    // Set new game settings
+  }
+
+  /**
+   * Save current game settings to localStorage
+   */
+  const saveGameSettings = () => {
     const gameSettings: GameSettings = { alias, range, rounds }
     localStorage.setItem('nutti.settings', JSON.stringify(gameSettings))
     localStorage.setItem('nutti.roundNo', '1')
-    
-    // Precompute first round facts for optimization
+  }
+
+  /**
+   * Precompute first round facts for better game performance
+   */
+  const precomputeFirstRoundFacts = () => {
     import('@/lib/game').then(({ factPool, pickFacts }) => {
       const firstFacts = pickFacts(factPool(range), 10)
       localStorage.setItem(`nutti.facts.1.${range}`, JSON.stringify(firstFacts))
       console.log('Home: Precomputed round 1 facts')
     })
-    
-    console.log('Home: Started new game:', rounds, 'rounds,', range, 'multiplication tables')
-    router.push(`/${loc}/play`)
   }
   return (
     <div className="min-h-screen bg-gradient-to-br from-nutti-beige/30 via-white to-cyan-50/40 py-4">
@@ -103,7 +130,7 @@ export default function HomePage() {
                 onChange={e => setAlias(e.target.value.slice(0, 16))}
                 onKeyDown={e => {
                   if (e.key === 'Enter' && alias.trim()) {
-                    goPlay()
+                    startNewGame()
                   }
                 }}
                 className="w-full rounded-lg border border-nutti-beige p-3 text-xl text-center font-semibold bg-white/90 focus:ring-2 focus:ring-nutti-orange/30 focus:border-nutti-orange transition-all" 
@@ -212,7 +239,7 @@ export default function HomePage() {
                   : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
               disabled={!alias.trim()} 
-              onClick={goPlay}
+              onClick={startNewGame}
             >
               {t('icons.start')} {t('home.start')}
             </button>
