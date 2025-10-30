@@ -101,7 +101,8 @@
     "submit": "Skicka",
     "hint": "Tips (H)",
     "loading": "Laddar uppgifter...",
-    "noTasks": "Inga uppgifter"
+    "noTasks": "Inga uppgifter tillgängliga",
+    "enterAnswerHint": "Ange svar för att fortsätta"
   },
   "keypad": {
     "title": "Numerisk knappsats",
@@ -212,6 +213,7 @@
     },
     "difficulty6to10": "🌟",
     "difficulty2to12": "🍪",
-    "difficultyMix": "🍬"
+    "difficultyMix": "🍬",
+    "pointingDown": "👇"
   }
 }

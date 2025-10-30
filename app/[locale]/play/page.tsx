@@ -52,6 +52,7 @@ export default function Play() {
   
   // UI state
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showEmptyHint, setShowEmptyHint] = useState(false)
   
   // Performance tracking
   const questionStartTime = useRef<number>(performance.now())
@@ -93,6 +94,12 @@ export default function Play() {
    */
   const submitAnswer = () => {
     if (!currentQuestion || isSubmitting) return
+    
+    // Check if input is empty
+    if (!userInput.trim()) {
+      setShowEmptyHint(true)
+      return
+    }
     
     // Prevent multiple submits
     setIsSubmitting(true)
@@ -136,6 +143,7 @@ export default function Play() {
     setUserInput('')
     setHint('')
     setCurrentHints(0)
+    setShowEmptyHint(false)
     questionStartTime.current = performance.now()
   }
 
@@ -241,7 +249,10 @@ export default function Play() {
                 aria-label={t('play.answer')} 
                 inputMode="numeric" 
                 value={userInput}
-                onChange={e=>setUserInput(e.target.value.replace(/\D/g,'').slice(0,3))}
+                onChange={e=>{
+                  setUserInput(e.target.value.replace(/\D/g,'').slice(0,3))
+                  setShowEmptyHint(false) // Hide hint when user starts typing
+                }}
                 onKeyDown={e => {
                   if (e.key === 'Enter' && !isSubmitting) {
                     submitAnswer()
@@ -257,7 +268,7 @@ export default function Play() {
               />
               <button 
                 className={`btn text-lg px-6 py-3 shadow-xl transition-all focus:ring-4 ${
-                  isSubmitting 
+                  isSubmitting
                     ? 'bg-gray-400 cursor-not-allowed opacity-50' 
                     : 'bg-gradient-to-r from-nutti-teal to-cyan-500 hover:from-nutti-teal/90 hover:to-cyan-500/90 transform hover:scale-110 focus:ring-nutti-teal/30'
                 }`}
@@ -266,6 +277,14 @@ export default function Play() {
               >
                 {isSubmitting ? '⏳' : t('icons.lightning')} {t('play.submit')}
               </button>
+            </div>
+            {/* Fixed space for hint message to prevent layout jumping */}
+            <div className="h-6 mt-2 flex justify-center">
+              {showEmptyHint && (
+                <p className="text-sm text-red-600 animate-pulse">
+                  {t('icons.pointingDown')} {t('play.enterAnswerHint')}
+                </p>
+              )}
             </div>
           </div>
 

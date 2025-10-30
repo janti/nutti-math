@@ -101,7 +101,8 @@
     "submit": "Lähetä",
     "hint": "Vihje (H)",
     "loading": "Ladataan tehtäviä...",
-    "noTasks": "Ei tehtäviä"
+    "noTasks": "Ei tehtäviä",
+    "enterAnswerHint": "Syötä vastaus jatkaaksesi"
   },
   "keypad": {
     "title": "Numeronäppäimistö",
@@ -212,6 +213,7 @@
     },
     "difficulty6to10": "🌟",
     "difficulty2to12": "🍪",
-    "difficultyMix": "🍬"
+    "difficultyMix": "🍬",
+    "pointingDown": "👇"
   }
 }

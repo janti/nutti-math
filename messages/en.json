@@ -101,7 +101,8 @@
     "submit": "Submit",
     "hint": "Hint (H)",
     "loading": "Loading tasks...",
-    "noTasks": "No tasks"
+    "noTasks": "No tasks available",
+    "enterAnswerHint": "Enter answer to continue"
   },
   "keypad": {
     "title": "Number keypad",
@@ -212,6 +213,7 @@
     },
     "difficulty6to10": "🌟",
     "difficulty2to12": "🍪",
-    "difficultyMix": "🍬"
+    "difficultyMix": "🍬",
+    "pointingDown": "👇"
   }
 }
