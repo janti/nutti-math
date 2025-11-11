@@ -185,25 +185,25 @@ export default function Break() {
             </div>
           ) : null}
 
-          {/* AI feedback - optimoitu lataus */}
-          <div className="card p-4 bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-nutti-teal/30">
+          {/* AI feedback - kompakti versio */}
+          <div className="card p-3 bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-nutti-teal/30">
             <div className="text-center mb-2">
-              <span className="text-2xl">{t('icons.squirrel')}</span>
-              <p className="text-lg font-bold text-nutti-teal inline ml-2">{t('break.nuttiSays')}</p>
+              <span className="text-xl">{t('icons.squirrel')}</span>
+              <p className="text-base font-bold text-nutti-teal inline ml-2">{t('break.nuttiSays')}</p>
             </div>
-            <div className="bg-white/80 rounded-lg p-3">
+            <div className="bg-white/80 rounded-lg p-2">
               {aiLoading ? (
-                <div className="text-center py-4">
+                <div className="text-center py-2">
                   <div className="animate-pulse text-nutti-teal">
-                    <div className="text-2xl mb-2">{t('icons.hourglass')}</div>
-                    <p className="text-sm">{t('break.generating')}</p>
+                    <div className="text-lg mb-1">{t('icons.hourglass')}</div>
+                    <p className="text-xs">{t('break.generating')}</p>
                   </div>
                 </div>
               ) : ai ? (
-                <p className="text-base leading-relaxed whitespace-pre-wrap text-center">{ai.text}</p>
+                <p className="text-sm leading-snug text-center px-2">{ai.text}</p>
               ) : (
-                <div className="text-center py-2">
-                  <p className="text-sm text-gray-500">{t('break.skipAiFeedback')}</p>
+                <div className="text-center py-1">
+                  <p className="text-xs text-gray-500">{t('break.skipAiFeedback')}</p>
                 </div>
               )}
             </div>

@@ -1,10 +1,45 @@
 {
   "app": {
-    "title": "Nutti Orava – Kertotaulupeli"
+    "title": "Nutti Orava – Matematiikkapeli"
+  },
+  "gameModes": {
+    "multiplication": {
+      "name": "Kertotaulut",
+      "description": "Harjoittele kertolaskuja eri vaikeustasoilla"
+    },
+    "addition": {
+      "name": "Yhteenlaskut",
+      "description": "Opettele yhteenlaskuja hauskasti"
+    },
+    "subtraction": {
+      "name": "Vähennyslaskut",
+      "description": "Harjoittele vähennyslaskuja"
+    },
+    "division": {
+      "name": "Jakolaskut", 
+      "description": "Opettele jakamaan numeroita"
+    },
+    "equations": {
+      "name": "Yhtälöt",
+      "description": "Ratko yhtälöitä (esim. x + 3 = 7)"
+    },
+    "wordProblems": {
+      "name": "Kirjalliset tehtävät",
+      "description": "Ratko matemaattisia sanatehtäviä"
+    }
   },
   "home": {
-    "heading": "Nutti Orava – Kertotaulupeli",
-    "subtitle": "100 kertolaskua • 10 erää • palaute tauoilla",
+    "heading": "Nutti Orava – Matematiikkapeli",
+    "subtitle": "Valitse pelimuoto ja aloita oppiminen!",
+    "startGame": "Aloita peli",
+    "comingSoon": "Tulossa pian",
+    "backToMenu": "Takaisin päävalikkoon",
+    "teacherView": "Opettajan näkymä",
+    "teacherDescription": "Seuraa oppilaan edistymistä ja aseta haasteet",
+    "openTeacherView": "Avaa opettajan näkymä",
+    "readStory": "Lue tarina",
+    "storyDescription": "Kuuntele Nutti Oravan seikkailut",
+    "startStory": "Aloita tarina",
     "alias": "Nimimerkki",
     "difficulty": "Vaikeus",
     "start": "Aloita peli",
@@ -13,9 +48,12 @@
     "kbStart": "Vihje: Kirjoita nimi ja paina Enter aloittaaksesi!",
     "roundCount": "Erämäärä",
     "gameInfo": "10 tehtävää per erä • Nutin palaute tauoilla",
-    "rounds": "Erämäärä",
-    "teacherView": "Opettajanäkymä",
-    "readStory": "Kuuntele tarina"
+    "rounds": "Erämäärä"
+  },
+  "difficulty": {
+    "easy": "Helppo",
+    "medium": "Keskitaso", 
+    "hard": "Vaikea"
   },
   "story": {
     "skip": "Ohita tarina",
@@ -147,12 +185,6 @@
   },
   "alias": {
     "placeholder": "esim. Tähdistö"
-  },
-  "difficulty": {
-    "1-5": "1–5",
-    "1-10": "1–10", 
-    "6-10": "6–10",
-    "2-12": "2–12"
   },
   "common": {
     "unknown": "Tuntematon"

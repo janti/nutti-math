@@ -228,22 +228,22 @@ export default function Results() {
               </p>
             </div>
             
-            {/* AI Final Feedback - with proper spacing */}
-            <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl mt-4">
-              <div className="text-center mb-3">
-                <span className="text-xl">{t('icons.squirrel')}</span>
-                <span className="text-lg font-bold text-green-700 ml-2">{t('results.finalFeedback')}</span>
+            {/* AI Final Feedback - kompakti versio */}
+            <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl mt-4">
+              <div className="text-center mb-2">
+                <span className="text-lg">{t('icons.squirrel')}</span>
+                <span className="text-base font-bold text-green-700 ml-2">{t('results.finalFeedback')}</span>
               </div>
-              <div className="bg-white/80 rounded-lg p-4">
+              <div className="bg-white/80 rounded-lg p-2">
                 {finalAiLoading ? (
                   <div className="text-center py-2">
                     <div className="animate-pulse text-green-600">
-                      <div className="text-lg mb-1">{t('icons.hourglass')}</div>
-                      <p className="text-sm">{t('results.generatingFinalFeedback')}</p>
+                      <div className="text-base mb-1">{t('icons.hourglass')}</div>
+                      <p className="text-xs">{t('results.generatingFinalFeedback')}</p>
                     </div>
                   </div>
                 ) : finalAi ? (
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap text-center">{finalAi.text}</p>
+                  <p className="text-sm leading-snug text-center px-1">{finalAi.text}</p>
                 ) : (
                   <div className="text-center py-1">
                     <p className="text-xs text-gray-500">{t('results.finalFeedbackSkipped')}</p>

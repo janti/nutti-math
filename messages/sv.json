@@ -2,9 +2,38 @@
   "app": {
     "title": "Nutti Ekorre – Mattespel"
   },
+  "gameModes": {
+    "multiplication": {
+      "name": "Multiplikationstabeller",
+      "description": "Öva multiplikation på olika svårighetsnivåer"
+    },
+    "addition": {
+      "name": "Addition",
+      "description": "Lär dig addition på ett roligt sätt"
+    },
+    "subtraction": {
+      "name": "Subtraktion",
+      "description": "Öva subtraktionsuppgifter"
+    },
+    "division": {
+      "name": "Division",
+      "description": "Lär dig att dela tal"
+    },
+    "equations": {
+      "name": "Ekvationer",
+      "description": "Lös ekvationer (t.ex. x + 3 = 7)"
+    },
+    "wordProblems": {
+      "name": "Textuppgifter",
+      "description": "Lös matematiska textuppgifter"
+    }
+  },
   "home": {
+    "subtitle": "Välj spelläge och börja lära!",
+    "startGame": "Starta spelet",
+    "comingSoon": "Kommer snart",
+    "backToMenu": "Tillbaka till huvudmeny",
     "heading": "Nutti Ekorre – Mattespel",
-    "subtitle": "100 multiplikationer • 10 omgångar • feedback i pauser",
     "alias": "Smeknamn",
     "difficulty": "Svårighetsgrad",
     "start": "Starta spelet",
@@ -16,6 +45,11 @@
     "rounds": "Omgångar",
     "teacherView": "Lärarvy",
     "readStory": "Läs berättelse"
+  },
+  "difficulty": {
+    "easy": "Lätt",
+    "medium": "Medel",
+    "hard": "Svår"
   },
   "story": {
     "skip": "Hoppa över berättelse",
@@ -147,12 +181,6 @@
   },
   "alias": {
     "placeholder": "t.ex. Stjärna"
-  },
-  "difficulty": {
-    "1-5": "1–5",
-    "1-10": "1–10", 
-    "6-10": "6–10",
-    "2-12": "2–12"
   },
   "common": {
     "unknown": "Okänd"

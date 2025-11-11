@@ -2,9 +2,38 @@
   "app": {
     "title": "Nutti the Squirrel – Math Trainer"
   },
+  "gameModes": {
+    "multiplication": {
+      "name": "Times Tables",
+      "description": "Practice multiplication at different difficulty levels"
+    },
+    "addition": {
+      "name": "Addition",
+      "description": "Learn addition in a fun way"
+    },
+    "subtraction": {
+      "name": "Subtraction", 
+      "description": "Practice subtraction problems"
+    },
+    "division": {
+      "name": "Division",
+      "description": "Learn to divide numbers"
+    },
+    "equations": {
+      "name": "Equations",
+      "description": "Solve equations (e.g. x + 3 = 7)"
+    },
+    "wordProblems": {
+      "name": "Word Problems",
+      "description": "Solve mathematical word problems"
+    }
+  },
   "home": {
+    "subtitle": "Choose a game mode and start learning!",
+    "startGame": "Start game",
+    "comingSoon": "Coming soon",
+    "backToMenu": "Back to main menu",
     "heading": "Nutti the Squirrel – Math Trainer",
-    "subtitle": "100 multiplications • 10 rounds • feedback in breaks",
     "alias": "Nickname",
     "difficulty": "Difficulty",
     "start": "Start game",
@@ -16,6 +45,11 @@
     "rounds": "Rounds",
     "teacherView": "Teacher View",
     "readStory": "Read story"
+  },
+  "difficulty": {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
   },
   "story": {
     "skip": "Skip story",
@@ -147,12 +181,6 @@
   },
   "alias": {
     "placeholder": "e.g., Starry"
-  },
-  "difficulty": {
-    "1-5": "1–5",
-    "1-10": "1–10", 
-    "6-10": "6–10",
-    "2-12": "2–12"
   },
   "common": {
     "unknown": "Unknown"
