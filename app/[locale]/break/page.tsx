@@ -5,6 +5,8 @@ import { useEffect, useState, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import NuttiBadge from '@/components/NuttiBadge'
 import Progress from '@/components/Progress'
+import { AcornReward } from '@/components/AcornDisplay'
+import { calculateAcorns } from '@/lib/game'
 
 // Types
 interface RoundData {
@@ -16,6 +18,7 @@ interface RoundData {
     isCorrect: boolean
   }>
   alias: string
+  acorns?: number
 }
 
 interface GameSettings {
@@ -59,9 +62,18 @@ export default function Break() {
       )
       
       if (!alreadyExists) {
-        allRounds = [...prevRounds, payload]
+        // Add acorn count to the payload before saving
+        const roundWithAcorns = {
+          ...payload,
+          acorns: calculateAcorns(
+            payload.answers.filter((a: any) => a.isCorrect).length,
+            payload.answers.length,
+            Math.round(payload.answers.reduce((sum: number, answer: any) => sum + answer.ms, 0) / payload.answers.length)
+          )
+        }
+        allRounds = [...prevRounds, roundWithAcorns]
         localStorage.setItem('nutti.all-rounds', JSON.stringify(allRounds))
-        console.log('Break: Saved round', payload.roundNo, 'to localStorage. Total rounds:', allRounds.length)
+        console.log('Break: Saved round', payload.roundNo, 'to localStorage with', roundWithAcorns.acorns, 'acorns. Total rounds:', allRounds.length)
       } else {
         console.log('Break: Round', payload.roundNo, 'was already saved')
       }
@@ -116,6 +128,9 @@ export default function Break() {
   const avgMs = Math.round(totalMs / total)
   const avgSeconds = (avgMs / 1000).toFixed(1)
   const totalSeconds = (totalMs / 1000).toFixed(1)
+  
+  // Calculate acorns earned for this round
+  const acornsEarned = calculateAcorns(correct, total, avgMs)
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50/40 via-white to-nutti-beige/20 py-4">
       <div className="max-w-4xl mx-auto">
@@ -155,6 +170,9 @@ export default function Break() {
                 </div>
               </div>
             </div>
+            
+            {/* Acorn reward display */}
+            <AcornReward acorns={acornsEarned} t={t} />
           </div>
         </div>
         
@@ -185,13 +203,13 @@ export default function Break() {
             </div>
           ) : null}
 
-          {/* AI feedback - optimoitu lataus */}
+          {/* AI feedback - optimized for better text display */}
           <div className="card p-4 bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-nutti-teal/30">
-            <div className="text-center mb-2">
+            <div className="text-center mb-3">
               <span className="text-2xl">{t('icons.squirrel')}</span>
               <p className="text-lg font-bold text-nutti-teal inline ml-2">{t('break.nuttiSays')}</p>
             </div>
-            <div className="bg-white/80 rounded-lg p-3">
+            <div className="bg-white/90 rounded-lg p-4 min-h-[80px] flex items-center justify-center">
               {aiLoading ? (
                 <div className="text-center py-4">
                   <div className="animate-pulse text-nutti-teal">
@@ -200,7 +218,11 @@ export default function Break() {
                   </div>
                 </div>
               ) : ai ? (
-                <p className="text-base leading-relaxed whitespace-pre-wrap text-center">{ai.text}</p>
+                <div className="text-center w-full">
+                  <p className="text-sm sm:text-base leading-relaxed text-gray-800 whitespace-pre-wrap break-words max-w-full">
+                    {ai.text}
+                  </p>
+                </div>
               ) : (
                 <div className="text-center py-2">
                   <p className="text-sm text-gray-500">{t('break.skipAiFeedback')}</p>

@@ -53,7 +53,7 @@ function sysFeedback(locale:Locale){
   switch(locale){
     case 'en': return 'You are a wise math teacher. Give DIFFERENT feedback based on exact performance: 9-10 correct: "Fantastic! You really know your multiplication tables!" 7-8 correct: "Great work, you\'re getting really good at this!" 5-6 correct: "Good effort! Keep practicing and you\'ll improve even more." 3-4 correct: "This was challenging today, but that\'s how we learn best!" 1-2 correct: "These were tough problems - every try helps you get stronger at math!" 0 correct: "Don\'t worry, multiplication takes time to learn. You\'re building your math muscles!" Be honest about the difficulty while staying encouraging.'
     case 'sv': return 'Du är en vis mattelärare. Ge OLIKA feedback baserat på exakt prestation: 9-10 rätt: "Fantastiskt! Du kan verkligen dina multiplikationstabeller!" 7-8 rätt: "Bra jobbat, du blir riktigt duktig på det här!" 5-6 rätt: "Bra försök! Fortsätt träna så blir du ännu bättre." 3-4 rätt: "Det här var utmanande idag, men så lär vi oss bäst!" 1-2 rätt: "Det här var tuffa problem - varje försök hjälper dig bli starkare i matte!" 0 rätt: "Oroa dig inte, multiplikation tar tid att lära sig. Du bygger dina mattmuskler!" Var ärlig om svårigheten medan du förblir uppmuntrande.'
-    default:   return 'Olet viisas matematiikanopettaja. Anna ERI palautetta tarkan suorituksen perusteella: 9-10 oikein: "Loistavaa! Osaat todella kertotaulusi!" 7-8 oikein: "Hienoa työtä, olet todella kehittymässä tässä!" 5-6 oikein: "Hyvä yritys! Jatka harjoittelua niin kehityt vielä lisää." 3-4 oikein: "Tämä oli haastavaa tänään, mutta niin me opimme parhaiten!" 1-2 oikein: "Nämä olivat vaikeita tehtäviä - jokainen yritys tekee sinusta vahvemman matematiikassa!" 0 oikein: "Älä huoli, kertolaskujen oppiminen vie aikaa. Rakennat matemaattisia lihaksiasi!" Ole rehellinen vaikeudesta mutta pysy rohkaisevana.'
+    default:   return 'Sinun TÄYTYY antaa palaute oikeiden vastausten määrän mukaan: 10 oikein = "Täydellistä! Osaat kertotaulut!" 9 oikein = "Loistavaa! Melkein täydellinen!" 8 oikein = "Mahtavaa! Olet taitava!" 7 oikein = "Hienoa työtä!" 6 oikein = "Hyvää menoa!" 5 oikein = "Puolet oikein, jatka!" 4 oikein = "Haastavaa, mutta yrität!" 3 oikein = "Vaikea kierros!" 2 oikein = "Pari onnistui!" 1 oikein = "Yksi oikein!" 0 oikein = "Ei hätää, harjoitus auttaa!" ÄLÄ sekoita näitä!'
   }
 }
 function userFeedback(stats:any, locale:Locale){
@@ -61,9 +61,9 @@ function userFeedback(stats:any, locale:Locale){
   const errorCount = mistakes?.length || (total - correct)
   
   switch(locale){
-    case 'en': return `IMPORTANT: Student got exactly ${correct} out of ${total} correct. Follow the rules: ${correct} correct answers means specific feedback for that exact number. Do not give generic praise. Be specific about this performance level.`
-    case 'sv': return `VIKTIGT: Eleven fick exakt ${correct} av ${total} rätt. Följ reglerna: ${correct} rätta svar betyder specifik feedback för just det exakta antalet. Ge inte generisk beröm. Var specifik om denna prestationsnivå.`
-    default:   return `TÄRKEÄÄ: Oppilas sai täsmälleen ${correct}/${total} oikein. Noudata sääntöjä: ${correct} oikeaa vastausta tarkoittaa erityistä palautetta juuri tälle tarkolle määrälle. Älä anna yleistä kehuja. Ole tarkka tästä suoritustasosta.`
+    case 'en': return `CRITICAL: Student got EXACTLY ${correct} out of ${total} correct. You MUST give feedback for ${correct} correct answers, not any other number. Follow the exact rules for ${correct} correct answers only.`
+    case 'sv': return `KRITISKT: Eleven fick EXAKT ${correct} av ${total} rätt. Du MÅSTE ge feedback för ${correct} rätta svar, inte något annat antal. Följ de exakta reglerna för ${correct} rätta svar endast.`
+    default:   return `KRIITTISTÄ: Oppilas sai TÄSMÄLLEEN ${correct} oikeaa vastausta ${total}:sta. Sinun TÄYTYY antaa palaute ${correct} oikealle vastaukselle, ei mille tahansa muulle määrälle. Noudata tarkkoja sääntöjä ${correct} oikealle vastaukselle.`
   }
 }
 
@@ -98,7 +98,7 @@ export async function aiRoundFeedback(stats:{correct:number,total:number,avgMs:n
       {role:'user', content: userMsg}
     ],
     temperature:0.3, 
-    max_tokens:40,
+    max_tokens:40, // Increased to ensure complete sentences without cutoff
     presence_penalty:0
   })
   
@@ -109,21 +109,23 @@ export async function aiRoundFeedback(stats:{correct:number,total:number,avgMs:n
 
 function sysFinalFeedback(locale:Locale){
   switch(locale){
-    case 'en': return 'You are a wise math teacher giving final game feedback. Respond based on overall performance: 80%+ correct = proud celebration of mastery. 60-79% = encouraging about good progress. 40-59% = supportive about learning journey. Under 40% = gentle encouragement about effort and growth. Be specific about the achievement level, not generic praise. Max 2 sentences.'
-    case 'sv': return 'Du är en vis mattelärare som ger slutlig spelåterkoppling. Svara baserat på övergripande prestation: 80%+ rätt = stolt firande av behärskning. 60-79% = uppmuntrande om goda framsteg. 40-59% = stödjande om inlärningsresan. Under 40% = mild uppmuntran om ansträngning och tillväxt. Var specifik om prestationsnivån, inte generisk beröm. Max 2 meningar.'
-    default:   return 'Olet viisas matematiikanopettaja antamassa lopullista pelipalautetta. Vastaa kokonaissuorituksen perusteella: 80%+ oikein = ylpeä juhlinta osaamisesta. 60-79% = rohkaisevaa hyvästä edistymisestä. 40-59% = tukevaa oppimismatkasta. Alle 40% = lempeää rohkaisua yrittämisestä ja kasvusta. Ole tarkka saavutustasosta, älä anna yleisiä kehuja. Max 2 lausetta.'
+    case 'en': return 'You are a wise math teacher giving final game feedback. Respond based on exact percentage: 80%+ = "Fantastic! You really mastered your multiplication tables!" 60-79% = "Great progress! You\'re learning well." 40-59% = "Good work! Keep practicing and you\'ll definitely improve." Under 40% = "Math is challenging, but every try makes you stronger!" Give ONLY one clear sentence that matches the exact performance level.'
+    case 'sv': return 'Du är en vis mattelärare som ger slutlig spelåterkoppling. Svara baserat på exakt procent: 80%+ = "Fantastiskt! Du behärskar verkligen dina multiplikationstabeller!" 60-79% = "Stora framsteg! Du lär dig bra." 40-59% = "Bra jobbat! Fortsätt träna så förbättras du säkert." Under 40% = "Matte är utmanande, men varje försök gör dig starkare!" Ge BARA en tydlig mening som matchar exakt prestationsnivå.'
+    default:   return 'Anna lyhyt palaute prosentin mukaan: 95-100% = "Täydellistä! Hallitset kertotaulut!" 85-94% = "Loistavaa! Olet taitava!" 75-84% = "Hienoa! Kehityt hyvin!" 65-74% = "Hyvää työtä!" 50-64% = "Puolet onnistui!" Alle 50% = "Harjoitus auttaa!" Anna VAIN yksi lause.'
   }
 }
 
 function userFinalFeedback(stats:any, locale:Locale){
-  const total = stats.totalAnswered || 0
+  const total = stats.totalQuestions || stats.totalAnswered || 0
   const correct = stats.totalCorrect || 0
   const percentage = total > 0 ? Math.round((correct / total) * 100) : 0
   
+  console.log('Final feedback debug:', { total, correct, percentage, stats })
+  
   switch(locale){
-    case 'en': return `IMPORTANT: Student completed the entire game with exactly ${correct} correct out of ${total} total answers (${percentage}% success rate). Give specific feedback for this exact performance level, not generic encouragement.`
-    case 'sv': return `VIKTIGT: Eleven slutförde hela spelet med exakt ${correct} rätt av ${total} totala svar (${percentage}% framgång). Ge specifik feedback för just denna prestationsnivå, inte generisk uppmuntran.`
-    default:   return `TÄRKEÄÄ: Oppilas suoritti koko pelin täsmälleen ${correct} oikealla vastauksella ${total}:sta (${percentage}% onnistuminen). Anna tarkkaa palautetta juuri tälle suoritustasolle, ei yleistä rohkaisua.`
+    case 'en': return `CRITICAL: Student got ${percentage}% correct (${correct}/${total}). You MUST give feedback for ${percentage}% performance only. If 80%+ give celebration. If 60-79% give encouragement. If 40-59% give support. If under 40% give gentle encouragement.`
+    case 'sv': return `KRITISKT: Eleven fick ${percentage}% rätt (${correct}/${total}). Du MÅSTE ge feedback för ${percentage}% prestation endast. Om 80%+ ge firande. Om 60-79% ge uppmuntran. Om 40-59% ge stöd. Om under 40% ge mild uppmuntran.`
+    default:   return `Oppilas sai ${percentage}% oikein (${correct}/${total}). Anna palaute tälle prosentille.`
   }
 }
 
@@ -136,7 +138,7 @@ export async function aiFinalFeedback(stats:any, locale:Locale='fi'){
       {role:'user', content: userFinalFeedback(stats,locale)}
     ],
     temperature:0.3, 
-    max_tokens:60,
+    max_tokens:50, // Increased to prevent cutoff
     presence_penalty:0
   })
   return r.choices?.[0]?.message?.content?.trim() ?? ''

@@ -22,6 +22,8 @@ export interface GameResult {
   timeSpent: number
   /** Number of rounds played */
   totalRounds: number
+  /** Total acorns earned across all rounds */
+  totalAcorns?: number
   /** Detailed results for each multiplication fact */
   facts: FactResult[]
   /** Round-by-round breakdown for multi-round games */
@@ -37,6 +39,7 @@ export interface RoundResult {
   correctInRound: number
   timeSpentInRound: number
   hintsInRound: number
+  acornsInRound?: number
 }
 
 /**
@@ -131,7 +134,9 @@ export class GameStorage {
         averageAccuracy: 0,
         totalHints: 0,
         totalTime: 0,
-        averageTime: 0
+        totalAcorns: 0,
+        averageTime: 0,
+        averageAcorns: 0
       }
     }
     
@@ -139,8 +144,19 @@ export class GameStorage {
     const totalQuestions = results.reduce((sum, r) => sum + r.totalQuestions, 0)
     const totalCorrect = results.reduce((sum, r) => sum + r.correctAnswers, 0)
     const totalWrong = results.reduce((sum, r) => sum + r.wrongAnswers, 0)
-    const totalHints = results.reduce((sum, r) => sum + r.hintsUsed, 0)
-    const totalTime = results.reduce((sum, r) => sum + r.timeSpent, 0)
+    const totalHints = results.reduce((sum, result) => sum + (result.hintsUsed || 0), 0)
+    const totalTime = results.reduce((sum, result) => sum + (result.timeSpent || 0), 0)
+    const totalAcorns = results.reduce((sum, result) => {
+      if (result.totalAcorns && result.totalAcorns > 0) {
+        return sum + result.totalAcorns
+      }
+      // Fallback calculation for games without acorn data
+      // Estimate based on performance: 1-5 acorns per round based on accuracy
+      const accuracy = result.totalQuestions > 0 ? result.correctAnswers / result.totalQuestions : 0
+      const baseAcorns = accuracy >= 0.8 ? 4 : accuracy >= 0.6 ? 3 : accuracy >= 0.4 ? 2 : 1
+      const estimatedAcorns = Math.max(1, baseAcorns * (result.totalRounds || 1))
+      return sum + estimatedAcorns
+    }, 0)
     
     return {
       totalGames,
@@ -150,12 +166,47 @@ export class GameStorage {
       averageAccuracy: totalQuestions > 0 ? (totalCorrect / totalQuestions) * 100 : 0,
       totalHints,
       totalTime,
-      averageTime: totalGames > 0 ? totalTime / totalGames : 0
+      totalAcorns,
+      averageTime: totalGames > 0 ? totalTime / totalGames : 0,
+      averageAcorns: totalGames > 0 ? totalAcorns / totalGames : 0
     }
   }
   
   static clearAllData(): void {
     localStorage.removeItem(this.STORAGE_KEY)
+  }
+  
+  /**
+   * Update existing games with retroactive acorn calculations
+   */
+  static updateGamesWithAcorns(): void {
+    try {
+      const results = this.getAllResults()
+      let updated = false
+      
+      const updatedResults = results.map(result => {
+        if (!result.totalAcorns || result.totalAcorns === 0) {
+          // Calculate acorns retroactively
+          const accuracy = result.totalQuestions > 0 ? result.correctAnswers / result.totalQuestions : 0
+          const baseAcorns = accuracy >= 0.8 ? 4 : accuracy >= 0.6 ? 3 : accuracy >= 0.4 ? 2 : 1
+          const estimatedAcorns = Math.max(1, baseAcorns * (result.totalRounds || 1))
+          
+          updated = true
+          return {
+            ...result,
+            totalAcorns: estimatedAcorns
+          }
+        }
+        return result
+      })
+      
+      if (updated) {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedResults))
+        console.log('Updated', updatedResults.filter(r => r.totalAcorns).length, 'games with retroactive acorn data')
+      }
+    } catch (error) {
+      console.error('Failed to update games with acorns:', error)
+    }
   }
   
   static exportData(): string {

@@ -1,6 +1,8 @@
 import { GameStorage, GameResult } from '@/lib/storage'
 import { useTranslations } from 'next-intl'
 import { useState, useEffect } from 'react'
+import AcornDisplay from './AcornDisplay'
+import { calculateAcorns } from '@/lib/game'
 
 interface TeacherViewProps {
   onClose: () => void
@@ -13,7 +15,34 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
   const [results, setResults] = useState<GameResult[]>([])
   const [stats, setStats] = useState<any>(null)
 
+  // Function to calculate acorns retroactively for games without acorn data
+  const calculateRetroactiveAcorns = (result: GameResult): number => {
+    if (result.totalAcorns && result.totalAcorns > 0) {
+      return result.totalAcorns // Already has acorn data
+    }
+    
+    // Calculate from round results if available
+    if (result.roundResults && result.roundResults.length > 0) {
+      return result.roundResults.reduce((total, round) => {
+        if (round.acornsInRound) {
+          return total + round.acornsInRound
+        }
+        // Calculate acorns for this round retroactively
+        const avgMs = round.timeSpentInRound > 0 ? Math.round((round.timeSpentInRound * 1000) / round.questionsInRound) : 5000
+        return total + calculateAcorns(round.correctInRound, round.questionsInRound, avgMs)
+      }, 0)
+    }
+    
+    // Fallback: calculate from overall game stats
+    const avgMs = result.timeSpent > 0 ? Math.round((result.timeSpent * 1000) / result.totalQuestions) : 5000
+    const acornsPerRound = calculateAcorns(result.correctAnswers, result.totalQuestions, avgMs)
+    return Math.max(1, Math.round(acornsPerRound * (result.totalRounds || 1) / 10)) // Estimate based on total performance
+  }
+
   useEffect(() => {
+    // Update existing games with acorn data if missing
+    GameStorage.updateGamesWithAcorns()
+    
     const allNicknames = GameStorage.getNicknames()
     setNicknames(allNicknames)
     
@@ -125,6 +154,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                   <div>❌ {t('teacher.wrong')}: <strong>{stats.totalWrong}</strong></div>
                   <div>🎯 {t('teacher.accuracy')}: <strong>{stats.averageAccuracy.toFixed(1)}%</strong></div>
                   <div>💡 {t('teacher.hints')}: <strong>{stats.totalHints}</strong></div>
+                  <div>🌰 {t('acorns.acorns')}: <strong>{stats.totalAcorns || 0}</strong></div>
                   <div>⏱️ {t('teacher.averageTime')}: <strong>{formatTime(stats.averageTime)}/{t('teacher.perGame')}</strong></div>
                   <div>⏰ {t('teacher.time')}: <strong>{formatTime(stats.totalTime)}</strong></div>
                 </div>
@@ -202,12 +232,36 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                         <div className="font-medium">{result.hintsUsed}</div>
                       </div>
                       <div>
+                        <span className="text-gray-600">🌰 {t('acorns.acorns')}:</span>
+                        <div className="font-medium">{calculateRetroactiveAcorns(result)}</div>
+                      </div>
+                      <div>
                         <span className="text-gray-600">{t('teacher.speed')}:</span>
                         <div className="font-medium">
                           {(result.timeSpent / result.totalQuestions).toFixed(1)}s/{t('teacher.perQuestion')}
                         </div>
                       </div>
                     </div>
+                    
+                    {/* Acorn display */}
+                    {(() => {
+                      const acorns = calculateRetroactiveAcorns(result)
+                      return acorns > 0 ? (
+                        <div className="mt-3 p-2 bg-amber-50 rounded-lg border border-amber-200">
+                          <div className="text-center">
+                            <AcornDisplay 
+                              acorns={acorns} 
+                              maxAcorns={acorns} 
+                              size="small"
+                              showEmptySlots={false}
+                            />
+                            <p className="text-xs text-amber-600 mt-1">
+                              {t('acorns.acornsCount', { count: acorns, rounds: result.totalRounds })}
+                            </p>
+                          </div>
+                        </div>
+                      ) : null
+                    })()}
 
                     {/* Round breakdown - only show if more than 1 round */}
                     {result.totalRounds > 1 && result.roundResults && (
@@ -228,6 +282,11 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                                   time: round.timeSpentInRound.toFixed(1),
                                   hints: round.hintsInRound
                                 })}
+                                {round.acornsInRound && (
+                                  <div className="text-amber-600 font-medium">
+                                    🌰 {round.acornsInRound}
+                                  </div>
+                                )}
                               </div>
                             </div>
                           ))}

@@ -2,6 +2,12 @@
   "app": {
     "title": "Nutti Orava – Kertotaulupeli"
   },
+  "common": {
+    "unknown": "Tuntematon",
+    "round": "Erä",
+    "rounds": "Erää",
+    "in": "erässä"
+  },
   "home": {
     "heading": "Nutti Orava – Kertotaulupeli",
     "subtitle": "100 kertolaskua • 10 erää • palaute tauoilla",
@@ -56,6 +62,14 @@
       "page3": "Tiesitkö? 7 × 8 = 56 pähkinää! Se riittäisi Nutille melkein kahdeksi viikoksi.",
       "page5": "Vihje: Käytä näppäimistöä: 0-9, Enter, Backspace ja H (vihje)!"
     }
+  },
+  "acorns": {
+    "reward": "Pähkinäpalkinto!",
+    "earned": "Ansaitsit {count} pähkinä{plural}!",
+    "collection": "Pähkinäkokoelma",
+    "total": "Keräsit yhteensä {total} pähkinää {rounds} erässä!",
+    "acorns": "Pähkinät",
+    "acornsCount": "{count} pähkinää {rounds} erässä"
   },
   "teacher": {
     "title": "Opettajanäkymä",

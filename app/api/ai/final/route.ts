@@ -20,7 +20,8 @@ export async function POST(req: NextRequest){
   const text = await aiFinalFeedback({ 
     rounds: rounds.length,
     totalCorrect, 
-    totalQuestions, 
+    totalQuestions,
+    totalAnswered: totalQuestions, // For backward compatibility
     avgTimeMs,
     roundsData: rounds.map(r => ({
       roundNo: r.roundNo,

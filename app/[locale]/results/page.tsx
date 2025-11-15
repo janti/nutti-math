@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import NuttiBadge from '@/components/NuttiBadge'
 import { GameStorage, GameResult, FactResult } from '@/lib/storage'
+import AcornDisplay from '@/components/AcornDisplay'
+import { calculateAcorns, calculateTotalAcorns } from '@/lib/game'
 
 // TypeScript interfaces
 interface GameSummary {
@@ -157,7 +159,12 @@ export default function Results() {
         questionsInRound: round.answers?.length || 0,
         correctInRound: round.answers?.filter((a: Answer) => a.isCorrect).length || 0,
         timeSpentInRound: (round.answers?.reduce((sum: number, a: Answer) => sum + a.ms, 0) || 0) / 1000,
-        hintsInRound: round.answers?.reduce((sum: number, a: Answer) => sum + ((a as any).hintsUsed || 0), 0) || 0
+        hintsInRound: round.answers?.reduce((sum: number, a: Answer) => sum + ((a as any).hintsUsed || 0), 0) || 0,
+        acornsInRound: calculateAcorns(
+          round.answers?.filter((a: Answer) => a.isCorrect).length || 0,
+          round.answers?.length || 0,
+          Math.round((round.answers?.reduce((sum: number, a: Answer) => sum + a.ms, 0) || 0) / Math.max(1, round.answers?.length || 1))
+        )
       }))
         
         const gameResult: GameResult = {
@@ -171,6 +178,7 @@ export default function Results() {
           hintsUsed: totalHints,
           timeSpent: timeMs / 1000,
           totalRounds: allRounds.length,
+          totalAcorns: totalAcorns,
           facts: facts,
           roundResults: roundResults
         }
@@ -198,6 +206,16 @@ export default function Results() {
   },[])
   const sec=(summary.timeMs/1000).toFixed(1)
   const accuracy = summary.total > 0 ? Math.round((summary.correct / summary.total) * 100) : 0
+  
+  // Calculate total acorns earned from all rounds
+  const roundsWithStats = rounds.map(round => {
+    const correct = round.answers.filter(a => a.isCorrect).length
+    const total = round.answers.length
+    const totalMs = round.answers.reduce((sum, a) => sum + a.ms, 0)
+    const avgMs = Math.round(totalMs / total)
+    return { correct, total, avgMs }
+  })
+  const totalAcorns = calculateTotalAcorns(roundsWithStats)
   
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -228,13 +246,13 @@ export default function Results() {
               </p>
             </div>
             
-            {/* AI Final Feedback - with proper spacing */}
+            {/* AI Final Feedback - optimized for better text display */}
             <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl mt-4">
               <div className="text-center mb-3">
                 <span className="text-xl">{t('icons.squirrel')}</span>
                 <span className="text-lg font-bold text-green-700 ml-2">{t('results.finalFeedback')}</span>
               </div>
-              <div className="bg-white/80 rounded-lg p-4">
+              <div className="bg-white/90 rounded-lg p-4 min-h-[100px] flex items-center justify-center">
                 {finalAiLoading ? (
                   <div className="text-center py-2">
                     <div className="animate-pulse text-green-600">
@@ -243,7 +261,11 @@ export default function Results() {
                     </div>
                   </div>
                 ) : finalAi ? (
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap text-center">{finalAi.text}</p>
+                  <div className="text-center w-full">
+                    <p className="text-base sm:text-lg leading-relaxed text-gray-800 whitespace-pre-wrap break-words max-w-full font-medium">
+                      {finalAi.text}
+                    </p>
+                  </div>
                 ) : (
                   <div className="text-center py-1">
                     <p className="text-xs text-gray-500">{t('results.finalFeedbackSkipped')}</p>
@@ -279,11 +301,30 @@ export default function Results() {
               <div className="text-sm font-semibold text-purple-600">{t('results.accuracy')}</div>
             </div>
             
-            {/* Time statistics */}
-                        <div className="bg-gradient-to-br from-orange-50 to-red-50 p-4 rounded-xl border-2 border-orange-300 text-center">
-              <div className="text-2xl mb-1">{t('icons.timer')}</div>
-              <div className="text-2xl font-bold text-orange-600">{sec}s</div>
-              <div className="text-sm font-semibold text-orange-600">{t('results.totalTime')}</div>
+            {/* Acorns earned */}
+            <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-4 rounded-xl border-2 border-amber-300 text-center">
+              <div className="text-2xl mb-1">🌰</div>
+              <div className="text-2xl font-bold text-amber-600">{totalAcorns}</div>
+              <div className="text-sm font-semibold text-amber-600">{t('acorns.acorns')}</div>
+            </div>
+          </div>
+          
+          {/* Acorn collection display */}
+          <div className="card p-4 bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-300">
+            <div className="text-center mb-3">
+              <span className="text-xl">🌰</span>
+              <span className="text-lg font-bold text-amber-700 ml-2">{t('acorns.collection')}</span>
+            </div>
+            <div className="text-center">
+              <AcornDisplay 
+                acorns={totalAcorns} 
+                maxAcorns={totalAcorns} 
+                size="medium"
+                showEmptySlots={false}
+              />
+              <p className="text-sm text-amber-600 mt-2">
+                {t('acorns.total', { total: totalAcorns, rounds: rounds.length })}
+              </p>
             </div>
           </div>
           

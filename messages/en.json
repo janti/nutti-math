@@ -57,6 +57,14 @@
       "page5": "Tip: Use the keyboard: 0-9, Enter, Backspace and H (hint)!"
     }
   },
+  "acorns": {
+    "reward": "Acorn Reward!",
+    "earned": "You earned {count} acorn{plural}!",
+    "collection": "Acorn Collection",
+    "total": "You collected {total} acorns in {rounds} rounds!",
+    "acorns": "Acorns",
+    "acornsCount": "{count} acorns in {rounds} rounds"
+  },
   "teacher": {
     "title": "Teacher View",
     "selectStudent": "Select student:",
@@ -215,5 +223,16 @@
     "difficulty2to12": "🍪",
     "difficultyMix": "🍬",
     "pointingDown": "👇"
+  },
+  "common": {
+    "unknown": "Unknown",
+    "round": "Round",
+    "rounds": "Rounds",
+    "acorns": "Acorns",
+    "totalAcorns": "Total Acorns",
+    "acornsEarned": "Acorns Earned",
+    "performance": "Performance",
+    "speed": "Speed",
+    "average": "Average"
   }
 }

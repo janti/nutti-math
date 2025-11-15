@@ -57,6 +57,14 @@
       "page5": "Tips: Använd tangentbordet: 0-9, Enter, Backspace och H (tips)!"
     }
   },
+  "acorns": {
+    "reward": "Ekollon belöning!",
+    "earned": "Du tjänade {count} ekollon{plural}!",
+    "collection": "Ekollon samling",
+    "total": "Du samlade {total} ekollon på {rounds} rundor!",
+    "acorns": "Ekollon",
+    "acornsCount": "{count} ekollon på {rounds} rundor"
+  },
   "teacher": {
     "title": "Lärarvy",
     "selectStudent": "Välj elev:",
@@ -215,5 +223,16 @@
     "difficulty2to12": "🍪",
     "difficultyMix": "🍬",
     "pointingDown": "👇"
+  },
+  "common": {
+    "unknown": "Okänd",
+    "round": "Omgång",
+    "rounds": "Omgångar",
+    "acorns": "Ekollon",
+    "totalAcorns": "Totala Ekollon",
+    "acornsEarned": "Ekollon Erhållna",
+    "performance": "Prestation",
+    "speed": "Hastighet",
+    "average": "Genomsnitt"
   }
 }
