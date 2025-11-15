@@ -6,6 +6,9 @@ A comprehensive, modern multiplication table trainer featuring AI-powered feedba
 
 ### 🎮 Game Mechanics
 - **Customizable Rounds**: Choose 1, 2, 3, 5, or 10 rounds
+- **Acorn Collection System**: Earn 1-5 acorns per round based on performance
+- **Performance-Based Rewards**: Acorns awarded for accuracy and speed
+- **Gamification Elements**: Visual acorn display and total collection tracking
 - **Difficulty Levels**: 
   - 🧸 Easy (1-5 tables)
   - 🎯 Medium (6-10 tables)  
@@ -37,16 +40,21 @@ A comprehensive, modern multiplication table trainer featuring AI-powered feedba
 - **Language Switching**: Easy language selection in header
 - **Localized AI**: AI feedback matches selected language
 
-### 👩‍� Teacher Analytics
+### 👩‍🏫 Teacher Analytics
 - **Comprehensive Dashboard**: Complete teacher view with student performance tracking
 - **Student Data Storage**: LocalStorage-based analytics with 1000+ result capacity
-- **Round Breakdown**: Detailed round-by-round performance analysis
+- **Acorn Tracking**: Monitor student motivation through acorn collection statistics
+- **Performance Gamification**: Track total acorns earned and performance trends
+- **Round Breakdown**: Detailed round-by-round performance analysis including acorns per round
 - **Multi-Student Support**: Track multiple students with nickname-based filtering
-- **Performance Statistics**: Accuracy, time spent, hints used, and detailed fact analysis
+- **Performance Statistics**: Accuracy, time spent, hints used, acorns earned, and detailed fact analysis
 - **Data Export Ready**: Structured data format for future export capabilities
 
-### �🍬 User Experience
+### 🍬 User Experience
 - **Nutti Theme**: Delightful squirrel mascot with candy and nature decorations
+- **Acorn Gamification**: Visual acorn collection with 1-5 acorn reward system
+- **Performance Motivation**: Earn more acorns with better accuracy and speed
+- **Progress Visualization**: See accumulated acorns across all rounds
 - **Responsive Design**: Optimized for desktop, tablet, and mobile
 - **Accessibility**: Complete ARIA labels, keyboard navigation, and screen reader support
 - **Performance Optimized**: Smart caching, precomputation, and smooth transitions
@@ -151,10 +159,10 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 1. **Welcome Story**: Optional interactive story introduction with AI narration
 2. **Setup**: Choose nickname, difficulty, and number of rounds
 3. **Play**: Solve 10 multiplication problems per round with hints available
-4. **Break**: Review round statistics and receive personalized AI feedback
-5. **Repeat**: Continue for selected number of rounds with progress tracking
-6. **Results**: Final statistics, round breakdown, and comprehensive AI assessment
-7. **Teacher Analytics**: Optional teacher dashboard with detailed performance data
+4. **Break**: Review round statistics, acorn rewards, and receive personalized AI feedback
+5. **Repeat**: Continue for selected number of rounds with progress and acorn tracking
+6. **Results**: Final statistics, total acorn collection, round breakdown, and comprehensive AI assessment
+7. **Teacher Analytics**: Optional teacher dashboard with detailed performance data and acorn statistics
 
 ## 🤖 AI Features
 
@@ -303,14 +311,6 @@ npm run lint:fix
 - Check localStorage for saved results
 - Verify nickname was entered during game setup
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
@@ -332,7 +332,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **v0.1.5** - Complete localization, Round breakdown analytics
 - **v0.1.0** - Core multiplication trainer with AI feedback
 
-### Latest Features (October 2025)
+### Latest Features (November 2025)
+- ✅ **Acorn Gamification System**: Performance-based acorn collection (1-5 per round)
+- ✅ **Visual Reward Display**: Beautiful acorn graphics with fallback emoji support
+- ✅ **Teacher Acorn Analytics**: Track student motivation through gamification metrics
 - ✅ **Interactive Math Story**: 5-page illustrated story with AI narration
 - ✅ **AI Text-to-Speech**: Professional quality voice narration in 3 languages
 - ✅ **Teacher Analytics**: Comprehensive dashboard with round-by-round breakdown
