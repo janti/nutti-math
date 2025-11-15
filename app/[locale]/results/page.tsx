@@ -166,6 +166,9 @@ export default function Results() {
           Math.round((round.answers?.reduce((sum: number, a: Answer) => sum + a.ms, 0) || 0) / Math.max(1, round.answers?.length || 1))
         )
       }))
+      
+      // Calculate total acorns from round results (ensures consistency)
+      const totalAcorns = roundResults.reduce((sum: number, round: any) => sum + round.acornsInRound, 0)
         
         const gameResult: GameResult = {
           id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
@@ -207,22 +210,22 @@ export default function Results() {
   const sec=(summary.timeMs/1000).toFixed(1)
   const accuracy = summary.total > 0 ? Math.round((summary.correct / summary.total) * 100) : 0
   
-  // Calculate total acorns earned from all rounds
-  const roundsWithStats = rounds.map(round => {
+  // Calculate total acorns from all rounds consistently
+  const totalAcorns = rounds.reduce((sum: number, round: Round) => {
     const correct = round.answers.filter(a => a.isCorrect).length
     const total = round.answers.length
-    const totalMs = round.answers.reduce((sum, a) => sum + a.ms, 0)
+    const totalMs = round.answers.reduce((ms, a) => ms + a.ms, 0)
     const avgMs = Math.round(totalMs / total)
-    return { correct, total, avgMs }
-  })
-  const totalAcorns = calculateTotalAcorns(roundsWithStats)
+    return sum + calculateAcorns(correct, total, avgMs)
+  }, 0)
+  
+
   
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="bg-white/90 backdrop-blur-sm border border-gray-200 shadow-xl rounded-2xl p-6">
         {/* Header */}
         <div className="text-center mb-2">
-            <div className="text-3xl mb-1">{t('icons.celebration')}</div>
             <NuttiBadge mood="excited" />
           </div>
       
@@ -368,8 +371,6 @@ export default function Results() {
           {t('icons.rocket')} {t('results.newGame')}
         </a>
         
-        {/* Bottom celebration - closer to button */}
-        <div className="text-2xl opacity-75">{t('icons.gameEnd')}</div>
       </div>
       </div>
     </div>

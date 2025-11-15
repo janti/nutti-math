@@ -266,8 +266,6 @@ export default function Break() {
           {t('icons.finish')} {t('break.stop')}
         </a>
         
-        {/* Candy decoration - closer to buttons */}
-        <div className="text-2xl opacity-75 mt-2 sm:mt-0 sm:ml-4">{t('icons.candyMix')}</div>
       </div>
         </div>
       </div>

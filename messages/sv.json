@@ -179,8 +179,6 @@
     }
   },
   "icons": {
-    "celebration": "🏆🎉🌟",
-    "gameTitle": "🌟🎯🚀",
     "gameInfo": "🧮✨",
     "alias": "🏷️",
     "rounds": "🎯",
@@ -204,14 +202,12 @@
     "hourglass": "⏳🍭",
     "rocket": "🚀",
     "finish": "🏁",
-    "candyMix": "🍭🍪🧁🍬🍫",
     "books": "📚",
     "checkmark": "✅",
     "bullseye": "🎯",
     "chart": "📊",
     "party": "🎊",
     "medal": "🎖️",
-    "gameEnd": "🎮🍭🏆🎯🌟",
     "roundNumbers": {
       "1": "1️⃣",
       "2": "2️⃣", 

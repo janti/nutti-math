@@ -15,28 +15,39 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
   const [results, setResults] = useState<GameResult[]>([])
   const [stats, setStats] = useState<any>(null)
 
-  // Function to calculate acorns retroactively for games without acorn data
+  // Function to get acorns, preferring saved data over calculation
   const calculateRetroactiveAcorns = (result: GameResult): number => {
-    if (result.totalAcorns && result.totalAcorns > 0) {
-      return result.totalAcorns // Already has acorn data
+    // Always use the saved totalAcorns if it exists (even if 0)
+    if (result.totalAcorns !== undefined) {
+      console.log(`Using saved totalAcorns: ${result.totalAcorns} for game ${result.id}`)
+      return result.totalAcorns
     }
+
+    console.log(`No totalAcorns found for game ${result.id}, calculating retroactively`)
     
-    // Calculate from round results if available
+    // Legacy fallback: calculate from round results for old games
     if (result.roundResults && result.roundResults.length > 0) {
-      return result.roundResults.reduce((total, round) => {
+      const calculatedTotal = result.roundResults.reduce((total, round) => {
         if (round.acornsInRound) {
+          console.log(`Round ${round.roundNo}: using saved acorns = ${round.acornsInRound}`)
           return total + round.acornsInRound
         }
         // Calculate acorns for this round retroactively
         const avgMs = round.timeSpentInRound > 0 ? Math.round((round.timeSpentInRound * 1000) / round.questionsInRound) : 5000
-        return total + calculateAcorns(round.correctInRound, round.questionsInRound, avgMs)
+        const calculated = calculateAcorns(round.correctInRound, round.questionsInRound, avgMs)
+        console.log(`Round ${round.roundNo}: calculated acorns = ${calculated}`)
+        return total + calculated
       }, 0)
+      console.log(`Total calculated from rounds: ${calculatedTotal}`)
+      return calculatedTotal
     }
     
-    // Fallback: calculate from overall game stats
+    // Final fallback: estimate from overall game stats
     const avgMs = result.timeSpent > 0 ? Math.round((result.timeSpent * 1000) / result.totalQuestions) : 5000
     const acornsPerRound = calculateAcorns(result.correctAnswers, result.totalQuestions, avgMs)
-    return Math.max(1, Math.round(acornsPerRound * (result.totalRounds || 1) / 10)) // Estimate based on total performance
+    const estimated = Math.max(1, Math.round(acornsPerRound * (result.totalRounds || 1) / 10))
+    console.log(`Final fallback estimate: ${estimated}`)
+    return estimated
   }
 
   useEffect(() => {
