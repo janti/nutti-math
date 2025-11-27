@@ -1,8 +1,8 @@
 import '../globals.css'
-import {NextIntlClientProvider} from 'next-intl'
-import {getMessages} from 'next-intl/server'
-import type {Metadata} from 'next'
-import {defaultLocale, type Locale} from '@/i18n'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages } from 'next-intl/server'
+import type { Metadata } from 'next'
+import { defaultLocale, type Locale } from '@/i18n'
 import Header from '@/components/Header'
 
 export const metadata: Metadata = {
@@ -28,11 +28,11 @@ export const metadata: Metadata = {
 
 export default async function LocaleLayout({
   children, params
-}:{ children: React.ReactNode; params: Promise<{ locale: Locale }> }){
+}: { children: React.ReactNode; params: Promise<{ locale: Locale }> }) {
   const { locale } = await params
   const messages = await getMessages()
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body className="min-h-screen">
         <NextIntlClientProvider messages={messages} locale={locale}>
           <Header locale={locale} />

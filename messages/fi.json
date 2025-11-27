@@ -1,15 +1,26 @@
 {
   "app": {
-    "title": "Nutti Orava – Kertotaulupeli"
+    "title": "Nutti Orava – Matikkapeli"
   },
-  "common": {
-    "unknown": "Tuntematon",
-    "round": "Erä",
-    "rounds": "Erää",
-    "in": "erässä"
+  "landing": {
+    "title": "Nutti Matikka",
+    "subtitle": "Opi kertotaulut hauskan orava-kaverin kanssa!",
+    "cta": "Pelaa Nyt",
+    "feature1": "Kohdennettu harjoittelu",
+    "feature2": "Hauska tarina",
+    "feature3": "Seuraa edistymistä",
+    "teacherView": "Opettajanäkymä"
+  },
+  "topics": {
+    "multiplication": "Kertotaulu",
+    "division": "Jakolaskut",
+    "addition": "Plus",
+    "subtraction": "Miinus",
+    "wordProblems": "Kirjalliset",
+    "equations": "Yhtälöt"
   },
   "home": {
-    "heading": "Nutti Orava – Kertotaulupeli",
+    "heading": "Nutti Orava – Matikkapeli",
     "subtitle": "100 kertolaskua • 10 erää • palaute tauoilla",
     "alias": "Nimimerkki",
     "difficulty": "Vaikeus",
@@ -20,6 +31,7 @@
     "roundCount": "Erämäärä",
     "gameInfo": "10 tehtävää per erä • Nutin palaute tauoilla",
     "rounds": "Erämäärä",
+    "topic": "Aihe",
     "teacherView": "Opettajanäkymä",
     "readStory": "Kuuntele tarina"
   },
@@ -164,7 +176,7 @@
   },
   "difficulty": {
     "1-5": "1–5",
-    "1-10": "1–10", 
+    "1-10": "1–10",
     "6-10": "6–10",
     "2-12": "2–12"
   },
@@ -216,7 +228,7 @@
     "medal": "🎖️",
     "roundNumbers": {
       "1": "1️⃣",
-      "2": "2️⃣", 
+      "2": "2️⃣",
       "3": "3️⃣",
       "5": "5️⃣",
       "10": "🔟"

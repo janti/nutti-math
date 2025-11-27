@@ -1,9 +1,26 @@
 {
   "app": {
-    "title": "Nutti the Squirrel – Math Trainer"
+    "title": "Nutti the Squirrel – Math Game"
+  },
+  "landing": {
+    "title": "Nutti Math",
+    "subtitle": "Master multiplication tables with your friendly squirrel companion!",
+    "cta": "Play Now",
+    "feature1": "Targeted Practice",
+    "feature2": "Fun Story",
+    "feature3": "Track Progress",
+    "teacherView": "Teacher View"
+  },
+  "topics": {
+    "multiplication": "Multiplication",
+    "division": "Division",
+    "addition": "Addition",
+    "subtraction": "Subtraction",
+    "wordProblems": "Word Problems",
+    "equations": "Equations"
   },
   "home": {
-    "heading": "Nutti the Squirrel – Math Trainer",
+    "heading": "Nutti the Squirrel – Math Game",
     "subtitle": "100 multiplications • 10 rounds • feedback in breaks",
     "alias": "Nickname",
     "difficulty": "Difficulty",
@@ -14,6 +31,7 @@
     "roundCount": "Number of rounds",
     "gameInfo": "10 tasks per round • Nutti's feedback in breaks",
     "rounds": "Rounds",
+    "topic": "Topic",
     "teacherView": "Teacher View",
     "readStory": "Read story"
   },
@@ -158,12 +176,20 @@
   },
   "difficulty": {
     "1-5": "1–5",
-    "1-10": "1–10", 
+    "1-10": "1–10",
     "6-10": "6–10",
     "2-12": "2–12"
   },
   "common": {
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "round": "Round",
+    "rounds": "Rounds",
+    "acorns": "Acorns",
+    "totalAcorns": "Total Acorns",
+    "acornsEarned": "Acorns Earned",
+    "performance": "Performance",
+    "speed": "Speed",
+    "average": "Average"
   },
   "layout": {
     "nuttiAlt": "Nutti the Squirrel mascot"
@@ -210,7 +236,7 @@
     "medal": "🎖️",
     "roundNumbers": {
       "1": "1️⃣",
-      "2": "2️⃣", 
+      "2": "2️⃣",
       "3": "3️⃣",
       "5": "5️⃣",
       "10": "🔟"
@@ -219,16 +245,5 @@
     "difficulty2to12": "🍪",
     "difficultyMix": "🍬",
     "pointingDown": "👇"
-  },
-  "common": {
-    "unknown": "Unknown",
-    "round": "Round",
-    "rounds": "Rounds",
-    "acorns": "Acorns",
-    "totalAcorns": "Total Acorns",
-    "acornsEarned": "Acorns Earned",
-    "performance": "Performance",
-    "speed": "Speed",
-    "average": "Average"
   }
 }

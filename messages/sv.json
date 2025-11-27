@@ -1,27 +1,45 @@
 {
   "app": {
-    "title": "Nutti Ekorre – Mattespel"
+    "title": "Nutti Ekorren – Mattespel"
+  },
+  "landing": {
+    "title": "Nutti Matte",
+    "subtitle": "Lär dig multiplikationstabellen med din vänliga ekorrekompis!",
+    "cta": "Spela Nu",
+    "feature1": "Riktad övning",
+    "feature2": "Rolig berättelse",
+    "feature3": "Följ framsteg",
+    "teacherView": "Lärarvy"
+  },
+  "topics": {
+    "multiplication": "Multiplikation",
+    "division": "Division",
+    "addition": "Addition",
+    "subtraction": "Subtraktion",
+    "wordProblems": "Lästal",
+    "equations": "Ekvationer"
   },
   "home": {
-    "heading": "Nutti Ekorre – Mattespel",
+    "heading": "Nutti Ekorren – Mattespel",
     "subtitle": "100 multiplikationer • 10 omgångar • feedback i pauser",
     "alias": "Smeknamn",
     "difficulty": "Svårighetsgrad",
     "start": "Starta spelet",
-    "mix": "Mix",
-    "kb": "Tangentbord: 0–9, Enter, Backspace, H (tips).",
-    "kbStart": "Tips: Skriv ditt namn och tryck Enter för att starta!",
+    "mix": "Blanda",
+    "kb": "Tangentbord: 0–9, Enter, Backspace, H (ledtråd).",
+    "kbStart": "Tips: Skriv ditt namn och tryck på Enter för att starta!",
     "roundCount": "Antal omgångar",
     "gameInfo": "10 uppgifter per omgång • Nuttis feedback i pauser",
     "rounds": "Omgångar",
+    "topic": "Ämne",
     "teacherView": "Lärarvy",
-    "readStory": "Läs berättelse"
+    "readStory": "Läs sagan"
   },
   "story": {
-    "skip": "Hoppa över berättelse",
+    "skip": "Hoppa över sagan",
     "previous": "Föregående",
     "next": "Nästa",
-    "start": "Vi börjar!",
+    "start": "Låt oss börja!",
     "page": "Sida",
     "mute": "🔇 Tysta",
     "unmute": "🔊 Ljud på",
@@ -32,38 +50,38 @@
     "stopReading": "⏹️ Sluta läsa",
     "pages": {
       "1": {
-        "title": "Nutti Ekorre och Nötarnas Hemlighet",
-        "text": "Det var en gång en livlig ekorre som hette Nutti och bodde i en stor ek. Nutti var annorlunda än andra ekorrar - han älskade matematik!"
+        "title": "Nutti Ekorren och Nötternas Hemlighet",
+        "text": "Det var en gång en livlig ekorre som hette Nutti som bodde i en stor ek. Nutti var annorlunda än andra ekorrar - han älskade matematik!"
       },
       "2": {
-        "title": "Förberedelse för Vintern",
-        "text": "Hösten var på väg och Nutti visste att han måste samla nötter för vintern. Men hur många nötter skulle han egentligen behöva?"
+        "title": "Förberedelser för Vintern",
+        "text": "Hösten var på väg och Nutti visste att han måste samla nötter inför vintern. Men hur många nötter skulle han egentligen behöva?"
       },
       "3": {
         "title": "Multiplikationstabellernas Kraft",
-        "text": "Nutti kom ihåg att hans mormor hade lärt honom multiplikationstabeller. 'Om du samlar 7 nötter om dagen i 8 dagar, hur många har du totalt?' hade mormor frågat."
+        "text": "Nutti kom ihåg att hans mormor hade lärt honom multiplikationstabellerna. 'Om du samlar 7 nötter om dagen i 8 dagar, hur många har du då totalt?' hade mormor frågat."
       },
       "4": {
         "title": "Äventyret Börjar",
-        "text": "Nutti bestämde sig för att han skulle lära sig alla multiplikationstabeller perfekt. På så sätt kunde han snabbt räkna ut hur många nötter han skulle ha när som helst!"
+        "text": "Nutti bestämde sig för att han skulle lära sig alla multiplikationstabeller perfekt. På så sätt kunde han snabbt räkna ut hur många nötter han hade när som helst!"
       },
       "5": {
         "title": "Gå med i Nuttis Äventyr!",
-        "text": "Nu kan du hjälpa Nutti att lära sig multiplikationstabellerna! Varje rätt svar hjälper Nutti att samla nötter för vintern. Är du redo?"
+        "text": "Nu kan du hjälpa Nutti att lära sig multiplikationstabellerna! Varje rätt svar hjälper Nutti att samla nötter inför vintern. Är du redo?"
       }
     },
     "funFacts": {
       "page3": "Visste du? 7 × 8 = 56 nötter! Det skulle räcka för Nutti i nästan två veckor.",
-      "page5": "Tips: Använd tangentbordet: 0-9, Enter, Backspace och H (tips)!"
+      "page5": "Tips: Använd tangentbordet: 0-9, Enter, Backspace och H (ledtråd)!"
     }
   },
   "acorns": {
-    "reward": "Ekollon belöning!",
-    "earned": "Du tjänade {count} ekollon{plural}!",
-    "collection": "Ekollon samling",
-    "total": "Du samlade {total} ekollon på {rounds} rundor!",
-    "acorns": "Ekollon",
-    "acornsCount": "{count} ekollon på {rounds} rundor"
+    "reward": "Nötbelöning!",
+    "earned": "Du tjänade {count} nöt{plural}!",
+    "collection": "Nötsamling",
+    "total": "Du samlade totalt {total} nötter på {rounds} omgångar!",
+    "acorns": "Nötter",
+    "acornsCount": "{count} nötter på {rounds} omgångar"
   },
   "teacher": {
     "title": "Lärarvy",
@@ -75,54 +93,54 @@
     "correct": "Rätt",
     "wrong": "Fel",
     "accuracy": "Noggrannhet",
-    "hints": "Tips",
+    "hints": "Ledtrådar",
     "time": "Tid",
-    "averageTime": "Genomsnittlig tid",
+    "averageTime": "Genomsnittstid",
     "gameHistory": "Spelhistorik",
     "difficulty": "Svårighetsgrad",
     "speed": "Hastighet",
     "perQuestion": "per fråga",
     "showDetails": "Visa detaljer",
     "correct_answer": "rätt",
-    "hint_count": "tips",
+    "hint_count": "ledtråd",
     "exportData": "Exportera data",
-    "clearAll": "Rensa alla",
-    "clearConfirm": "Är du säker på att du vill radera alla resultat? Detta kan inte ångras.",
+    "clearAll": "Rensa allt",
+    "clearConfirm": "Är du säker på att du vill ta bort alla resultat? Detta kan inte ångras.",
     "noResults": "Inga resultat för elev:",
     "selectToView": "Välj en elev för att se resultat",
-    "roundBreakdown": "Omgångsuppdelning",
+    "roundBreakdown": "Omgångsanalys",
     "roundNumber": "Omgång {number}",
-    "totalRounds": "Totalt omgångar: {count}",
+    "totalRounds": "Totalt antal omgångar: {count}",
     "questionsPerRound": "frågor/omgång",
-    "roundStats": "{correct}/{total} rätt, {time}s, {hints} tips",
+    "roundStats": "{correct}/{total} rätt, {time}s, {hints} ledtrådar",
     "perGame": "spel",
     "allStudentsStats": "Alla elever - Statistik",
     "allGames": "Alla spel",
     "studentStats": "{student} - Statistik",
     "studentHistory": "{student} - Spelhistorik",
     "noGamesYet": "Inga spel spelade än. Spela ett spel först!",
-    "resultsWillShow": "Resultat visas här när elever har spelat spel."
+    "resultsWillShow": "Resultat kommer att visas här när elever har spelat spel."
   },
   "play": {
     "round": "Omgång {n} / 10",
     "answer": "Svar",
     "submit": "Skicka",
-    "hint": "Tips (H)",
+    "hint": "Ledtråd (H)",
     "loading": "Laddar uppgifter...",
     "noTasks": "Inga uppgifter tillgängliga",
     "enterAnswerHint": "Ange svar för att fortsätta"
   },
   "keypad": {
-    "title": "Numerisk knappsats",
+    "title": "Nummerplatta",
     "number": "Nummer",
     "delete": "Radera",
     "submit": "Skicka (Enter)",
-    "hint": "Tips (H)"
+    "hint": "Ledtråd (H)"
   },
   "break": {
     "done": "Omgång klar!",
     "stats": "Rätt {correct}/{total}, total tid {totalTime} s, genomsnitt {avg} s.",
-    "generating": "Skapar feedback…",
+    "generating": "Genererar feedback…",
     "continue": "Fortsätt till nästa omgång",
     "stop": "Avsluta",
     "allRounds": "Alla omgångar:",
@@ -131,9 +149,9 @@
     "totalCorrect": "Totalt rätt",
     "totalTime": "Total tid",
     "averageTime": "Genomsnitt",
-    "previousRounds": "Tidigare omgångar",
+    "previousRounds": "Föregående omgångar",
     "nuttiSays": "Nutti säger",
-    "skipAiFeedback": "Nuttis feedback överhoppad",
+    "skipAiFeedback": "Nuttis feedback hoppades över",
     "correct": "{correct}/{total} rätt",
     "roundNumber": "Omgång {round}",
     "average": "Genomsnitt {seconds}s",
@@ -141,41 +159,49 @@
   },
   "results": {
     "title": "Bra övning!",
-    "summary": "Totalt {total} uppgifter, rätt {correct}. Tidsåtgång {seconds} s.",
+    "summary": "Totalt {total} uppgifter, {correct} rätt. Tid {seconds} s.",
     "tasks": "Uppgifter",
     "correct": "Rätt",
-    "accuracy": "Träffsäkerhet",
+    "accuracy": "Noggrannhet",
     "totalTime": "Total tid",
     "roundDetails": "Omgångsdetaljer",
     "round": "Omgång {number}",
     "newGame": "Nytt spel",
     "finalFeedback": "Nuttis slutord",
     "generatingFinalFeedback": "Nutti tänker...",
-    "finalFeedbackSkipped": "Slutfeedback överhoppad"
+    "finalFeedbackSkipped": "Slutfeedback hoppades över"
   },
   "alias": {
     "placeholder": "t.ex. Stjärna"
   },
   "difficulty": {
     "1-5": "1–5",
-    "1-10": "1–10", 
+    "1-10": "1–10",
     "6-10": "6–10",
     "2-12": "2–12"
   },
   "common": {
-    "unknown": "Okänd"
+    "unknown": "Okänd",
+    "round": "Omgång",
+    "rounds": "Omgångar",
+    "acorns": "Nötter",
+    "totalAcorns": "Totala Nötter",
+    "acornsEarned": "Intjänade Nötter",
+    "performance": "Prestation",
+    "speed": "Hastighet",
+    "average": "Genomsnitt"
   },
   "layout": {
-    "nuttiAlt": "Nutti Ekorre maskot"
+    "nuttiAlt": "Maskoten Nutti Ekorren"
   },
   "nutti": {
-    "name": "Nutti Ekorre",
+    "name": "Nutti Ekorren",
     "fallbackIcon": "🐿️",
-    "screenReader": "Maskot: Nutti Ekorre, stämning {mood}",
+    "screenReader": "Maskot: Nutti Ekorren, humör {mood}",
     "moods": {
       "happy": "🍯 Redo att hjälpa!",
-      "thinking": "🧮 Vi räknar tillsammans!",
-      "excited": "🎉 Fantastiskt arbete!"
+      "thinking": "🧮 Låt oss räkna tillsammans!",
+      "excited": "🎉 Bra jobbat!"
     }
   },
   "icons": {
@@ -210,7 +236,7 @@
     "medal": "🎖️",
     "roundNumbers": {
       "1": "1️⃣",
-      "2": "2️⃣", 
+      "2": "2️⃣",
       "3": "3️⃣",
       "5": "5️⃣",
       "10": "🔟"
@@ -219,16 +245,5 @@
     "difficulty2to12": "🍪",
     "difficultyMix": "🍬",
     "pointingDown": "👇"
-  },
-  "common": {
-    "unknown": "Okänd",
-    "round": "Omgång",
-    "rounds": "Omgångar",
-    "acorns": "Ekollon",
-    "totalAcorns": "Totala Ekollon",
-    "acornsEarned": "Ekollon Erhållna",
-    "performance": "Prestation",
-    "speed": "Hastighet",
-    "average": "Genomsnitt"
   }
 }
