@@ -124,11 +124,15 @@
   "play": {
     "round": "Omgång {n} / 10",
     "answer": "Svar",
-    "submit": "Skicka",
+    "submit": "Svara",
     "hint": "Ledtråd (H)",
     "loading": "Laddar uppgifter...",
     "noTasks": "Inga uppgifter tillgängliga",
-    "enterAnswerHint": "Ange svar för att fortsätta"
+    "enterAnswerHint": "Ange svar för att fortsätta",
+    "quit": "Avsluta spelet",
+    "quitConfirm": "Är du säker på att du vill avsluta?",
+    "quitCancel": "Avbryt",
+    "quitOk": "Avsluta"
   },
   "keypad": {
     "title": "Nummerplatta",

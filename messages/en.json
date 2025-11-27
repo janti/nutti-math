@@ -124,11 +124,15 @@
   "play": {
     "round": "Round {n} / 10",
     "answer": "Answer",
-    "submit": "Submit",
+    "submit": "Answer",
     "hint": "Hint (H)",
     "loading": "Loading tasks...",
     "noTasks": "No tasks available",
-    "enterAnswerHint": "Enter answer to continue"
+    "enterAnswerHint": "Enter answer to continue",
+    "quit": "Quit Game",
+    "quitConfirm": "Are you sure you want to quit?",
+    "quitCancel": "Cancel",
+    "quitOk": "Quit"
   },
   "keypad": {
     "title": "Number keypad",

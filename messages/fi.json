@@ -124,11 +124,15 @@
   "play": {
     "round": "Erä {n} / 10",
     "answer": "Vastaus",
-    "submit": "Lähetä",
+    "submit": "Vastaa",
     "hint": "Vihje (H)",
     "loading": "Ladataan tehtäviä...",
     "noTasks": "Ei tehtäviä",
-    "enterAnswerHint": "Syötä vastaus jatkaaksesi"
+    "enterAnswerHint": "Syötä vastaus jatkaaksesi",
+    "quit": "Lopeta peli",
+    "quitConfirm": "Haluatko varmasti lopettaa pelin kesken?",
+    "quitCancel": "Peruuta",
+    "quitOk": "Lopeta"
   },
   "keypad": {
     "title": "Numeronäppäimistö",
