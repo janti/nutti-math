@@ -127,7 +127,8 @@ export default function Results() {
 
     // Save game results to localStorage for teacher view (only once per unique game)
     if (total > 0 && allRounds.length > 0) {
-      const settings = JSON.parse(localStorage.getItem('nutti.settings') || '{}')
+      const settings = JSON.parse(localStorage.getItem('nutti.settings') || '{"gameType":"multiplication"}')
+      const gameType = settings.gameType || 'multiplication'
 
       // Create a unique game identifier based on game content
       const gameIdentifier = `${allRounds[0]?.alias || t('common.unknown')}-${total}-${correct}-${Math.round(summary.timeMs)}-${allRounds.length}`
@@ -145,7 +146,7 @@ export default function Results() {
             a: answer.a,
             b: answer.b,
             userAnswer: (answer as any).child || 0, // Get user's actual answer
-            correctAnswer: answer.a * answer.b,
+            correctAnswer: gameType === 'addition' ? answer.a + answer.b : answer.a * answer.b,
             isCorrect: answer.isCorrect,
             timeSpent: answer.ms / 1000,
             hintsUsed: (answer as any).hintsUsed || 0, // Get actual hints used
@@ -175,6 +176,7 @@ export default function Results() {
           nickname: allRounds[0]?.alias || t('common.unknown'),
           timestamp: Date.now(),
           range: settings.range || '1-5',
+          gameType: gameType,
           totalQuestions: total,
           correctAnswers: correct,
           wrongAnswers: total - correct,

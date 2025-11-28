@@ -20,8 +20,9 @@ interface Answer {
 
 interface GameSettings {
   alias: string
-  range: '1-5' | '1-10' | '6-10' | '2-12' | 'mix'
+  range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add'
   rounds: number
+  gameType: 'multiplication' | 'addition'
 }
 
 interface Fact {
@@ -36,7 +37,7 @@ export default function Play() {
   const t = useTranslations()
 
   // Game configuration state
-  const [settings, setSettings] = useState<GameSettings>({ alias: 'Guest', range: '2-12', rounds: 10 })
+  const [settings, setSettings] = useState<GameSettings>({ alias: 'Guest', range: '2-12', rounds: 10, gameType: 'multiplication' })
   const [roundNo, setRoundNo] = useState(1)
 
   // Question data and progress
@@ -70,7 +71,7 @@ export default function Play() {
     // Optimized initialization - no heavy computation
     const savedSettings: GameSettings = JSON.parse(
       localStorage.getItem('nutti.settings') ||
-      '{"alias":"Guest","range":"2-12","rounds":10}'
+      '{"alias":"Guest","range":"2-12","rounds":10,"gameType":"multiplication"}'
     )
     const savedRoundNo = Number(localStorage.getItem('nutti.roundNo') || '1')
 
@@ -80,7 +81,7 @@ export default function Play() {
 
     if (!roundFacts) {
       // Compute only if no cache exists
-      roundFacts = pickFacts(factPool(savedSettings.range), 10)
+      roundFacts = pickFacts(factPool(savedSettings.range, savedSettings.gameType || 'multiplication'), 10)
       localStorage.setItem(precomputedKey, JSON.stringify(roundFacts))
     }
 
@@ -113,7 +114,9 @@ export default function Play() {
     // Calculate answer metrics
     const timeSpentMs = Math.round(performance.now() - questionStartTime.current)
     const userAnswer = Number(userInput || NaN)
-    const correctAnswer = currentQuestion.a * currentQuestion.b
+    const correctAnswer = settings.gameType === 'addition' 
+      ? currentQuestion.a + currentQuestion.b 
+      : currentQuestion.a * currentQuestion.b
     const isCorrect = userAnswer === correctAnswer
 
     const answerEntry: Answer = {
@@ -126,7 +129,8 @@ export default function Play() {
       hintsUsed: currentHints
     }
 
-    console.log('Saving answer:', currentQuestion.a, 'x', currentQuestion.b, '=', userAnswer, 'hints used:', currentHints, 'time:', timeSpentMs, 'ms')
+    const operation = settings.gameType === 'addition' ? '+' : 'x'
+    console.log('Saving answer:', currentQuestion.a, operation, currentQuestion.b, '=', userAnswer, 'hints used:', currentHints, 'time:', timeSpentMs, 'ms')
 
     // Update state and prepare for next question
     const updatedAnswers = [...answers, answerEntry]
@@ -191,7 +195,8 @@ export default function Play() {
       const { hint } = await response.json()
       setHint(hint)
       setCurrentHints(prev => prev + 1)
-      console.log('Hint requested for', currentQuestion.a, 'x', currentQuestion.b, '- Total hints for this question:', currentHints + 1)
+      const operation = settings.gameType === 'addition' ? '+' : 'x'
+      console.log('Hint requested for', currentQuestion.a, operation, currentQuestion.b, '- Total hints for this question:', currentHints + 1)
     } catch (error) {
       console.error('Error fetching hint:', error)
     }
@@ -273,7 +278,7 @@ export default function Play() {
               <div className="text-center py-3 bg-gradient-to-r from-nutti-primary/20 to-blue-100 rounded-xl border-2 border-nutti-primary/30 shadow-sm">
                 <div className="text-3xl">{t('icons.target')}</div>
                 <div className="text-xl font-bold text-nutti-primary">
-                  Erä {roundNo} / {settings.rounds}
+                  {t('play.round', { n: roundNo, total: settings.rounds })}
                 </div>
               </div>
 
@@ -281,7 +286,7 @@ export default function Play() {
               <div className="p-6 bg-gradient-to-br from-white to-blue-50 rounded-2xl border-3 border-nutti-primary/40 text-center shadow-lg transform hover:scale-[1.02] transition-all">
                 <div className="text-4xl mb-3">{t('icons.calculator')}</div>
                 <div className="text-6xl lg:text-7xl font-black tracking-tight text-nutti-primary select-none mb-3 drop-shadow-sm">
-                  {currentQuestion.a} × {currentQuestion.b}
+                  {currentQuestion.a} {settings.gameType === 'addition' ? '+' : '×'} {currentQuestion.b}
                 </div>
                 <div className="text-3xl">{t('icons.sparkles')}</div>
               </div>

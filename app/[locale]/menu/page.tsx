@@ -7,8 +7,9 @@ import NuttiBadge from '@/components/NuttiBadge'
 // TypeScript interfaces
 interface GameSettings {
     alias: string
-    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix'
+    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add'
     rounds: 1 | 2 | 3 | 5 | 10
+    gameType: 'multiplication' | 'addition'
 }
 
 export default function MenuPage() {
@@ -20,6 +21,7 @@ export default function MenuPage() {
     const [range, setRange] = useState<GameSettings['range']>('1-10')
     const [rounds, setRounds] = useState<GameSettings['rounds']>(1)
     const [topic, setTopic] = useState('multiplication')
+    const [gameType, setGameType] = useState<'multiplication' | 'addition'>('multiplication')
 
     /**
      * Clear localStorage and start a new game with current settings
@@ -56,7 +58,7 @@ export default function MenuPage() {
      * Save current game settings to localStorage
      */
     const saveGameSettings = () => {
-        const gameSettings: GameSettings = { alias, range, rounds }
+        const gameSettings: GameSettings = { alias, range, rounds, gameType }
         localStorage.setItem('nutti.settings', JSON.stringify(gameSettings))
         localStorage.setItem('nutti.roundNo', '1')
     }
@@ -66,7 +68,7 @@ export default function MenuPage() {
      */
     const precomputeFirstRoundFacts = () => {
         import('@/lib/game').then(({ factPool, pickFacts }) => {
-            const firstFacts = pickFacts(factPool(range), 10)
+            const firstFacts = pickFacts(factPool(range, gameType), 10)
             localStorage.setItem(`nutti.facts.1.${range}`, JSON.stringify(firstFacts))
             console.log('Home: Precomputed round 1 facts')
         })
@@ -91,20 +93,42 @@ export default function MenuPage() {
     const topics = [
         { id: 'multiplication', icon: '✖️', label: 'multiplication', enabled: true },
         { id: 'division', icon: '➗', label: 'division', enabled: false },
-        { id: 'addition', icon: '➕', label: 'addition', enabled: false },
+        { id: 'addition', icon: '➕', label: 'addition', enabled: true },
         { id: 'subtraction', icon: '➖', label: 'subtraction', enabled: false },
         { id: 'wordProblems', icon: '📝', label: 'wordProblems', enabled: false },
         { id: 'equations', icon: '📐', label: 'equations', enabled: false },
     ]
+
+    // Update gameType and reset range when topic changes
+    const handleTopicChange = (topicId: string) => {
+        setTopic(topicId)
+        if (topicId === 'addition') {
+            setGameType('addition')
+            setRange('1-100-add')
+        } else if (topicId === 'multiplication') {
+            setGameType('multiplication')
+            setRange('1-10')
+        }
+    }
 
     return (
         <div className="h-[750px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 overflow-hidden flex items-start justify-center py-2">
             <div className="max-w-4xl mx-auto w-full px-4">
                 {/* Main content card with background */}
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 max-h-[98vh] overflow-y-auto">
-                    {/* Header - compact */}
-                    <div className="text-center">
+                    {/* Header - full width */}
+                    <div className="text-center mb-2 relative">
                         <NuttiBadge />
+                        <button
+                            onClick={() => {
+                                const currentLocale = window.location.pathname.split('/')[1] || 'fi'
+                                router.push(`/${currentLocale}`)
+                            }}
+                            className="absolute right-0 top-1/2 transform -translate-y-1/2 flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-nutti-primary bg-gray-50 hover:bg-gray-100 rounded-lg transition-all"
+                        >
+                            <span>←</span>
+                            <span>{t('menu.backToStart')}</span>
+                        </button>
                     </div>
 
                     {/* Main content - grid with top alignment and spacing */}
@@ -173,60 +197,121 @@ export default function MenuPage() {
                                     <span className="text-sm font-bold text-red-700 ml-2">{t('home.difficulty')}</span>
                                 </div>
                                 <div className="grid grid-cols-2 gap-2">
-                                    <button
-                                        onClick={() => setRange('1-5')}
-                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-5'
-                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                            }`}
-                                    >
-                                        🧸 1-5
-                                    </button>
-                                    <button
-                                        onClick={() => setRange('1-10')}
-                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10'
-                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                            }`}
-                                    >
-                                        1-10
-                                    </button>
-                                    <button
-                                        onClick={() => setRange('6-10')}
-                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '6-10'
-                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                            }`}
-                                    >
-                                        {t('icons.difficulty6to10')} 6-10
-                                    </button>
-                                    <button
-                                        onClick={() => setRange('1-12')}
-                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-12'
-                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                            }`}
-                                    >
-                                        {t('icons.difficulty1to12')} 1-12
-                                    </button>
-                                    <button
-                                        onClick={() => setRange('2-12')}
-                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '2-12'
-                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                            }`}
-                                    >
-                                        {t('icons.difficulty2to12')} 2-12
-                                    </button>
-                                    <button
-                                        onClick={() => setRange('mix')}
-                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix'
-                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                            }`}
-                                    >
-                                        {t('icons.difficultyMix')} {t('home.mix')}
-                                    </button>
+                                    {gameType === 'multiplication' ? (
+                                        <>
+                                            <button
+                                                onClick={() => setRange('1-5')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-5'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                🧸 1-5
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('1-10')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                1-10
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('6-10')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '6-10'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                {t('icons.difficulty6to10')} 6-10
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('1-12')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-12'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                {t('icons.difficulty1to12')} 1-12
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('2-12')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '2-12'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                {t('icons.difficulty2to12')} 2-12
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('mix')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                {t('icons.difficultyMix')} {t('home.mix')}
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button
+                                                onClick={() => setRange('1-10-add')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10-add'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                🧸 1-10
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('1-20-add')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20-add'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                1-20
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('1-50-add')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-50-add'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                1-50
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('50-100-add')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '50-100-add'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                50-100
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('1-100-add')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-100-add'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                1-100
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('mix-add')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix-add'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                {t('icons.difficultyMix')} {t('home.mix')}
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -242,7 +327,7 @@ export default function MenuPage() {
                             {topics.map((tItem) => (
                                 <button
                                     key={tItem.id}
-                                    onClick={() => tItem.enabled && setTopic(tItem.id)}
+                                    onClick={() => tItem.enabled && handleTopicChange(tItem.id)}
                                     disabled={!tItem.enabled}
                                     className={`p-2 rounded-lg border-2 transition-all flex flex-col items-center justify-center gap-1 ${topic === tItem.id
                                         ? 'bg-purple-100 border-purple-400 text-purple-800 shadow-md'

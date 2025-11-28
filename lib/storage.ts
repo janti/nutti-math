@@ -8,8 +8,10 @@ export interface GameResult {
   nickname: string
   /** Timestamp when the game was completed */
   timestamp: number
-  /** Multiplication table range played */
-  range: '1-5'|'1-10'|'6-10'|'2-12'|'mix'
+  /** Game range played (multiplication or addition) */
+  range: '1-5'|'1-10'|'6-10'|'1-12'|'2-12'|'mix'|'1-10-add'|'1-20-add'|'1-50-add'|'50-100-add'|'1-100-add'|'mix-add'
+  /** Game type */
+  gameType?: 'multiplication'|'addition'
   /** Total number of questions answered */
   totalQuestions: number
   /** Number of correct answers */
@@ -24,7 +26,7 @@ export interface GameResult {
   totalRounds: number
   /** Total acorns earned across all rounds */
   totalAcorns?: number
-  /** Detailed results for each multiplication fact */
+  /** Detailed results for each math fact */
   facts: FactResult[]
   /** Round-by-round breakdown for multi-round games */
   roundResults?: RoundResult[]
@@ -43,12 +45,12 @@ export interface RoundResult {
 }
 
 /**
- * Result data for a single multiplication fact/question
+ * Result data for a single math fact/question
  */
 export interface FactResult {
-  /** First multiplicand */
+  /** First operand */
   a: number
-  /** Second multiplicand */
+  /** Second operand */
   b: number
   /** Student's answer */
   userAnswer: number

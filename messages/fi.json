@@ -14,7 +14,7 @@
   "topics": {
     "multiplication": "Kertotaulu",
     "division": "Jakolaskut",
-    "addition": "Plus",
+    "addition": "Yhteenlasku",
     "subtraction": "Miinus",
     "wordProblems": "Kirjalliset",
     "equations": "Yhtälöt"
@@ -34,6 +34,9 @@
     "topic": "Aihe",
     "teacherView": "Opettajanäkymä",
     "readStory": "Kuuntele tarina"
+  },
+  "menu": {
+    "backToStart": "Takaisin alkuun"
   },
   "story": {
     "skip": "Ohita tarina",
@@ -98,6 +101,7 @@
     "averageTime": "Keskiaika",
     "gameHistory": "Pelihistoria",
     "difficulty": "Vaikeus",
+    "gameType": "Pelin tyyppi",
     "speed": "Nopeus",
     "perQuestion": "tehtävä",
     "showDetails": "Näytä yksityiskohdat",
@@ -122,7 +126,7 @@
     "resultsWillShow": "Tulokset näkyvät täällä kun oppilaat ovat pelanneet pelejä."
   },
   "play": {
-    "round": "Erä {n} / 10",
+    "round": "Erä {n} / {total}",
     "answer": "Vastaus",
     "submit": "Vastaa",
     "hint": "Vihje (H)",

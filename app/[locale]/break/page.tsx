@@ -24,6 +24,7 @@ interface RoundData {
 interface GameSettings {
   rounds: number
   range: string
+  gameType?: 'multiplication' | 'addition'
 }
 
 export default function Break() {
@@ -251,7 +252,7 @@ export default function Break() {
                 // Only if not already computed
                 if (!localStorage.getItem(precomputeKey)) {
                   import('@/lib/game').then(({ factPool, pickFacts }) => {
-                    const nextFacts = pickFacts(factPool(gameSettings.range), 10)
+                    const nextFacts = pickFacts(factPool(gameSettings.range as any, gameSettings.gameType || 'multiplication'), 10)
                     localStorage.setItem(precomputeKey, JSON.stringify(nextFacts))
                   })
                 }

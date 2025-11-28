@@ -35,6 +35,9 @@
     "teacherView": "Teacher View",
     "readStory": "Read Story"
   },
+  "menu": {
+    "backToStart": "Back to Start"
+  },
   "story": {
     "skip": "Skip Story",
     "previous": "Previous",
@@ -98,6 +101,7 @@
     "averageTime": "Average Time",
     "gameHistory": "Game History",
     "difficulty": "Difficulty",
+    "gameType": "Game Type",
     "speed": "Speed",
     "perQuestion": "per question",
     "showDetails": "Show Details",
@@ -122,7 +126,7 @@
     "resultsWillShow": "Results will appear here once students have played games."
   },
   "play": {
-    "round": "Round {n} / 10",
+    "round": "Round {n} / {total}",
     "answer": "Answer",
     "submit": "Answer",
     "hint": "Hint (H)",

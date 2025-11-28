@@ -231,6 +231,12 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
 
                     <div className="grid grid-cols-4 gap-4 text-sm">
                       <div>
+                        <span className="text-gray-600">{t('teacher.gameType')}:</span>
+                        <div className="font-medium">
+                          {result.gameType === 'addition' ? '➕ ' + t('topics.addition') : '✖️ ' + t('topics.multiplication')}
+                        </div>
+                      </div>
+                      <div>
                         <span className="text-gray-600">{t('teacher.difficulty')}:</span>
                         <div className="font-medium">{result.range}</div>
                       </div>
@@ -337,7 +343,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                                           }`}
                                       >
                                         <div className="font-mono">
-                                          {fact.a} × {fact.b} = {fact.userAnswer}
+                                          {fact.a} {result.gameType === 'addition' ? '+' : '×'} {fact.b} = {fact.userAnswer}
                                           {!fact.isCorrect && (
                                             <span className="text-red-600"> ({t('teacher.correct_answer')}: {fact.correctAnswer})</span>
                                           )}
@@ -362,7 +368,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                                   }`}
                               >
                                 <div className="font-mono">
-                                  {fact.a} × {fact.b} = {fact.userAnswer}
+                                  {fact.a} {result.gameType === 'addition' ? '+' : '×'} {fact.b} = {fact.userAnswer}
                                   {!fact.isCorrect && (
                                     <span className="text-red-600"> ({t('teacher.correct_answer')}: {fact.correctAnswer})</span>
                                   )}

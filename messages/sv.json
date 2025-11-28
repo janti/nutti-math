@@ -35,6 +35,9 @@
     "teacherView": "Lärarvy",
     "readStory": "Läs sagan"
   },
+  "menu": {
+    "backToStart": "Tillbaka till start"
+  },
   "story": {
     "skip": "Hoppa över sagan",
     "previous": "Föregående",
@@ -98,6 +101,7 @@
     "averageTime": "Genomsnittstid",
     "gameHistory": "Spelhistorik",
     "difficulty": "Svårighetsgrad",
+    "gameType": "Speltyp",
     "speed": "Hastighet",
     "perQuestion": "per fråga",
     "showDetails": "Visa detaljer",
@@ -122,7 +126,7 @@
     "resultsWillShow": "Resultat kommer att visas här när elever har spelat spel."
   },
   "play": {
-    "round": "Omgång {n} / 10",
+    "round": "Omgång {n} / {total}",
     "answer": "Svar",
     "submit": "Svara",
     "hint": "Ledtråd (H)",
