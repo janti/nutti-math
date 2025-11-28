@@ -132,7 +132,7 @@ export default function Break() {
   // Calculate acorns earned for this round
   const acornsEarned = calculateAcorns(correct, total, avgMs)
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50/40 via-white to-nutti-beige/20 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50/40 via-white to-nutti-secondary/20 py-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-6 space-y-4">
           {/* Header */}
@@ -146,25 +146,25 @@ export default function Break() {
 
             {/* Left column: Celebration and stats */}
             <div className="space-y-3">
-              <div className="card bg-gradient-to-br from-orange-50 to-yellow-50 border-2 border-nutti-orange/30 p-4">
+              <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-nutti-accent/30 p-4">
                 <div className="text-center mb-4">
                   <div className="text-4xl mb-2">{t('icons.breakCelebration')}</div>
-                  <h2 className="text-3xl font-bold mb-2 text-nutti-orange">{t('break.done')}</h2>
+                  <h2 className="text-3xl font-bold mb-2 text-nutti-accent">{t('break.done')}</h2>
                   <div className="text-2xl">{t('icons.star')}</div>
                 </div>
 
                 {/* Stats - compact */}
-                <div className="bg-white/70 rounded-xl p-4 border border-nutti-beige">
+                <div className="bg-white/70 rounded-xl p-4 border border-nutti-secondary">
                   <div className="text-center">
                     <div className="text-2xl mb-1">{t('icons.candy')}</div>
-                    <p className="text-xl font-bold text-nutti-teal mb-2">
+                    <p className="text-xl font-bold text-nutti-primary mb-2">
                       {t('break.correct', { correct, total })}
                     </p>
                     <div className="flex justify-center gap-2 text-sm flex-wrap">
-                      <span className="bg-nutti-beige px-2 py-1 rounded-full text-xs">
+                      <span className="bg-nutti-secondary px-2 py-1 rounded-full text-xs">
                         {t('icons.timer')} {t('break.average', { seconds: avgSeconds })}
                       </span>
-                      <span className="bg-nutti-beige px-2 py-1 rounded-full text-xs">
+                      <span className="bg-nutti-secondary px-2 py-1 rounded-full text-xs">
                         🕐 {t('break.total', { seconds: totalSeconds })}
                       </span>
                     </div>
@@ -204,15 +204,15 @@ export default function Break() {
               ) : null}
 
               {/* AI feedback - optimized for better text display */}
-              <div className="card p-4 bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-nutti-teal/30">
+              <div className="card p-4 bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-nutti-primary/30">
                 <div className="text-center mb-3">
                   <span className="text-2xl">{t('icons.squirrel')}</span>
-                  <p className="text-lg font-bold text-nutti-teal inline ml-2">{t('break.nuttiSays')}</p>
+                  <p className="text-lg font-bold text-nutti-primary inline ml-2">{t('break.nuttiSays')}</p>
                 </div>
                 <div className="bg-white/90 rounded-lg p-4 min-h-[80px] flex items-center justify-center">
                   {aiLoading ? (
                     <div className="text-center py-4">
-                      <div className="animate-pulse text-nutti-teal">
+                      <div className="animate-pulse text-nutti-primary">
                         <div className="text-2xl mb-2">{t('icons.hourglass')}</div>
                         <p className="text-sm">{t('break.generating')}</p>
                       </div>
@@ -236,7 +236,7 @@ export default function Break() {
           {/* Action buttons - better positioned with more space */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8 mb-6">
             <a
-              className="btn text-lg px-8 py-4 bg-gradient-to-r from-nutti-teal to-cyan-500 hover:from-nutti-teal/90 hover:to-cyan-500/90 shadow-lg transform hover:scale-105 transition-all w-full sm:w-auto"
+              className="btn text-lg px-8 py-4 bg-gradient-to-r from-nutti-primary to-blue-500 hover:from-nutti-primary/90 hover:to-blue-500/90 shadow-lg transform hover:scale-105 transition-all w-full sm:w-auto"
               href={`/${loc}/play`}
               rel="prefetch"
               onClick={() => {
@@ -260,7 +260,7 @@ export default function Break() {
               {t('icons.rocket')} {t('break.continue')}
             </a>
             <a
-              className="px-8 py-4 text-lg rounded-lg border-2 border-nutti-orange text-nutti-orange font-semibold hover:bg-nutti-orange hover:text-white transition-all transform hover:scale-105 w-full sm:w-auto"
+              className="px-8 py-4 text-lg rounded-lg border-2 border-nutti-accent text-nutti-accent font-semibold hover:bg-nutti-accent hover:text-white transition-all transform hover:scale-105 w-full sm:w-auto"
               href={`/${loc}/results`}
             >
               {t('icons.finish')} {t('break.stop')}

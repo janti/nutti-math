@@ -200,7 +200,7 @@ export default function Play() {
   // Show loading screen if facts are not ready
   if (!isLoaded || facts.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-nutti-beige/30 via-white to-cyan-50/40 py-8">
+      <div className="min-h-screen bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 py-8">
         <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg text-center">
           <div className="flex items-center justify-center space-x-2 text-lg">
             <span>{t('icons.loading')}</span>
@@ -218,14 +218,14 @@ export default function Play() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/40 via-white to-nutti-teal/10 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/40 via-white to-nutti-primary/10 py-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 space-y-3 min-h-[90vh] flex flex-col relative">
 
           {/* Quit Confirmation Modal */}
           {showQuitConfirm && (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm rounded-2xl">
-              <div className="bg-white p-6 rounded-2xl shadow-2xl border-2 border-nutti-teal/20 max-w-sm w-full mx-4 animate-in fade-in zoom-in duration-200">
+              <div className="bg-white p-6 rounded-2xl shadow-2xl border-2 border-nutti-primary/20 max-w-sm w-full mx-4 animate-in fade-in zoom-in duration-200">
                 <h3 className="text-xl font-bold text-center text-gray-800 mb-4">
                   {t('play.quitConfirm')}
                 </h3>
@@ -270,24 +270,24 @@ export default function Play() {
             {/* Left column: Problem and input - MAIN FOCUS */}
             <div className="space-y-4">
               {/* Round indicator - compact */}
-              <div className="text-center py-3 bg-gradient-to-r from-nutti-teal/20 to-cyan-100 rounded-xl border-2 border-nutti-teal/30 shadow-sm">
+              <div className="text-center py-3 bg-gradient-to-r from-nutti-primary/20 to-blue-100 rounded-xl border-2 border-nutti-primary/30 shadow-sm">
                 <div className="text-3xl">{t('icons.target')}</div>
-                <div className="text-xl font-bold text-nutti-teal">
+                <div className="text-xl font-bold text-nutti-primary">
                   Erä {roundNo} / {settings.rounds}
                 </div>
               </div>
 
               {/* Problem display - ENHANCED & PROMINENT */}
-              <div className="p-6 bg-gradient-to-br from-white to-blue-50 rounded-2xl border-3 border-nutti-teal/40 text-center shadow-lg transform hover:scale-[1.02] transition-all">
+              <div className="p-6 bg-gradient-to-br from-white to-blue-50 rounded-2xl border-3 border-nutti-primary/40 text-center shadow-lg transform hover:scale-[1.02] transition-all">
                 <div className="text-4xl mb-3">{t('icons.calculator')}</div>
-                <div className="text-6xl lg:text-7xl font-black tracking-tight text-nutti-teal select-none mb-3 drop-shadow-sm">
+                <div className="text-6xl lg:text-7xl font-black tracking-tight text-nutti-primary select-none mb-3 drop-shadow-sm">
                   {currentQuestion.a} × {currentQuestion.b}
                 </div>
                 <div className="text-3xl">{t('icons.sparkles')}</div>
               </div>
 
               {/* Answer input section - ENHANCED */}
-              <div className="p-5 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl border-3 border-nutti-orange/40 text-center shadow-lg">
+              <div className="p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border-3 border-nutti-accent/40 text-center shadow-lg">
                 <div className="text-3xl mb-3">{t('icons.honey')}</div>
                 <div className="flex gap-4 justify-center items-center flex-wrap">
                   <input
@@ -306,14 +306,14 @@ export default function Play() {
                     disabled={isSubmitting}
                     className={`w-32 text-center text-3xl font-bold rounded-xl border-3 p-3 transition-all shadow-sm ${isSubmitting
                       ? 'bg-gray-100 border-gray-300 cursor-not-allowed opacity-50'
-                      : 'bg-white border-nutti-beige focus:ring-4 focus:ring-nutti-orange/40 focus:border-nutti-orange'
+                      : 'bg-white border-nutti-secondary focus:ring-4 focus:ring-nutti-accent/40 focus:border-nutti-accent'
                       }`}
                     placeholder="?"
                   />
                   <button
                     className={`btn text-lg px-6 py-3 shadow-xl transition-all focus:ring-4 ${isSubmitting
                       ? 'bg-gray-400 cursor-not-allowed opacity-50'
-                      : 'bg-gradient-to-r from-nutti-teal to-cyan-500 hover:from-nutti-teal/90 hover:to-cyan-500/90 transform hover:scale-110 focus:ring-nutti-teal/30'
+                      : 'bg-gradient-to-r from-nutti-primary to-blue-500 hover:from-nutti-primary/90 hover:to-blue-500/90 transform hover:scale-110 focus:ring-nutti-primary/30'
                       }`}
                     onClick={submitAnswer}
                     disabled={isSubmitting}
@@ -333,9 +333,9 @@ export default function Play() {
 
               {/* Hint section - compact when present */}
               {hint && (
-                <div className="p-2 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-lg border border-amber-300 text-center">
+                <div className="p-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-300 text-center">
                   <div className="text-lg mb-1">{t('icons.lightbulb')}</div>
-                  <p className="text-base text-amber-800 font-semibold">
+                  <p className="text-base text-nutti-accent font-semibold">
                     {hint}
                   </p>
                 </div>
@@ -347,7 +347,7 @@ export default function Play() {
               <div className="flex justify-end mb-2">
                 <button
                   onClick={() => setShowKeypad(!showKeypad)}
-                  className="text-xs text-gray-400 hover:text-nutti-teal flex items-center gap-1 transition-colors"
+                  className="text-xs text-gray-400 hover:text-nutti-primary flex items-center gap-1 transition-colors"
                 >
                   {showKeypad ? '🔽 Piilota' : '🔼 Näytä'}
                 </button>

@@ -34,7 +34,7 @@ export default function AcornDisplay({
       <div className="flex items-center justify-center gap-4">
         <div className={`${sizeClass} relative flex items-center justify-center`}>
           {imageErrors.has('/pahkina.png') ? (
-            <span className="text-amber-600 text-4xl">🌰</span>
+            <span className="text-nutti-warm text-4xl">🌰</span>
           ) : (
             <img
               src="/pahkina.png"
@@ -44,7 +44,7 @@ export default function AcornDisplay({
             />
           )}
         </div>
-        <div className="text-4xl font-bold text-amber-700">
+        <div className="text-4xl font-bold text-nutti-accent">
           × {acorns}
         </div>
       </div>
@@ -71,7 +71,7 @@ export default function AcornDisplay({
                   className={`${sizeClass} relative transition-transform duration-300 scale-100 flex items-center justify-center`}
                 >
                   {imageErrors.has('/pahkina.png') ? (
-                    <span className="text-amber-600">🌰</span>
+                    <span className="text-nutti-warm">🌰</span>
                   ) : (
                     <img
                       src="/pahkina.png"
@@ -108,7 +108,7 @@ export default function AcornDisplay({
               }`}
           >
             {imageErrors.has(imageSrc) ? (
-              <span className={isEarned ? "text-amber-600" : "text-gray-400"}>{emoji}</span>
+              <span className={isEarned ? "text-nutti-warm" : "text-gray-400"}>{emoji}</span>
             ) : (
               <img
                 src={imageSrc}
@@ -129,12 +129,12 @@ export function AcornReward({ acorns, t }: { acorns: number, t: any }) {
   const plural = acorns !== 1 ? 'ä' : 'n'
 
   return (
-    <div className="text-center p-4 bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 rounded-xl">
-      <div className="text-lg font-bold text-amber-700 mb-2">
+    <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl">
+      <div className="text-lg font-bold text-nutti-accent mb-2">
         🌰 {t('acorns.reward')}
       </div>
       <AcornDisplay acorns={acorns} size="large" />
-      <p className="text-sm text-amber-600 mt-2">
+      <p className="text-sm text-nutti-accent mt-2">
         {t('acorns.earned', { count: acorns, plural })}
       </p>
     </div>

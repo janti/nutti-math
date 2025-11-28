@@ -98,7 +98,7 @@ export default function MenuPage() {
     ]
 
     return (
-        <div className="h-[750px] bg-gradient-to-br from-nutti-beige/30 via-white to-cyan-50/40 overflow-hidden flex items-start justify-center py-2">
+        <div className="h-[750px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 overflow-hidden flex items-start justify-center py-2">
             <div className="max-w-4xl mx-auto w-full px-4">
                 {/* Main content card with background */}
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 max-h-[98vh] overflow-y-auto">
@@ -112,20 +112,20 @@ export default function MenuPage() {
 
                         {/* Left column: Title and alias */}
                         <div className="flex flex-col gap-3 h-full">
-                            <div className="card bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-nutti-teal/30 p-4 h-full flex flex-col justify-between">
+                            <div className="card bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-nutti-primary/30 p-4 h-full flex flex-col justify-between">
                                 <div className="text-center mb-2">
                                     <div className="text-xl mb-1">{t('icons.gameInfo')}</div>
-                                    <h1 className="text-xl font-extrabold mb-2 text-nutti-teal">{t('home.heading')}</h1>
-                                    <p className="text-sm text-nutti-orange font-semibold bg-white/70 rounded-xl p-2 border border-nutti-beige">
+                                    <h1 className="text-xl font-extrabold mb-2 text-nutti-primary">{t('home.heading')}</h1>
+                                    <p className="text-sm text-nutti-accent font-semibold bg-white/70 rounded-xl p-2 border border-nutti-secondary">
                                         {t('home.gameInfo', { rounds })}
                                     </p>
                                 </div>
 
                                 {/* Alias input */}
-                                <div className="p-2 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-nutti-orange/30">
+                                <div className="p-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-nutti-accent/30">
                                     <div className="text-center mb-2">
                                         <span className="text-lg">{t('icons.alias')}</span>
-                                        <span className="text-sm font-bold text-orange-700 ml-2">{t('home.alias')}</span>
+                                        <span className="text-sm font-bold text-nutti-accent ml-2">{t('home.alias')}</span>
                                     </div>
                                     <input
                                         value={alias}
@@ -135,7 +135,7 @@ export default function MenuPage() {
                                                 startNewGame()
                                             }
                                         }}
-                                        className="w-full rounded-lg border border-nutti-beige p-2 text-lg text-center font-semibold bg-white/90 focus:ring-2 focus:ring-nutti-orange/30 focus:border-nutti-orange transition-all"
+                                        className="w-full rounded-lg border border-nutti-secondary p-2 text-lg text-center font-semibold bg-white/90 focus:ring-2 focus:ring-nutti-accent/30 focus:border-nutti-accent transition-all"
                                         placeholder={t('alias.placeholder') as string}
                                     />
                                 </div>
@@ -176,8 +176,8 @@ export default function MenuPage() {
                                     <button
                                         onClick={() => setRange('1-5')}
                                         className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-5'
-                                            ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
+                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
                                             }`}
                                     >
                                         🧸 1-5
@@ -185,8 +185,8 @@ export default function MenuPage() {
                                     <button
                                         onClick={() => setRange('1-10')}
                                         className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10'
-                                            ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
+                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
                                             }`}
                                     >
                                         1-10
@@ -194,8 +194,8 @@ export default function MenuPage() {
                                     <button
                                         onClick={() => setRange('6-10')}
                                         className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '6-10'
-                                            ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
+                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
                                             }`}
                                     >
                                         {t('icons.difficulty6to10')} 6-10
@@ -203,8 +203,8 @@ export default function MenuPage() {
                                     <button
                                         onClick={() => setRange('1-12')}
                                         className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-12'
-                                            ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
+                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
                                             }`}
                                     >
                                         {t('icons.difficulty1to12')} 1-12
@@ -212,8 +212,8 @@ export default function MenuPage() {
                                     <button
                                         onClick={() => setRange('2-12')}
                                         className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '2-12'
-                                            ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
+                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
                                             }`}
                                     >
                                         {t('icons.difficulty2to12')} 2-12
@@ -221,8 +221,8 @@ export default function MenuPage() {
                                     <button
                                         onClick={() => setRange('mix')}
                                         className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix'
-                                            ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
+                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
                                             }`}
                                     >
                                         {t('icons.difficultyMix')} {t('home.mix')}
@@ -265,7 +265,7 @@ export default function MenuPage() {
                             <div className="text-center">
                                 <button
                                     className={`text-lg px-8 py-3 font-bold rounded-xl shadow-lg transform transition-all ${alias.trim()
-                                        ? 'bg-gradient-to-r from-nutti-teal to-cyan-500 text-white hover:from-nutti-teal/90 hover:to-cyan-500/90 hover:scale-105 focus:ring-4 focus:ring-nutti-teal/30'
+                                        ? 'bg-gradient-to-r from-nutti-primary to-blue-500 text-white hover:from-nutti-primary/90 hover:to-blue-500/90 hover:scale-105 focus:ring-4 focus:ring-nutti-primary/30'
                                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                         }`}
                                     disabled={!alias.trim()}
@@ -279,7 +279,7 @@ export default function MenuPage() {
                             <div className="p-2 bg-gradient-to-r from-gray-50 to-slate-50 rounded-xl border border-gray-200 text-center">
                                 <span className="text-sm">{t('icons.keyboard')}</span>
                                 {alias.trim() ? (
-                                    <p className="text-xs text-nutti-teal font-bold mt-1 animate-pulse">{t('home.kbStart')}</p>
+                                    <p className="text-xs text-nutti-primary font-bold mt-1 animate-pulse">{t('home.kbStart')}</p>
                                 ) : (
                                     <p className="text-xs text-slate-600 font-medium mt-1">{t('home.kb')}</p>
                                 )}

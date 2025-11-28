@@ -24,7 +24,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
     }
 
     console.log(`No totalAcorns found for game ${result.id}, calculating retroactively`)
-    
+
     // Legacy fallback: calculate from round results for old games
     if (result.roundResults && result.roundResults.length > 0) {
       const calculatedTotal = result.roundResults.reduce((total, round) => {
@@ -41,7 +41,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
       console.log(`Total calculated from rounds: ${calculatedTotal}`)
       return calculatedTotal
     }
-    
+
     // Final fallback: estimate from overall game stats
     const avgMs = result.timeSpent > 0 ? Math.round((result.timeSpent * 1000) / result.totalQuestions) : 5000
     const acornsPerRound = calculateAcorns(result.correctAnswers, result.totalQuestions, avgMs)
@@ -53,18 +53,18 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
   useEffect(() => {
     // Update existing games with acorn data if missing
     GameStorage.updateGamesWithAcorns()
-    
+
     const allNicknames = GameStorage.getNicknames()
     setNicknames(allNicknames)
-    
+
     if (selectedNickname) {
       const userResults = GameStorage.getResultsByNickname(selectedNickname)
       setResults(userResults.sort((a, b) => b.timestamp - a.timestamp))
       const userStats = GameStorage.getStats(selectedNickname)
       console.log('User stats for', selectedNickname, ':', userStats)
       console.log('User results:', userResults.map(r => ({
-        nickname: r.nickname, 
-        timeSpent: r.timeSpent, 
+        nickname: r.nickname,
+        timeSpent: r.timeSpent,
         hintsUsed: r.hintsUsed,
         questions: r.totalQuestions
       })))
@@ -75,8 +75,8 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
       console.log('All stats:', allStats)
       const allResults = GameStorage.getAllResults()
       console.log('All results:', allResults.map(r => ({
-        nickname: r.nickname, 
-        timeSpent: r.timeSpent, 
+        nickname: r.nickname,
+        timeSpent: r.timeSpent,
         hintsUsed: r.hintsUsed,
         questions: r.totalQuestions
       })))
@@ -127,7 +127,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
         <div className="p-6 border-b bg-blue-50">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-blue-800">👨‍🏫 {t('teacher.title')}</h2>
-            <button 
+            <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 text-2xl"
             >
@@ -141,7 +141,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
           <div className="w-80 border-r bg-gray-50 p-4 overflow-y-auto">
             <div className="mb-4">
               <label className="block text-sm font-medium mb-2">{t('teacher.selectStudent')}</label>
-              <select 
+              <select
                 value={selectedNickname}
                 onChange={(e) => setSelectedNickname(e.target.value)}
                 className="w-full p-2 border rounded"
@@ -173,13 +173,13 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
             )}
 
             <div className="space-y-2">
-              <button 
+              <button
                 onClick={exportData}
                 className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
               >
                 📥 {t('teacher.exportData')}
               </button>
-              <button 
+              <button
                 onClick={clearData}
                 className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
               >
@@ -193,9 +193,9 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
             {results.length === 0 ? (
               <div className="text-center text-gray-500 mt-20">
                 <div className="mb-4">
-                  {selectedNickname 
+                  {selectedNickname
                     ? `${t('teacher.noResults')} ${selectedNickname}`
-                    : nicknames.length === 0 
+                    : nicknames.length === 0
                       ? t('teacher.noGamesYet')
                       : t('teacher.selectToView')
                   }
@@ -211,7 +211,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                 <h3 className="text-lg font-semibold">
                   {selectedNickname ? t('teacher.studentHistory', { student: selectedNickname }) : t('teacher.allGames')}
                 </h3>
-                
+
                 {results.map((result) => (
                   <div key={result.id} className="bg-white border rounded-lg p-4 shadow-sm">
                     <div className="flex justify-between items-start mb-3">
@@ -228,7 +228,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-4 gap-4 text-sm">
                       <div>
                         <span className="text-gray-600">{t('teacher.difficulty')}:</span>
@@ -253,20 +253,20 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Acorn display */}
                     {(() => {
                       const acorns = calculateRetroactiveAcorns(result)
                       return acorns > 0 ? (
-                        <div className="mt-3 p-2 bg-amber-50 rounded-lg border border-amber-200">
+                        <div className="mt-3 p-2 bg-blue-50 rounded-lg border border-blue-200">
                           <div className="text-center">
-                            <AcornDisplay 
-                              acorns={acorns} 
-                              maxAcorns={acorns} 
+                            <AcornDisplay
+                              acorns={acorns}
+                              maxAcorns={acorns}
                               size="small"
                               showEmptySlots={false}
                             />
-                            <p className="text-xs text-amber-600 mt-1">
+                            <p className="text-xs text-blue-600 mt-1">
                               {t('acorns.acornsCount', { count: acorns, rounds: result.totalRounds })}
                             </p>
                           </div>
@@ -294,7 +294,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                                   hints: round.hintsInRound
                                 })}
                                 {round.acornsInRound && (
-                                  <div className="text-amber-600 font-medium">
+                                  <div className="text-nutti-accent font-medium">
                                     🌰 {round.acornsInRound}
                                   </div>
                                 )}
@@ -331,11 +331,10 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                                   </h6>
                                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 text-sm">
                                     {facts.map((fact, index) => (
-                                      <div 
+                                      <div
                                         key={index}
-                                        className={`p-2 rounded ${
-                                          fact.isCorrect ? 'bg-green-100' : 'bg-red-100'
-                                        }`}
+                                        className={`p-2 rounded ${fact.isCorrect ? 'bg-green-100' : 'bg-red-100'
+                                          }`}
                                       >
                                         <div className="font-mono">
                                           {fact.a} × {fact.b} = {fact.userAnswer}
@@ -357,11 +356,10 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                           // Show all facts without round grouping for single round games
                           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 text-sm">
                             {result.facts.map((fact, index) => (
-                              <div 
+                              <div
                                 key={index}
-                                className={`p-2 rounded ${
-                                  fact.isCorrect ? 'bg-green-100' : 'bg-red-100'
-                                }`}
+                                className={`p-2 rounded ${fact.isCorrect ? 'bg-green-100' : 'bg-red-100'
+                                  }`}
                               >
                                 <div className="font-mono">
                                   {fact.a} × {fact.b} = {fact.userAnswer}
