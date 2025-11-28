@@ -9,7 +9,8 @@
     "feature1": "Kohdennettu harjoittelu",
     "feature2": "Hauska tarina",
     "feature3": "Seuraa edistymistä",
-    "teacherView": "Opettajanäkymä"
+    "teacherView": "Opettajanäkymä",
+    "help": "Ohjeet"
   },
   "topics": {
     "multiplication": "Kertotaulu",
@@ -204,6 +205,24 @@
       "thinking": "🧮 Lasketaan yhdessä!",
       "excited": "🎉 Mahtavaa työtä!"
     }
+  },
+  "help": {
+    "title": "Näppäimistön käyttö",
+    "numbers": "Syötä numeroita pelin aikana",
+    "enter": "Lähetä vastaus / Aloita peli",
+    "backspace": "Poista numero / Tyhjennä syöte",
+    "hint": "Pyydä AI-vihje kysymykseen",
+    "escape": "Sulje ikkunat ja palaa valikkoon",
+    "tipTitle": "Vinkki:",
+    "tipText": "Voit käyttää sekä näppäimistöä että virtuaalista numeronäppäimistöä samanaikaisesti!"
+  },
+  "features": {
+    "multiplication": "Kertotaulut ja yhteenlaskut",
+    "interactive": "Interaktiivinen oppimiskokemus",
+    "tracking": "Seuranta ja tilastot",
+    "storyDescription": "Kuuntele Nutin tarina",
+    "teacherDescription": "Seuranta ja tilastot",
+    "helpDescription": "Näppäimistön käyttö"
   },
   "icons": {
     "gameInfo": "🧮✨",

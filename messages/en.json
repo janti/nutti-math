@@ -9,7 +9,8 @@
     "feature1": "Targeted Practice",
     "feature2": "Fun Story",
     "feature3": "Track Progress",
-    "teacherView": "Teacher View"
+    "teacherView": "Teacher View",
+    "help": "Instructions"
   },
   "topics": {
     "multiplication": "Multiplication",
@@ -204,6 +205,24 @@
       "thinking": "🧮 Let's calculate together!",
       "excited": "🎉 Great job!"
     }
+  },
+  "help": {
+    "title": "Keyboard Usage",
+    "numbers": "Enter numbers during the game",
+    "enter": "Submit answer / Start game",
+    "backspace": "Delete number / Clear input",
+    "hint": "Request AI hint for question",
+    "escape": "Close windows and return to menu",
+    "tipTitle": "Tip:",
+    "tipText": "You can use both keyboard and virtual number pad simultaneously!"
+  },
+  "features": {
+    "multiplication": "Multiplication tables and addition",
+    "interactive": "Interactive learning experience",
+    "tracking": "Progress tracking and statistics",
+    "storyDescription": "Listen to Nutti's story",
+    "teacherDescription": "Tracking and statistics",
+    "helpDescription": "Keyboard usage"
   },
   "icons": {
     "gameInfo": "🧮✨",

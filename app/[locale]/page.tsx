@@ -12,9 +12,12 @@ import nuttiIsoImage from '@/assets/nutti_iso.png'
 export default function LandingPage() {
   const t = useTranslations('landing')
   const tHome = useTranslations('home') // Reuse readStory from home or add to landing
+  const tHelp = useTranslations('help')
+  const tFeatures = useTranslations('features')
   const locale = useLocale()
   const [showTeacherView, setShowTeacherView] = useState(false)
   const [showStory, setShowStory] = useState(false)
+  const [showHelp, setShowHelp] = useState(false)
 
   const handleStoryComplete = () => {
     // Stop any playing audio elements
@@ -34,21 +37,21 @@ export default function LandingPage() {
       <div className="absolute top-10 left-10 w-16 h-16 bg-yellow-200 rounded-full opacity-20 animate-pulse"></div>
       <div className="absolute top-32 right-16 w-12 h-12 bg-pink-200 rounded-full opacity-30 animate-bounce delay-1000"></div>
       <div className="absolute bottom-20 left-20 w-10 h-10 bg-green-200 rounded-full opacity-25 animate-pulse delay-2000"></div>
-      <div className="absolute bottom-32 right-32 w-18 h-18 bg-purple-200 rounded-full opacity-20 animate-bounce"></div>
       
-      <div className="container mx-auto px-4 py-4 h-full flex flex-col">
-        {/* Header Section */}
-        <div className="text-center mb-6">
-          <div className="mb-3">
-            <NuttiBadge />
-          </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-nutti-primary via-purple-600 to-pink-500 mb-3">
-            {t('title')}
-          </h1>
-          <p className="text-base md:text-lg text-gray-700 font-medium leading-relaxed max-w-2xl mx-auto">
-            {t('subtitle')}
-          </p>
-        </div>
+      <div className="max-w-4xl mx-auto h-full px-4">
+        <div className="h-full flex flex-col py-4">
+          {/* Header Section */}
+          <div className="text-center mb-2">
+            <div className="mb-3">
+              <NuttiBadge />
+            </div>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-nutti-primary via-purple-600 to-pink-500 mb-3">
+              {t('title')}
+            </h1>
+            <p className="text-base md:text-lg text-gray-700 font-medium leading-relaxed max-w-2xl mx-auto">
+              {t('subtitle')}
+            </p>
+          </div>      <div className="container mx-auto px-4 py-4 h-full flex flex-col">
 
         {/* Main Content Grid */}
         <div className="grid lg:grid-cols-3 gap-6 items-center mb-8 flex-1">
@@ -89,7 +92,7 @@ export default function LandingPage() {
                   <span className="text-2xl group-hover:animate-bounce">🎯</span>
                   <div>
                     <h3 className="font-bold text-gray-800 text-sm">{t('feature1')}</h3>
-                    <p className="text-xs text-gray-600">Kertotaulut ja yhteenlaskut</p>
+                    <p className="text-xs text-gray-600">{tFeatures('multiplication')}</p>
                   </div>
                 </div>
               </div>
@@ -99,7 +102,7 @@ export default function LandingPage() {
                   <span className="text-2xl group-hover:animate-bounce">🐿️</span>
                   <div>
                     <h3 className="font-bold text-gray-800 text-sm">{t('feature2')}</h3>
-                    <p className="text-xs text-gray-600">Interaktiivinen oppimiskokemus</p>
+                    <p className="text-xs text-gray-600">{tFeatures('interactive')}</p>
                   </div>
                 </div>
               </div>
@@ -109,7 +112,7 @@ export default function LandingPage() {
                   <span className="text-2xl group-hover:animate-bounce">🏆</span>
                   <div>
                     <h3 className="font-bold text-gray-800 text-sm">{t('feature3')}</h3>
-                    <p className="text-xs text-gray-600">Opettajan seurantatyökalut</p>
+                    <p className="text-xs text-gray-600">{tFeatures('tracking')}</p>
                   </div>
                 </div>
               </div>
@@ -142,7 +145,7 @@ export default function LandingPage() {
             <span className="text-lg group-hover:animate-spin">📚</span>
             <div className="text-left">
               <div className="font-bold text-sm">{tHome('readStory')}</div>
-              <div className="text-xs opacity-75">Kuuntele Nutin tarina</div>
+              <div className="text-xs opacity-75">{tFeatures('storyDescription')}</div>
             </div>
           </button>
 
@@ -153,11 +156,77 @@ export default function LandingPage() {
             <span className="text-lg group-hover:animate-bounce">👨‍🏫</span>
             <div className="text-left">
               <div className="font-bold text-sm">{t('teacherView')}</div>
-              <div className="text-xs opacity-75">Seuranta ja tilastot</div>
+              <div className="text-xs opacity-75">{tFeatures('teacherDescription')}</div>
+            </div>
+          </button>
+
+          <button
+            onClick={() => setShowHelp(true)}
+            className="group bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 text-blue-700 hover:text-blue-800 px-4 py-3 rounded-xl border border-blue-200 hover:border-blue-300 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
+          >
+            <span className="text-lg group-hover:animate-pulse">⌨️</span>
+            <div className="text-left">
+              <div className="font-bold text-sm">{t('help')}</div>
+              <div className="text-xs opacity-75">{tFeatures('helpDescription')}</div>
             </div>
           </button>
         </div>
+        </div>
       </div>
+    </div>
+
+      {/* Help Modal */}
+      {showHelp && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-blue-800 flex items-center gap-2">
+                  <span className="text-2xl">⌨️</span>
+                  {tHelp('title')}
+                </h2>
+                <button
+                  onClick={() => setShowHelp(false)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center gap-3">
+                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-mono">0-9</span>
+                  <span>{tHelp('numbers')}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-mono">Enter</span>
+                  <span>{tHelp('enter')}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-mono">Backspace</span>
+                  <span>{tHelp('backspace')}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-mono">H</span>
+                  <span>{tHelp('hint')}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-mono">Esc</span>
+                  <span>{tHelp('escape')}</span>
+                </div>
+              </div>
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-4">
+                <p className="text-xs text-yellow-800">
+                  💡 <strong>{tHelp('tipTitle')}</strong> {tHelp('tipText')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Teacher View Modal */}
       {showTeacherView && (

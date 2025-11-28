@@ -9,7 +9,8 @@
     "feature1": "Riktad övning",
     "feature2": "Rolig berättelse",
     "feature3": "Följ framsteg",
-    "teacherView": "Lärarvy"
+    "teacherView": "Lärarvy",
+    "help": "Instruktioner"
   },
   "topics": {
     "multiplication": "Multiplikation",
@@ -212,6 +213,24 @@
       "thinking": "🧮 Låt oss räkna tillsammans!",
       "excited": "🎉 Bra jobbat!"
     }
+  },
+  "help": {
+    "title": "Tangentbordsanvändning",
+    "numbers": "Ange siffror under spelet",
+    "enter": "Skicka svar / Starta spel",
+    "backspace": "Ta bort siffra / Rensa inmatning",
+    "hint": "Be om AI-tips för fråga",
+    "escape": "Stäng fönster och återgå till meny",
+    "tipTitle": "Tips:",
+    "tipText": "Du kan använda både tangentbordet och virtuellt nummer knappsats samtidigt!"
+  },
+  "features": {
+    "multiplication": "Multiplikationstabeller och addition",
+    "interactive": "Interaktiv lärupplevelse",
+    "tracking": "Förloppsspårning och statistik",
+    "storyDescription": "Lyssna på Nuttis historia",
+    "teacherDescription": "Spårning och statistik",
+    "helpDescription": "Tangentbordsanvändning"
   },
   "icons": {
     "gameInfo": "🧮✨",

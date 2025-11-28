@@ -224,24 +224,34 @@ export default function Results() {
 
 
   return (
-    <div className="min-h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 py-4 overflow-y-auto flex items-center justify-center">
+    <div className="h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 py-4 overflow-y-auto flex items-center justify-center">
       <div className="max-w-4xl mx-auto p-4 h-full">
-        <div className="bg-white/90 backdrop-blur-sm border border-gray-200 shadow-xl rounded-2xl p-6 h-full overflow-y-auto">
+        <div className="bg-white/90 backdrop-blur-sm border border-gray-200 shadow-xl rounded-2xl p-6 overflow-hidden">
         {/* Header */}
-        <div className="text-center mb-2">
-          <NuttiBadge mood="excited" />
+        <div className="mb-2">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <NuttiBadge mood="excited" />
+            </div>
+            <div>
+              <a
+                className="btn px-6 py-2 bg-gradient-to-r from-nutti-primary to-blue-500 hover:from-nutti-primary/90 hover:to-blue-500/90 shadow-lg transform hover:scale-105 transition-all focus:ring-4 focus:ring-nutti-primary/30"
+                href={`/${loc}`}
+              >
+                {t('icons.rocket')} {t('results.newGame')}
+              </a>
+            </div>
+          </div>
         </div>
 
-        {/* Main content - grid layout with less flex expansion */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Main content - grid layout with equal height columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[calc(100%-80px)]">
 
           {/* Left column: Title and summary */}
-          <div className="space-y-3">
-            <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-nutti-primary/30 p-4">
+          <div className="flex flex-col h-full">
+            <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-nutti-primary/30 p-4 flex-1">
               <div className="text-center mb-4">
-                <div className="text-4xl mb-2">{t('icons.party')}</div>
-                <h2 className="text-4xl font-extrabold text-nutti-primary mb-2">{t('results.title')}</h2>
-                <div className="text-3xl">{t('icons.sparkles')}</div>
+                <h2 className="text-4xl font-extrabold text-nutti-primary mb-2">{t('icons.party')} {t('results.title')}</h2>
               </div>
 
               {/* Summary text */}
@@ -253,7 +263,7 @@ export default function Results() {
               </div>
 
               {/* AI Final Feedback - optimized for better text display */}
-              <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl mt-4">
+              <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl mt-4 flex-1">
                 <div className="text-center mb-3">
                   <span className="text-xl">{t('icons.squirrel')}</span>
                   <span className="text-lg font-bold text-green-700 ml-2">{t('results.finalFeedback')}</span>
@@ -268,7 +278,7 @@ export default function Results() {
                     </div>
                   ) : finalAi ? (
                     <div className="text-center w-full">
-                      <p className="text-base sm:text-lg leading-relaxed text-gray-800 whitespace-pre-wrap break-words max-w-full font-medium">
+                      <p className="text-sm leading-relaxed text-gray-800 whitespace-pre-wrap break-words max-w-full font-medium">
                         {finalAi.text}
                       </p>
                     </div>
@@ -283,7 +293,7 @@ export default function Results() {
           </div>
 
           {/* Right column: Stats and round details */}
-          <div className="space-y-3">
+          <div className="flex flex-col h-full space-y-3">
             {/* Stats cards - compact grid */}
             <div className="grid grid-cols-2 gap-3">
               {/* Total questions */}
@@ -336,7 +346,7 @@ export default function Results() {
 
             {/* Round details */}
             {rounds.length > 0 && (
-              <div className="card p-4 bg-gradient-to-r from-indigo-50 to-blue-50 border-2 border-indigo-200">
+              <div className="card p-4 bg-gradient-to-r from-indigo-50 to-blue-50 border-2 border-indigo-200 flex-1">
                 <div className="text-center mb-3">
                   <span className="text-xl">{t('icons.chart')}</span>
                   <p className="text-lg font-bold text-indigo-700 inline ml-2">{t('results.roundDetails')}</p>
@@ -363,17 +373,6 @@ export default function Results() {
               </div>
             )}
           </div>
-        </div>
-
-        {/* Action buttons - better positioned */}
-        <div className="flex flex-col items-center gap-4 mt-6 mb-8">
-          <a
-            className="btn text-xl px-10 py-4 bg-gradient-to-r from-nutti-primary to-blue-500 hover:from-nutti-primary/90 hover:to-blue-500/90 shadow-lg transform hover:scale-105 transition-all focus:ring-4 focus:ring-nutti-primary/30"
-            href={`/${loc}`}
-          >
-            {t('icons.rocket')} {t('results.newGame')}
-          </a>
-
         </div>
         </div>
       </div>

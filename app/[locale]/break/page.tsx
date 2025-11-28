@@ -133,8 +133,8 @@ export default function Break() {
   // Calculate acorns earned for this round
   const acornsEarned = calculateAcorns(correct, total, avgMs)
   return (
-    <div className="min-h-[800px] bg-gradient-to-br from-green-50/40 via-white to-nutti-secondary/20 py-4 overflow-y-auto">
-      <div className="max-w-4xl mx-auto">
+    <div className="h-[800px] bg-gradient-to-br from-green-50/40 via-white to-nutti-secondary/20 py-4 overflow-y-auto">
+      <div className="max-w-4xl mx-auto h-full">
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-6 space-y-4">
           {/* Header */}
           <div className="flex items-center justify-between">

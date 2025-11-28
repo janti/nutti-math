@@ -113,11 +113,11 @@ export default function MenuPage() {
 
     return (
         <div className="h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 overflow-hidden flex items-start justify-center py-2">
-            <div className="max-w-4xl mx-auto w-full px-4">
+            <div className="max-w-4xl mx-auto w-full px-4 h-full flex flex-col">
                 {/* Main content card with background */}
-                <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 max-h-[98vh] overflow-y-auto">
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 flex-1 overflow-y-auto flex flex-col">
                     {/* Header - full width */}
-                    <div className="text-center mb-2 relative">
+                    <div className="text-center mb-2 relative flex-shrink-0">
                         <NuttiBadge />
                         <button
                             onClick={() => {
@@ -131,8 +131,12 @@ export default function MenuPage() {
                         </button>
                     </div>
 
-                    {/* Main content - grid with top alignment and spacing */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
+                    {/* Main content area - takes available space */}
+                    <div className="flex-1 flex flex-col">
+                        {/* Content section */}
+                        <div className="flex-1">
+                            {/* Two column layout for main content */}
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
 
                         {/* Left column: Title and alias */}
                         <div className="flex flex-col gap-3 h-full">
@@ -342,37 +346,28 @@ export default function MenuPage() {
                             ))}
                         </div>
                     </div>
-
-                    {/* Bottom section - better visual separation */}
-                    <div className="mt-2 pt-2 border-t border-gray-100">
-                        <div className="space-y-1.5">
-                            {/* Start button with better visual hierarchy */}
+                            </div>
+                        </div>
+                        
+                        {/* Start button at bottom - flex-shrink-0 keeps it at bottom */}
+                        <div className="flex-shrink-0 border-t border-gray-100 pt-4 pb-2">
                             <div className="text-center">
                                 <button
-                                    className={`text-lg px-8 py-3 font-bold rounded-xl shadow-lg transform transition-all ${alias.trim()
-                                        ? 'bg-gradient-to-r from-nutti-primary to-blue-500 text-white hover:from-nutti-primary/90 hover:to-blue-500/90 hover:scale-105 focus:ring-4 focus:ring-nutti-primary/30'
-                                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                        }`}
+                                    className={`text-lg px-8 py-3 font-bold rounded-xl shadow-lg transform transition-all ${
+                                        alias.trim()
+                                            ? 'bg-gradient-to-r from-nutti-primary to-blue-500 text-white hover:from-nutti-primary/90 hover:to-blue-500/90 hover:scale-105 focus:ring-4 focus:ring-nutti-primary/30'
+                                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                    }`}
                                     disabled={!alias.trim()}
                                     onClick={startNewGame}
                                 >
                                     {t('icons.start')} {t('home.start')}
                                 </button>
                             </div>
-
-                            {/* Instructions */}
-                            <div className="p-2 bg-gradient-to-r from-gray-50 to-slate-50 rounded-xl border border-gray-200 text-center">
-                                <span className="text-sm">{t('icons.keyboard')}</span>
-                                {alias.trim() ? (
-                                    <p className="text-xs text-nutti-primary font-bold mt-1 animate-pulse">{t('home.kbStart')}</p>
-                                ) : (
-                                    <p className="text-xs text-slate-600 font-medium mt-1">{t('home.kb')}</p>
-                                )}
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+      
     )
 }
