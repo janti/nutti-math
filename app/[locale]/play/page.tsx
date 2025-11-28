@@ -95,9 +95,23 @@ export default function Play() {
     document.body.focus()
     // Focus input field when game starts
     setTimeout(() => inputRef.current?.focus(), 200)
+
   }, [])
 
   const currentQuestion = facts[currentQuestionIndex]
+
+  // Separate effect for keyboard listener to avoid dependency issues
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === 'h' && !isSubmitting && facts.length > 0 && currentQuestionIndex < facts.length) {
+        e.preventDefault()
+        requestHint()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isSubmitting, facts, currentQuestionIndex])
 
   /**
    * Submit the current answer and move to next question
@@ -275,7 +289,7 @@ export default function Play() {
           </div>
 
           {/* Main game area - flexible grid layout */}
-          <div className={`flex-1 grid gap-4 items-start transition-all duration-500 ${showKeypad ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1 max-w-2xl mx-auto w-full'}`}>
+          <div className={`flex-1 transition-all duration-500 ${showKeypad ? 'grid grid-cols-1 lg:grid-cols-2 gap-4 items-start' : 'max-w-2xl mx-auto w-full space-y-4'}`}>
 
             {/* Left column: Problem and input - MAIN FOCUS */}
             <div className="space-y-4">
@@ -342,35 +356,25 @@ export default function Play() {
                   )}
                 </div>
               </div>
-
-              {/* Hint section - compact when present */}
-              {hint && (
-                <div className="p-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-300 text-center">
-                  <div className="text-lg mb-1">{t('icons.lightbulb')}</div>
-                  <p className="text-base text-nutti-accent font-semibold">
-                    {hint}
-                  </p>
-                </div>
-              )}
             </div>
 
-            {/* Right column: Keypad - collapsible */}
-            <div className="flex flex-col">
-              <div className="flex justify-end mb-2">
-                <button
-                  onClick={() => {
-                    setShowKeypad(!showKeypad)
-                    // Ensure focus returns to input after toggling keypad
-                    setTimeout(() => inputRef.current?.focus(), 50)
-                  }}
-                  className="text-xs text-gray-400 hover:text-nutti-primary flex items-center gap-1 transition-colors"
-                >
-                  {showKeypad ? '🔽 Piilota' : '🔼 Näytä'}
-                </button>
-              </div>
+            {/* Right column: Keypad and hints */}
+            {showKeypad && (
+              <div className="flex flex-col">
+                <div className="flex justify-end mb-2">
+                  <button
+                    onClick={() => {
+                      setShowKeypad(!showKeypad)
+                      // Ensure focus returns to input after toggling keypad
+                      setTimeout(() => inputRef.current?.focus(), 50)
+                    }}
+                    className="text-xs text-gray-400 hover:text-nutti-primary flex items-center gap-1 transition-colors"
+                  >
+                    {showKeypad ? `🔽 ${t('common.hide')}` : `🔼 ${t('common.show')}`}
+                  </button>
+                </div>
 
-              {showKeypad && (
-                <div className={`transition-all duration-300 ${isSubmitting ? 'opacity-30 pointer-events-none' : 'opacity-75 hover:opacity-100'}`}>
+                <div className={`transition-all duration-300 space-y-3 ${isSubmitting ? 'opacity-30 pointer-events-none' : 'opacity-75 hover:opacity-100'}`}>
                   <Keypad 
                     value={userInput} 
                     onChange={setUserInput} 
@@ -379,14 +383,69 @@ export default function Play() {
                     inputRef={inputRef}
                   />
 
+                  {/* Hint section under keypad */}
+                  {hint && (
+                    <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-2 border-green-200 text-center">
+                      <div className="text-lg mb-1">{t('icons.lightbulb')}</div>
+                      <p className="text-sm text-green-800 font-semibold">
+                        {hint}
+                      </p>
+                    </div>
+                  )}
+
                   {/* Instructions - compact */}
-                  <div className="mt-3 p-2 bg-gray-50 rounded-lg border border-gray-200 text-center opacity-60">
+                  <div className="p-2 bg-gray-50 rounded-lg border border-gray-200 text-center opacity-60">
                     <span className="text-base">{t('icons.keyboard')}</span>
                     <p className="text-xs text-slate-500 font-medium mt-1">{t('home.kb')}</p>
                   </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+
+            {/* Compact hint and controls when keypad is hidden */}
+            {!showKeypad && (
+              <div className="space-y-2">
+                {/* Compact hint section */}
+                {hint ? (
+                  <div className="p-2 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200 text-center">
+                    <div className="text-lg mb-1">{t('icons.lightbulb')}</div>
+                    <p className="text-sm text-green-800 font-medium">
+                      {hint}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="p-2 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200 text-center">
+                    <p className="text-xs text-yellow-800 mb-2">
+                      💡 {t('play.hintPrompt')}
+                    </p>
+                    <button
+                      onClick={requestHint}
+                      disabled={isSubmitting}
+                      className={`px-3 py-1 rounded text-xs font-medium transition-all ${isSubmitting
+                        ? 'bg-gray-400 cursor-not-allowed opacity-50'
+                        : 'bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-white'
+                        }`}
+                    >
+                      💡 {t('play.hint')}
+                    </button>
+                  </div>
+                )}
+
+                {/* Small toggle keypad link */}
+                <div className="text-center">
+                  <button
+                    onClick={() => {
+                      setShowKeypad(true)
+                      setTimeout(() => inputRef.current?.focus(), 50)
+                    }}
+                    className="text-xs text-gray-400 hover:text-nutti-primary transition-colors underline"
+                  >
+                    ↩️ {t('keypad.title')}
+                  </button>
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       </div>

@@ -131,6 +131,7 @@
     "answer": "Svar",
     "submit": "Svara",
     "hint": "Ledtråd (H)",
+    "hintPrompt": "Behöver du hjälp? Tryck H-tangenten för att få en ledtråd!",
     "loading": "Laddar uppgifter...",
     "noTasks": "Inga uppgifter tillgängliga",
     "enterAnswerHint": "Ange svar för att fortsätta",
@@ -199,7 +200,9 @@
     "acornsEarned": "Intjänade Nötter",
     "performance": "Prestation",
     "speed": "Hastighet",
-    "average": "Genomsnitt"
+    "average": "Genomsnitt",
+    "hide": "Göm",
+    "show": "Visa"
   },
   "layout": {
     "nuttiAlt": "Maskoten Nutti Ekorren"

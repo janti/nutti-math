@@ -1,28 +1,38 @@
-# 🐿️ Nutti Math - AI-Powered Multiplication Trainer
+# 🐿️ Nutti Math - AI-Powered Math Trainer
 
-A comprehensive, modern multiplication table trainer featuring AI-powered feedback, interactive storytelling, text-to-speech, teacher analytics, and complete multilingual support. Built with Next.js 15, TypeScript, and Tailwind CSS.
+A comprehensive, modern math trainer featuring AI-powered feedback, interactive storytelling, text-to-speech, teacher analytics, and complete multilingual support. Now supports both multiplication tables and addition practice! Built with Next.js 15, TypeScript, and Tailwind CSS.
 
 ## ✨ Features
 
 ### 🎮 Game Mechanics
-- **Customizable Rounds**: Choose 1, 2, 3, 5, or 10 rounds
-- **Acorn Collection System**: Earn 1-5 acorns per round based on performance
-- **Performance-Based Rewards**: Acorns awarded for accuracy and speed
-- **Gamification Elements**: Visual acorn display and total collection tracking
-- **Difficulty Levels**: 
+- **Dual Math Operations**: Complete multiplication tables (1-12) and addition practice (1-100)
+- **Comprehensive Addition Ranges**: 
+  - 1-10 Addition: Basic single-digit addition
+  - 1-20 Addition: Teen number mastery
+  - 1-50 Addition: Extended range practice
+  - 50-100 Addition: Advanced two-digit addition
+  - 1-100 Addition: Complete addition mastery
+  - Mix Addition: Random practice across all ranges
+- **Multiplication Difficulty Levels**: 
   - 🧸 Easy (1-5 tables)
   - 🎯 Medium (6-10 tables)  
   - 🌟 Advanced (1-10 tables)
   - 🚀 Classic (2-12 tables)
   - 🎲 Mix (1-12 tables)
+- **Customizable Rounds**: Choose 1, 2, 3, 5, or 10 rounds
+- **Acorn Collection System**: Earn 1-5 acorns per round based on performance
+- **Performance-Based Rewards**: Acorns awarded for accuracy and speed
+- **Gamification Elements**: Visual acorn display and total collection tracking
 - **10 Questions per Round**: Perfectly balanced practice sessions
 - **Real-time Progress**: Visual progress bar and statistics
 - **Round-by-Round Analytics**: Detailed performance tracking per round
 
 ### 🤖 AI Integration
-- **Smart Hints**: Context-aware multiplication hints during gameplay
-- **Round Feedback**: Personalized AI feedback after each round
-- **Final Assessment**: Comprehensive AI analysis of overall performance
+- **Smart Hints**: Context-aware hints for both multiplication and addition during gameplay
+- **Advanced H-Key Support**: Press 'H' during any question for instant AI assistance
+- **Flexible Hint Display**: Hints appear below keypad when visible, or full-width when keypad is hidden
+- **Round Feedback**: Personalized AI feedback after each round for both math operations
+- **Final Assessment**: Comprehensive AI analysis of overall performance across all problem types
 - **Multi-language AI**: AI responds in Finnish, English, or Swedish
 - **AI-Powered Text-to-Speech**: High-quality narration using OpenAI TTS API
 - **Locale-Specific Voices**: Optimized voice selection for each language
@@ -52,6 +62,10 @@ A comprehensive, modern multiplication table trainer featuring AI-powered feedba
 
 ### 🍬 User Experience
 - **Nutti Theme**: Delightful squirrel mascot with candy and nature decorations
+- **Dual-Image Landing Page**: Enhanced visual design with Nutti character illustrations
+- **Interactive Help System**: Built-in keyboard shortcuts guide and usage instructions
+- **Comprehensive Layout Heights**: Consistent 800px height across all pages (1000px for results)
+- **Enhanced Focus Management**: Advanced input field focus control with virtual keypad integration
 - **Acorn Gamification**: Visual acorn collection with 1-5 acorn reward system
 - **Performance Motivation**: Earn more acorns with better accuracy and speed
 - **Progress Visualization**: See accumulated acorns across all rounds
@@ -157,8 +171,8 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ## 🎯 Game Flow
 
 1. **Welcome Story**: Optional interactive story introduction with AI narration
-2. **Setup**: Choose nickname, difficulty, and number of rounds
-3. **Play**: Solve 10 multiplication problems per round with hints available
+2. **Setup**: Choose nickname, math operation (multiplication/addition), difficulty, and number of rounds
+3. **Play**: Solve 10 math problems per round with intelligent hints available via H-key or hint button
 4. **Break**: Review round statistics, acorn rewards, and receive personalized AI feedback
 5. **Repeat**: Continue for selected number of rounds with progress and acorn tracking
 6. **Results**: Final statistics, total acorn collection, round breakdown, and comprehensive AI assessment
@@ -167,10 +181,11 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ## 🤖 AI Features
 
 ### Hint System
-- Context-aware multiplication strategies
-- Encourages mental math techniques
-- Available via 'H' key or hint button
-- Tracks hint usage for teacher analytics
+- Context-aware strategies for both multiplication and addition
+- Encourages mental math techniques for all operations
+- Available via 'H' key or hint button during any question
+- Smart display positioning (below keypad or full-width)
+- Tracks hint usage for comprehensive teacher analytics
 
 ### Round Feedback
 - Analyzes performance patterns with specific statistics
@@ -328,11 +343,21 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🎯 Recent Updates
 
 ### Version History
+- **v0.3.0** - Addition Support, Enhanced UI, Focus Management, Layout Optimization
 - **v0.2.0** - AI Text-to-Speech, Interactive Story, Teacher Analytics
 - **v0.1.5** - Complete localization, Round breakdown analytics
 - **v0.1.0** - Core multiplication trainer with AI feedback
 
 ### Latest Features (November 2025)
+- ✅ **Complete Addition Support**: Five difficulty ranges from 1-10 to 1-100
+- ✅ **Enhanced Landing Page**: Dual-image design with interactive help modal
+- ✅ **Advanced Focus Management**: Seamless input field control with virtual keypad
+- ✅ **Improved H-Key Functionality**: Reliable hint system with keyboard listener
+- ✅ **Smart Hint Display**: Adaptive positioning based on keypad visibility
+- ✅ **Layout Consistency**: Standardized 800px height across all game pages
+- ✅ **Results Page Optimization**: Enhanced layout with compact hint display
+- ✅ **Complete Localization**: All hardcoded texts replaced with translation keys
+- ✅ **UI Polish**: Compact, responsive design with improved visual hierarchy
 - ✅ **Acorn Gamification System**: Performance-based acorn collection (1-5 per round)
 - ✅ **Visual Reward Display**: Beautiful acorn graphics with fallback emoji support
 - ✅ **Teacher Acorn Analytics**: Track student motivation through gamification metrics
@@ -340,8 +365,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - ✅ **AI Text-to-Speech**: Professional quality voice narration in 3 languages
 - ✅ **Teacher Analytics**: Comprehensive dashboard with round-by-round breakdown
 - ✅ **Next.js 15 Upgrade**: Latest framework features and performance improvements
-- ✅ **Enhanced Audio Controls**: Smart autoplay management and user preferences
-- ✅ **Complete Localization**: Every UI element translated across all languages
 
 ## 🎯 Future Enhancements
 
@@ -350,22 +373,27 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [ ] Achievement badges and progress certificates
 - [ ] Parent/teacher email reporting
 - [ ] Offline mode support
-- [ ] Additional math operations (addition, subtraction, division)
-- [ ] Gamification elements and rewards system
+- [ ] Subtraction and division operations
+- [ ] Advanced multiplication tables (13-20)
+- [ ] Mixed operation practice sessions
 - [ ] Student progress tracking over time
 - [ ] Customizable AI personality settings
+- [ ] Fraction and decimal support
+- [ ] Word problem integration
 
 ## 🏆 Key Metrics
 
 - **3 Languages**: Complete localization support
-- **216 Translation Keys**: Comprehensive language coverage  
+- **230+ Translation Keys**: Comprehensive language coverage including math operations  
+- **2 Math Operations**: Multiplication tables (1-12) and Addition (1-100)
+- **11 Difficulty Levels**: 6 multiplication + 5 addition ranges
 - **1000+ Results**: Teacher analytics storage capacity
 - **10 Questions/Round**: Optimal learning session length
-- **AI-Powered**: 4 different AI interaction types
+- **AI-Powered**: 4 different AI interaction types with dual operation support
 - **100% Accessible**: Full ARIA compliance and keyboard navigation
 
 ---
 
-Made with ❤️ and 🤖 AI for young mathematicians learning multiplication tables!
+Made with ❤️ and 🤖 AI for young mathematicians learning multiplication tables and addition!
 
-**Nutti the Squirrel** 🐿️ is ready to help students master their multiplication tables through engaging, AI-enhanced learning experiences.
+**Nutti the Squirrel** 🐿️ is ready to help students master their multiplication tables and addition skills through engaging, AI-enhanced learning experiences.

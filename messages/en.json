@@ -131,6 +131,7 @@
     "answer": "Answer",
     "submit": "Answer",
     "hint": "Hint (H)",
+    "hintPrompt": "Need help? Press H key to get a hint!",
     "loading": "Loading tasks...",
     "noTasks": "No tasks available",
     "enterAnswerHint": "Enter answer to continue",
@@ -191,7 +192,9 @@
     "1-12": "1–12"
   },
   "common": {
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "hide": "Hide",
+    "show": "Show"
   },
   "layout": {
     "nuttiAlt": "Nutti Squirrel Mascot"

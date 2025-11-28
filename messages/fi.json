@@ -131,6 +131,7 @@
     "answer": "Vastaus",
     "submit": "Vastaa",
     "hint": "Vihje (H)",
+    "hintPrompt": "Tarvitsetko apua? Paina H-näppäintä saadaksesi vinkin!",
     "loading": "Ladataan tehtäviä...",
     "noTasks": "Ei tehtäviä",
     "enterAnswerHint": "Syötä vastaus jatkaaksesi",
@@ -191,7 +192,9 @@
     "1-12": "1–12"
   },
   "common": {
-    "unknown": "Tuntematon"
+    "unknown": "Tuntematon",
+    "hide": "Piilota",
+    "show": "Näytä"
   },
   "layout": {
     "nuttiAlt": "Nutti Orava -maskotti"
