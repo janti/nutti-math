@@ -1,6 +1,6 @@
 # 🐿️ Nutti Math - AI-Powered Math Trainer
 
-A comprehensive, modern math trainer featuring AI-powered feedback, interactive storytelling, text-to-speech, teacher analytics, and complete multilingual support. Now supports both multiplication tables and addition practice! Built with Next.js 15, TypeScript, and Tailwind CSS.
+A comprehensive, modern math trainer featuring AI-powered feedback, interactive storytelling, teacher analytics, and complete multilingual support. Now supports both multiplication tables and addition practice! Built with Next.js 15, TypeScript, and Tailwind CSS.
 
 ## ✨ Features
 
@@ -29,24 +29,24 @@ A comprehensive, modern math trainer featuring AI-powered feedback, interactive 
 
 ### 🤖 AI Integration
 - **Smart Hints**: Context-aware hints for both multiplication and addition during gameplay
+- **Operation-Aware AI**: AI system automatically detects multiplication vs addition problems
 - **Advanced H-Key Support**: Press 'H' during any question for instant AI assistance
-- **Flexible Hint Display**: Hints appear below keypad when visible, or full-width when keypad is hidden
+- **Loading Indicators**: Visual feedback during hint generation
 - **Round Feedback**: Personalized AI feedback after each round for both math operations
 - **Final Assessment**: Comprehensive AI analysis of overall performance across all problem types
 - **Multi-language AI**: AI responds in Finnish, English, or Swedish
-- **AI-Powered Text-to-Speech**: High-quality narration using OpenAI TTS API
-- **Locale-Specific Voices**: Optimized voice selection for each language
+- **OpenAI Integration**: Powered by GPT models for natural, contextual responses
 
 ### 📚 Interactive Story Feature
 - **Math Story Introduction**: Engaging story about Nutti the Squirrel learning multiplication
 - **5-Page Interactive Story**: Beautiful illustrated narrative in 3 languages
-- **AI Text-to-Speech Narration**: Professional-quality voice acting
-- **User-Controlled Audio**: Play, pause, mute controls with automatic playback options
-- **Smart Audio Management**: Respects user preferences and browser autoplay policies
+- **Modal Interface**: Clean, focused story presentation with proper accessibility
+- **Navigation Controls**: Easy page-by-page story progression
 
 ### 🌍 Internationalization
 - **3 Languages**: Finnish (fi), English (en), Swedish (sv)
-- **Complete Localization**: All UI elements, emojis, and feedback
+- **Complete Localization**: All UI elements, feedback, and content (230+ translation keys)
+- **Language Switching**: Easy language selection in header
 - **Language Switching**: Easy language selection in header
 - **Localized AI**: AI feedback matches selected language
 
@@ -62,14 +62,14 @@ A comprehensive, modern math trainer featuring AI-powered feedback, interactive 
 
 ### 🍬 User Experience
 - **Nutti Theme**: Delightful squirrel mascot with candy and nature decorations
-- **Dual-Image Landing Page**: Enhanced visual design with Nutti character illustrations
+- **Emoji Icons**: Expressive emoji icons throughout the interface for playful, child-friendly design
+- **Responsive Design**: Fully responsive layouts that adapt to all screen sizes
+- **Mobile-First**: Optimized for phones, tablets, and desktop
 - **Interactive Help System**: Built-in keyboard shortcuts guide and usage instructions
-- **Comprehensive Layout Heights**: Consistent 800px height across all pages (1000px for results)
 - **Enhanced Focus Management**: Advanced input field focus control with virtual keypad integration
 - **Acorn Gamification**: Visual acorn collection with 1-5 acorn reward system
 - **Performance Motivation**: Earn more acorns with better accuracy and speed
 - **Progress Visualization**: See accumulated acorns across all rounds
-- **Responsive Design**: Optimized for desktop, tablet, and mobile
 - **Accessibility**: Complete ARIA labels, keyboard navigation, and screen reader support
 - **Performance Optimized**: Smart caching, precomputation, and smooth transitions
 - **Multi-Input Support**: Virtual keypad, physical keyboard, and touch interaction
@@ -78,13 +78,14 @@ A comprehensive, modern math trainer featuring AI-powered feedback, interactive 
 ### ⚡ Technical Features
 - **Next.js 15**: Latest React framework with App Router and server components
 - **TypeScript**: Full type safety throughout the application with strict configuration
+- **Emoji Design**: Playful emoji-based iconography for child-friendly interface
 - **Performance Caching**: Smart fact precomputation and localStorage optimization
 - **Duplicate Prevention**: Advanced deduplication systems with unique game identifiers
 - **Error Handling**: Comprehensive error handling with timeouts and fallbacks
 - **Modern Architecture**: Clean component structure with proper separation of concerns
 - **OpenAI Integration**: Both OpenAI API and Azure OpenAI Service support
-- **Audio Management**: Sophisticated audio lifecycle management with cleanup
 - **State Management**: Optimized React hooks with performance considerations
+- **Build Optimization**: Streamlined codebase with unnecessary features removed
 
 ## 🚀 Getting Started
 
@@ -141,28 +142,27 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 │   │   └── layout.tsx      # Locale-specific layout with metadata
 │   ├── api/
 │   │   └── ai/             # AI API endpoints
-│   │       ├── hint/       # Smart hint generation
+│   │       ├── hint/       # Smart hint generation for both operations
 │   │       ├── feedback/   # Round feedback analysis
-│   │       ├── final/      # Final game assessment
-│   │       └── tts/        # Text-to-speech generation
+│   │       └── final/      # Final game assessment
 │   └── globals.css         # Global styles with Tailwind
 ├── components/
 │   ├── Keypad.tsx          # Virtual number keypad with keyboard support
 │   ├── NuttiBadge.tsx      # Dynamic character badge with moods
 │   ├── Progress.tsx        # Animated progress bar component
-│   ├── MathStory.tsx       # Interactive story with AI narration
+│   ├── MathStory.tsx       # Interactive story with modal interface
 │   ├── TeacherView.tsx     # Comprehensive analytics dashboard
 │   └── UI/
 │       ├── LangSwitcher.tsx # Language switching component
 │       └── Header.tsx      # Application header with navigation
 ├── lib/
-│   ├── ai.ts              # AI integration with OpenAI/Azure support
+│   ├── ai.ts              # AI integration with OpenAI support
 │   ├── game.ts            # Game logic and fact generation
 │   └── storage.ts         # LocalStorage management for teacher analytics
 ├── messages/              # Complete internationalization
-│   ├── en.json           # English translations (216 keys)
-│   ├── fi.json           # Finnish translations (216 keys)  
-│   └── sv.json           # Swedish translations (216 keys)
+│   ├── en.json           # English translations (230+ keys)
+│   ├── fi.json           # Finnish translations (230+ keys)  
+│   └── sv.json           # Swedish translations (230+ keys)
 ├── i18n/
 │   └── request.ts        # Next-intl configuration with Next.js 15 support
 └── i18n.ts               # Locale configuration and routing
@@ -170,7 +170,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 🎯 Game Flow
 
-1. **Welcome Story**: Optional interactive story introduction with AI narration
+1. **Welcome Story**: Optional interactive story introduction with modal interface
 2. **Setup**: Choose nickname, math operation (multiplication/addition), difficulty, and number of rounds
 3. **Play**: Solve 10 math problems per round with intelligent hints available via H-key or hint button
 4. **Break**: Review round statistics, acorn rewards, and receive personalized AI feedback
@@ -181,30 +181,24 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ## 🤖 AI Features
 
 ### Hint System
-- Context-aware strategies for both multiplication and addition
-- Encourages mental math techniques for all operations
-- Available via 'H' key or hint button during any question
-- Smart display positioning (below keypad or full-width)
-- Tracks hint usage for comprehensive teacher analytics
+- **Operation-Aware**: Automatically detects multiplication vs addition problems
+- **Context-aware strategies**: Tailored hints for each operation type
+- **Mental math techniques**: Encourages learning strategies for all operations
+- **Multiple access methods**: Available via 'H' key or hint button during any question
+- **Loading indicators**: Visual feedback during hint generation
+- **Analytics tracking**: Tracks hint usage for comprehensive teacher analytics
 
 ### Round Feedback
-- Analyzes performance patterns with specific statistics
-- Provides encouraging, personalized feedback
-- Suggests targeted improvements
-- Adapts to student's difficulty level and progress
+- **Performance analysis**: Analyzes patterns with specific statistics
+- **Personalized feedback**: Encouraging, tailored responses
+- **Improvement suggestions**: Targeted advice for better performance
+- **Adaptive content**: Adjusts to student's difficulty level and progress
 
 ### Final Assessment
-- Comprehensive performance review across all rounds
-- Celebrates achievements and progress made
-- Motivational conclusion tailored to individual performance
+- **Comprehensive review**: Performance analysis across all rounds and operations
+- **Achievement celebration**: Recognizes progress and accomplishments
+- **Motivational conclusion**: Tailored to individual performance and growth
 - Incorporates round-by-round analysis
-
-### Text-to-Speech Integration
-- **Professional Voice Quality**: OpenAI TTS-1 model
-- **Multi-language Support**: Native voices for Finnish, English, Swedish
-- **Interactive Story Narration**: Full story reading with user controls
-- **Smart Audio Management**: Respects user interaction patterns
-- **Accessibility Enhancement**: Screen reader friendly audio controls
 
 ## 🌐 Supported Languages
 
@@ -221,6 +215,11 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 - **Warm Beige**: `#FFE8C2` - Secondary highlights  
 - **Teal**: `#2BB3C0` - Action buttons and progress
 
+### Icons
+- **Emoji Icons**: Expressive emoji system for playful, child-friendly interface
+- **Accessibility**: All icons include proper ARIA labels and descriptive text
+- **Semantic**: Emojis match their function and context (🎮 for games, 📚 for story, etc.)
+
 ### Typography
 - Clean, readable fonts optimized for mathematics
 - Large, clear numbers for multiplication problems
@@ -228,8 +227,9 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 📱 Responsive Design
 
-- **Mobile First**: Optimized for touch interaction
-- **Tablet**: Balanced layout with larger touch targets
+- **Mobile First**: Fully responsive layouts that adapt to all screen sizes
+- **Flexible Heights**: Dynamic height management for different screen sizes
+- **Touch Optimized**: Large touch targets and swipe gestures
 - **Desktop**: Full-featured experience with keyboard shortcuts
 
 ## ⌨️ Keyboard Shortcuts
@@ -246,7 +246,6 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 ### Game Settings
 Stored in localStorage as `nutti.settings`:
-```json
 {
   "alias": "Player name",
   "range": "1-5|6-10|1-10|2-12|mix",
@@ -304,12 +303,6 @@ npm run lint:fix
 - Check network connectivity and firewall settings
 - Monitor browser console for API errors
 
-**Audio/TTS not working**
-- Ensure OpenAI API key has TTS model access
-- Check browser audio permissions
-- Verify autoplay policies are respected
-- Clear audio cache and try manual play button
-
 **Language switching issues**
 - Clear browser cache and localStorage
 - Check locale routing configuration in `i18n.ts`
@@ -326,6 +319,11 @@ npm run lint:fix
 - Check localStorage for saved results
 - Verify nickname was entered during game setup
 
+**Responsive layout issues**
+- Try refreshing the page
+- Check browser zoom level (100% recommended)
+- Clear browser cache if layouts appear broken
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
@@ -334,8 +332,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - **Next.js 15** - Latest React framework with App Router
 - **Tailwind CSS** - Utility-first CSS framework for beautiful styling
+- **Unicode Emoji** - Expressive emoji system for child-friendly design
 - **next-intl** - Comprehensive internationalization for Next.js
-- **OpenAI** - AI-powered feedback and text-to-speech system
+- **OpenAI** - AI-powered feedback and hint system
 - **TypeScript** - Type safety and developer experience
 - **Vercel** - Deployment and hosting platform
 - **React** - User interface library
@@ -343,12 +342,19 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🎯 Recent Updates
 
 ### Version History
+- **v0.4.0** - Professional Icons, Responsive Design, Code Cleanup, UI Polish
 - **v0.3.0** - Addition Support, Enhanced UI, Focus Management, Layout Optimization
 - **v0.2.0** - AI Text-to-Speech, Interactive Story, Teacher Analytics
 - **v0.1.5** - Complete localization, Round breakdown analytics
 - **v0.1.0** - Core multiplication trainer with AI feedback
 
 ### Latest Features (November 2025)
+- **Enhanced Emoji System**: Consistent emoji iconography throughout the interface for playful, child-friendly design
+- **Fully Responsive Design**: Complete mobile-first redesign with adaptive layouts for all screen sizes
+- **Enhanced AI Hints**: Operation-aware AI system that properly handles both multiplication and addition problems
+- **Code Optimization**: Removed unnecessary audio/TTS code and streamlined the codebase
+- **UI Polish**: Improved spacing, button sizing, and layout consistency across all pages
+- **Loading Indicators**: Added visual feedback for AI hint generation
 - ✅ **Complete Addition Support**: Five difficulty ranges from 1-10 to 1-100
 - ✅ **Enhanced Landing Page**: Dual-image design with interactive help modal
 - ✅ **Advanced Focus Management**: Seamless input field control with virtual keypad

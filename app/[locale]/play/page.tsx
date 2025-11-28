@@ -53,6 +53,7 @@ export default function Play() {
 
   // UI state
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoadingHint, setIsLoadingHint] = useState(false)
   const [showEmptyHint, setShowEmptyHint] = useState(false)
   const [showKeypad, setShowKeypad] = useState(true)
   const [showQuitConfirm, setShowQuitConfirm] = useState(false)
@@ -204,13 +205,26 @@ export default function Play() {
    * Request an AI hint for the current question
    */
   const requestHint = async () => {
-    if (!currentQuestion) return
+    if (!currentQuestion || isLoadingHint) return
 
+    setIsLoadingHint(true)
     try {
       const response = await fetch('/api/ai/hint', {
         method: 'POST',
-        body: JSON.stringify({ ...currentQuestion, locale })
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          ...currentQuestion, 
+          locale, 
+          gameType: settings.gameType 
+        })
       })
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
       const { hint } = await response.json()
       setHint(hint)
       setCurrentHints(prev => prev + 1)
@@ -218,6 +232,9 @@ export default function Play() {
       console.log('Hint requested for', currentQuestion.a, operation, currentQuestion.b, '- Total hints for this question:', currentHints + 1)
     } catch (error) {
       console.error('Error fetching hint:', error)
+      setHint(t('play.hintError'))
+    } finally {
+      setIsLoadingHint(false)
     }
   }
 
@@ -384,14 +401,21 @@ export default function Play() {
                   />
 
                   {/* Hint section under keypad */}
-                  {hint && (
+                  {isLoadingHint ? (
+                    <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border-2 border-blue-200 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-500 border-t-transparent"></div>
+                        <span className="text-sm text-blue-800 font-semibold">{t('play.loadingHint')}</span>
+                      </div>
+                    </div>
+                  ) : hint ? (
                     <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border-2 border-green-200 text-center">
                       <div className="text-lg mb-1">{t('icons.lightbulb')}</div>
                       <p className="text-sm text-green-800 font-semibold">
                         {hint}
                       </p>
                     </div>
-                  )}
+                  ) : null}
 
                   {/* Instructions - compact */}
                   <div className="p-2 bg-gray-50 rounded-lg border border-gray-200 text-center opacity-60">
@@ -406,7 +430,14 @@ export default function Play() {
             {!showKeypad && (
               <div className="space-y-2">
                 {/* Compact hint section */}
-                {hint ? (
+                {isLoadingHint ? (
+                  <div className="p-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="animate-spin rounded-full h-3 w-3 border-2 border-blue-500 border-t-transparent"></div>
+                      <span className="text-xs text-blue-800 font-medium">{t('play.loadingHint')}</span>
+                    </div>
+                  </div>
+                ) : hint ? (
                   <div className="p-2 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200 text-center">
                     <div className="text-lg mb-1">{t('icons.lightbulb')}</div>
                     <p className="text-sm text-green-800 font-medium">
@@ -420,8 +451,8 @@ export default function Play() {
                     </p>
                     <button
                       onClick={requestHint}
-                      disabled={isSubmitting}
-                      className={`px-3 py-1 rounded text-xs font-medium transition-all ${isSubmitting
+                      disabled={isSubmitting || isLoadingHint}
+                      className={`px-3 py-1 rounded text-xs font-medium transition-all ${isSubmitting || isLoadingHint
                         ? 'bg-gray-400 cursor-not-allowed opacity-50'
                         : 'bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-white'
                         }`}

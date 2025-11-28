@@ -2,7 +2,7 @@ import '../globals.css'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import type { Metadata } from 'next'
-import { defaultLocale, type Locale } from '@/i18n'
+import { defaultLocale, type Locale, locales } from '@/i18n'
 import Header from '@/components/Header'
 
 export const metadata: Metadata = {
@@ -26,10 +26,19 @@ export const metadata: Metadata = {
   }
 }
 
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }))
+}
+
 export default async function LocaleLayout({
-  children, params
-}: { children: React.ReactNode; params: Promise<{ locale: Locale }> }) {
-  const { locale } = await params
+  children, 
+  params
+}: { 
+  children: React.ReactNode; 
+  params: Promise<{ locale: string }>;
+}) {
+  const resolvedParams = await params
+  const { locale } = resolvedParams as { locale: Locale }
   const messages = await getMessages()
   return (
     <html lang={locale} suppressHydrationWarning>

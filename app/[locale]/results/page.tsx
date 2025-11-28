@@ -224,18 +224,18 @@ export default function Results() {
 
 
   return (
-    <div className="h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 py-4 overflow-y-auto flex items-center justify-center">
-      <div className="max-w-4xl mx-auto p-4 h-full">
-        <div className="bg-white/90 backdrop-blur-sm border border-gray-200 shadow-xl rounded-2xl p-6 overflow-hidden">
+    <div className="min-h-screen lg:h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 py-4 overflow-auto lg:overflow-hidden flex items-center justify-center">
+      <div className="max-w-4xl mx-auto p-4 min-h-[calc(100vh-2rem)] lg:h-full">
+        <div className="bg-white/90 backdrop-blur-sm border border-gray-200 shadow-xl rounded-2xl p-6 h-full flex flex-col">
         {/* Header */}
         <div className="mb-2">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div className="flex items-center order-2 sm:order-1">
               <NuttiBadge mood="excited" />
             </div>
-            <div>
+            <div className="order-1 sm:order-2 w-full sm:w-auto">
               <a
-                className="btn px-6 py-2 bg-gradient-to-r from-nutti-primary to-blue-500 hover:from-nutti-primary/90 hover:to-blue-500/90 shadow-lg transform hover:scale-105 transition-all focus:ring-4 focus:ring-nutti-primary/30"
+                className="btn px-4 sm:px-6 py-2 bg-gradient-to-r from-nutti-primary to-blue-500 hover:from-nutti-primary/90 hover:to-blue-500/90 shadow-lg transform hover:scale-105 transition-all focus:ring-4 focus:ring-nutti-primary/30 text-sm sm:text-base whitespace-nowrap w-full sm:w-auto text-center inline-block"
                 href={`/${loc}`}
               >
                 {t('icons.rocket')} {t('results.newGame')}
@@ -245,7 +245,7 @@ export default function Results() {
         </div>
 
         {/* Main content - grid layout with equal height columns */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[calc(100%-80px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0">
 
           {/* Left column: Title and summary */}
           <div className="flex flex-col h-full">
@@ -351,7 +351,7 @@ export default function Results() {
                   <span className="text-xl">{t('icons.chart')}</span>
                   <p className="text-lg font-bold text-indigo-700 inline ml-2">{t('results.roundDetails')}</p>
                 </div>
-                <div className="space-y-2 max-h-32 overflow-y-auto">
+                <div className="space-y-2 max-h-28 lg:max-h-32 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                   {rounds.map((round: any, index: number) => {
                     const roundCorrect = round.answers?.filter((a: any) => a.isCorrect).length || 0
                     const roundTotal = round.answers?.length || 0

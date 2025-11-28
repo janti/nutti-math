@@ -34,7 +34,7 @@
     "rounds": "Erämäärä",
     "topic": "Aihe",
     "teacherView": "Opettajanäkymä",
-    "readStory": "Kuuntele tarina"
+    "readStory": "Lue tarina"
   },
   "menu": {
     "backToStart": "Takaisin alkuun"
@@ -45,13 +45,6 @@
     "next": "Seuraava",
     "start": "Aloitetaan!",
     "page": "Sivu",
-    "mute": "🔇 Hiljennä",
-    "unmute": "🔊 Ääni päälle",
-    "readAgain": "🎤 Lue ääneen",
-    "reading": "🎤 Lukee...",
-    "loading": "⏳ Ladataan...",
-    "muted": "🔇 Hiljennetty",
-    "stopReading": "⏹️ Lopeta lukeminen",
     "pages": {
       "1": {
         "title": "Nutti Orava ja Pähkinöiden Salaisuus",
@@ -62,20 +55,20 @@
         "text": "Syksy oli tulossa ja Nutti tiesi, että hänen piti kerätä pähkinöitä talvea varten. Mutta kuinka monta pähkinää hänen oikein tarvitsisi?"
       },
       "3": {
-        "title": "Kertotaulujen Voima",
-        "text": "Nutti muisti, että hänen mummonsa oli opettanut hänelle kertotaulut. 'Jos keräät 7 pähkinää päivässä 8 päivän ajan, montako sinulla on yhteensä?' mummo oli kysynyt."
+        "title": "Matematiikan Voima",
+        "text": "Nutti muisti, että hänen mummonsa oli opettanut hänelle laskutoimitukset. 'Kun opitset yhteen-, vähennys-, kerto- ja jakolaskun, voit laskea kuinka monta pähkinää tarvitset!' mummo oli sanonut."
       },
       "4": {
         "title": "Seikkailu Alkaa",
-        "text": "Nutti päätti, että hän oppisi kaikki kertotaulut täydellisesti. Näin hän voisi laskea nopeasti kuinka monta pähkinää hänellä olisi milloin tahansa!"
+        "text": "Nutti päätti, että hän oppisi kaikki laskutoimitukset täydellisesti. Yhteen- ja vähennyslaskulla hän voisi laskea keräämänsä pähkinät, kertolaskulla montako pähkinää kertyisi useampana päivänä, ja jakolaskulla kuinka tasan hän voisi jakaa ne!"
       },
       "5": {
         "title": "Liity Nutin Seikkailuun!",
-        "text": "Nyt sinä voit auttaa Nuttia oppimaan kertotaulut! Jokainen oikea vastaus auttaa Nuttia keräämään pähkinöitä talvea varten. Oletko valmis?"
+        "text": "Nyt sinä voit auttaa Nuttia oppimaan matematiikkaa! Jokainen oikea vastaus yhteen-, vähennys-, kerto- tai jakolaskussa auttaa Nuttia keräämään pähkinöitä talvea varten. Oletko valmis?"
       }
     },
     "funFacts": {
-      "page3": "Tiesitkö? 7 × 8 = 56 pähkinää! Se riittäisi Nutille melkein kahdeksi viikoksi.",
+      "page3": "Tiesitkö? Matematiikalla voit laskea kaiken: 7 + 8 = 15, 15 - 7 = 8, 7 × 8 = 56, 56 ÷ 7 = 8!",
       "page5": "Vihje: Käytä näppäimistöä: 0-9, Enter, Backspace ja H (vihje)!"
     }
   },
@@ -135,6 +128,8 @@
     "loading": "Ladataan tehtäviä...",
     "noTasks": "Ei tehtäviä",
     "enterAnswerHint": "Syötä vastaus jatkaaksesi",
+    "hintError": "Vinkin hakeminen epäonnistui. Yritä uudelleen.",
+    "loadingHint": "Haetaan vinkki...",
     "quit": "Lopeta peli",
     "quitConfirm": "Haluatko varmasti lopettaa pelin kesken?",
     "quitCancel": "Peruuta",
@@ -223,7 +218,7 @@
     "multiplication": "Kertotaulut ja yhteenlaskut",
     "interactive": "Interaktiivinen oppimiskokemus",
     "tracking": "Seuranta ja tilastot",
-    "storyDescription": "Kuuntele Nutin tarina",
+    "storyDescription": "Lue Nutin tarina",
     "teacherDescription": "Seuranta ja tilastot",
     "helpDescription": "Näppäimistön käyttö"
   },

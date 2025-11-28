@@ -112,10 +112,10 @@ export default function MenuPage() {
     }
 
     return (
-        <div className="h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 overflow-hidden flex items-start justify-center py-2">
-            <div className="max-w-4xl mx-auto w-full px-4 h-full flex flex-col">
+        <div className="min-h-screen lg:h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 overflow-auto lg:overflow-hidden flex items-start justify-center py-2">
+            <div className="max-w-4xl mx-auto w-full px-4 min-h-[calc(100vh-1rem)] lg:h-full flex flex-col">
                 {/* Main content card with background */}
-                <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 flex-1 overflow-y-auto flex flex-col">
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 flex-1 min-h-0 overflow-y-auto flex flex-col">
                     {/* Header - full width */}
                     <div className="text-center mb-2 relative flex-shrink-0">
                         <NuttiBadge />
@@ -136,7 +136,7 @@ export default function MenuPage() {
                         {/* Content section */}
                         <div className="flex-1">
                             {/* Two column layout for main content */}
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-3 mt-4">
 
                         {/* Left column: Title and alias */}
                         <div className="flex flex-col gap-3 h-full">
@@ -350,10 +350,10 @@ export default function MenuPage() {
                         </div>
                         
                         {/* Start button at bottom - flex-shrink-0 keeps it at bottom */}
-                        <div className="flex-shrink-0 border-t border-gray-100 pt-4 pb-2">
+                        <div className="flex-shrink-0 border-t border-gray-100 pt-4 pb-4 lg:pb-2">
                             <div className="text-center">
                                 <button
-                                    className={`text-lg px-8 py-3 font-bold rounded-xl shadow-lg transform transition-all ${
+                                    className={`text-base lg:text-lg px-6 lg:px-8 py-3 font-bold rounded-xl shadow-lg transform transition-all w-full max-w-xs mx-auto ${
                                         alias.trim()
                                             ? 'bg-gradient-to-r from-nutti-primary to-blue-500 text-white hover:from-nutti-primary/90 hover:to-blue-500/90 hover:scale-105 focus:ring-4 focus:ring-nutti-primary/30'
                                             : 'bg-gray-300 text-gray-500 cursor-not-allowed'

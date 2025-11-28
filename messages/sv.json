@@ -34,24 +34,17 @@
     "rounds": "Omgångar",
     "topic": "Ämne",
     "teacherView": "Lärarvy",
-    "readStory": "Läs sagan"
+    "readStory": "Läs berättelse"
   },
   "menu": {
     "backToStart": "Tillbaka till start"
   },
   "story": {
-    "skip": "Hoppa över sagan",
+    "skip": "Hoppa över berättelse",
     "previous": "Föregående",
     "next": "Nästa",
     "start": "Låt oss börja!",
     "page": "Sida",
-    "mute": "🔇 Tysta",
-    "unmute": "🔊 Ljud på",
-    "readAgain": "🎤 Läs högt",
-    "reading": "🎤 Läser...",
-    "loading": "⏳ Laddar...",
-    "muted": "🔇 Tystad",
-    "stopReading": "⏹️ Sluta läsa",
     "pages": {
       "1": {
         "title": "Nutti Ekorren och Nötternas Hemlighet",
@@ -62,21 +55,21 @@
         "text": "Hösten var på väg och Nutti visste att han måste samla nötter inför vintern. Men hur många nötter skulle han egentligen behöva?"
       },
       "3": {
-        "title": "Multiplikationstabellernas Kraft",
-        "text": "Nutti kom ihåg att hans mormor hade lärt honom multiplikationstabellerna. 'Om du samlar 7 nötter om dagen i 8 dagar, hur många har du då totalt?' hade mormor frågat."
+        "title": "Matematikens Kraft",
+        "text": "Nutti kom ihåg att hans mormor hade lärt honom maträkning. 'När du lär dig addition, subtraktion, multiplikation och division, kan du beräkna hur många nötter du behöver!' hade mormor sagt."
       },
       "4": {
         "title": "Äventyret Börjar",
-        "text": "Nutti bestämde sig för att han skulle lära sig alla multiplikationstabeller perfekt. På så sätt kunde han snabbt räkna ut hur många nötter han hade när som helst!"
+        "text": "Nutti bestmäde sig för att lära sig alla maträkningsoperationer perfekt. Med addition och subtraktion kunde han räkna sina samlade nötter, med multiplikation hur många han skulle ha över flera dagar, och med division hur han kunde dela dem jämnt!"
       },
       "5": {
         "title": "Gå med i Nuttis Äventyr!",
-        "text": "Nu kan du hjälpa Nutti att lära sig multiplikationstabellerna! Varje rätt svar hjälper Nutti att samla nötter inför vintern. Är du redo?"
+        "text": "Nu kan du hjälpa Nutti lära sig matematik! Varje rätt svar i addition, subtraktion, multiplikation eller division hjälper Nutti samla nötter för vintern. Är du redo?"
       }
     },
     "funFacts": {
-      "page3": "Visste du? 7 × 8 = 56 nötter! Det skulle räcka för Nutti i nästan två veckor.",
-      "page5": "Tips: Använd tangentbordet: 0-9, Enter, Backspace och H (ledtråd)!"
+      "page3": "Visste du? Med matematik kan du beräkna allt: 7 + 8 = 15, 15 - 7 = 8, 7 × 8 = 56, 56 ÷ 7 = 8!",
+      "page5": "Tips: Använd tangentbordet: 0-9, Enter, Backspace och H (tips)!"
     }
   },
   "acorns": {
@@ -135,7 +128,9 @@
     "loading": "Laddar uppgifter...",
     "noTasks": "Inga uppgifter tillgängliga",
     "enterAnswerHint": "Ange svar för att fortsätta",
-    "quit": "Avsluta spelet",
+    "hintError": "Kunde inte hämta tips. Försök igen.",
+    "loadingHint": "Hämtar tips...",
+    "quit": "Avsluta spel",
     "quitConfirm": "Är du säker på att du vill avsluta?",
     "quitCancel": "Avbryt",
     "quitOk": "Avsluta"
@@ -231,7 +226,7 @@
     "multiplication": "Multiplikationstabeller och addition",
     "interactive": "Interaktiv lärupplevelse",
     "tracking": "Förloppsspårning och statistik",
-    "storyDescription": "Lyssna på Nuttis historia",
+    "storyDescription": "Läs Nuttis historia",
     "teacherDescription": "Spårning och statistik",
     "helpDescription": "Tangentbordsanvändning"
   },

@@ -34,24 +34,17 @@
     "rounds": "Rounds",
     "topic": "Topic",
     "teacherView": "Teacher View",
-    "readStory": "Read Story"
+    "readStory": "Read story"
   },
   "menu": {
     "backToStart": "Back to Start"
   },
   "story": {
-    "skip": "Skip Story",
+    "skip": "Skip story",
     "previous": "Previous",
     "next": "Next",
-    "start": "Let's Start!",
+    "start": "Let's start!",
     "page": "Page",
-    "mute": "🔇 Mute",
-    "unmute": "🔊 Unmute",
-    "readAgain": "🎤 Read Aloud",
-    "reading": "🎤 Reading...",
-    "loading": "⏳ Loading...",
-    "muted": "🔇 Muted",
-    "stopReading": "⏹️ Stop Reading",
     "pages": {
       "1": {
         "title": "Nutti Squirrel and the Secret of Nuts",
@@ -62,20 +55,20 @@
         "text": "Autumn was coming, and Nutti knew he had to collect nuts for the winter. But how many nuts would he actually need?"
       },
       "3": {
-        "title": "The Power of Multiplication Tables",
-        "text": "Nutti remembered that his grandmother had taught him multiplication tables. 'If you collect 7 nuts a day for 8 days, how many do you have in total?' grandmother had asked."
+        "title": "The Power of Math",
+        "text": "Nutti remembered that his grandmother had taught him math operations. 'When you learn addition, subtraction, multiplication, and division, you can calculate how many acorns you need!' grandma had said."
       },
       "4": {
-        "title": "The Adventure Begins",
-        "text": "Nutti decided he would learn all multiplication tables perfectly. That way, he could quickly calculate how many nuts he had at any time!"
+        "title": "Adventure Begins",
+        "text": "Nutti decided he would learn all math operations perfectly. With addition and subtraction he could count his collected acorns, with multiplication how many he'd have over several days, and with division how to share them evenly!"
       },
       "5": {
         "title": "Join Nutti's Adventure!",
-        "text": "Now you can help Nutti learn multiplication tables! Every correct answer helps Nutti collect nuts for the winter. Are you ready?"
+        "text": "Now you can help Nutti learn math! Every correct answer in addition, subtraction, multiplication, or division helps Nutti collect acorns for winter. Are you ready?"
       }
     },
     "funFacts": {
-      "page3": "Did you know? 7 × 8 = 56 nuts! That would be enough for Nutti for almost two weeks.",
+      "page3": "Did you know? With math you can calculate everything: 7 + 8 = 15, 15 - 7 = 8, 7 × 8 = 56, 56 ÷ 7 = 8!",
       "page5": "Hint: Use the keyboard: 0-9, Enter, Backspace, and H (hint)!"
     }
   },
@@ -135,6 +128,8 @@
     "loading": "Loading tasks...",
     "noTasks": "No tasks available",
     "enterAnswerHint": "Enter answer to continue",
+    "hintError": "Failed to get hint. Please try again.",
+    "loadingHint": "Getting hint...",
     "quit": "Quit Game",
     "quitConfirm": "Are you sure you want to quit?",
     "quitCancel": "Cancel",
@@ -223,7 +218,7 @@
     "multiplication": "Multiplication tables and addition",
     "interactive": "Interactive learning experience",
     "tracking": "Progress tracking and statistics",
-    "storyDescription": "Listen to Nutti's story",
+    "storyDescription": "Read Nutti's story",
     "teacherDescription": "Tracking and statistics",
     "helpDescription": "Keyboard usage"
   },
