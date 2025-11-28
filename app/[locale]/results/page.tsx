@@ -224,8 +224,9 @@ export default function Results() {
 
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <div className="bg-white/90 backdrop-blur-sm border border-gray-200 shadow-xl rounded-2xl p-6">
+    <div className="min-h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 py-4 overflow-y-auto flex items-center justify-center">
+      <div className="max-w-4xl mx-auto p-4 h-full">
+        <div className="bg-white/90 backdrop-blur-sm border border-gray-200 shadow-xl rounded-2xl p-6 h-full overflow-y-auto">
         {/* Header */}
         <div className="text-center mb-2">
           <NuttiBadge mood="excited" />
@@ -373,6 +374,7 @@ export default function Results() {
             {t('icons.rocket')} {t('results.newGame')}
           </a>
 
+        </div>
         </div>
       </div>
     </div>

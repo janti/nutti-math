@@ -63,6 +63,7 @@ export default function Play() {
 
   // Performance tracking
   const questionStartTime = useRef<number>(performance.now())
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     // Reset hint counter when component mounts or facts change
@@ -92,6 +93,8 @@ export default function Play() {
     console.log('Play: Loaded', roundFacts.length, 'facts for round', savedRoundNo, '- Expected: 10')
     document.body.tabIndex = -1
     document.body.focus()
+    // Focus input field when game starts
+    setTimeout(() => inputRef.current?.focus(), 200)
   }, [])
 
   const currentQuestion = facts[currentQuestionIndex]
@@ -155,6 +158,8 @@ export default function Play() {
     setCurrentHints(0)
     setShowEmptyHint(false)
     questionStartTime.current = performance.now()
+    // Focus input field for next question
+    setTimeout(() => inputRef.current?.focus(), 100)
   }
 
   /**
@@ -223,7 +228,7 @@ export default function Play() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/40 via-white to-nutti-primary/10 py-4">
+    <div className="min-h-[800px] bg-gradient-to-br from-blue-50/40 via-white to-nutti-primary/10 py-4 overflow-y-auto">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 space-y-3 min-h-[90vh] flex flex-col relative">
 
@@ -296,6 +301,7 @@ export default function Play() {
                 <div className="text-3xl mb-3">{t('icons.honey')}</div>
                 <div className="flex gap-4 justify-center items-center flex-wrap">
                   <input
+                    ref={inputRef}
                     aria-label={t('play.answer')}
                     inputMode="numeric"
                     value={userInput}
@@ -308,6 +314,7 @@ export default function Play() {
                         submitAnswer()
                       }
                     }}
+                    autoFocus
                     disabled={isSubmitting}
                     className={`w-32 text-center text-3xl font-bold rounded-xl border-3 p-3 transition-all shadow-sm ${isSubmitting
                       ? 'bg-gray-100 border-gray-300 cursor-not-allowed opacity-50'
@@ -351,7 +358,11 @@ export default function Play() {
             <div className="flex flex-col">
               <div className="flex justify-end mb-2">
                 <button
-                  onClick={() => setShowKeypad(!showKeypad)}
+                  onClick={() => {
+                    setShowKeypad(!showKeypad)
+                    // Ensure focus returns to input after toggling keypad
+                    setTimeout(() => inputRef.current?.focus(), 50)
+                  }}
                   className="text-xs text-gray-400 hover:text-nutti-primary flex items-center gap-1 transition-colors"
                 >
                   {showKeypad ? '🔽 Piilota' : '🔼 Näytä'}
@@ -360,7 +371,13 @@ export default function Play() {
 
               {showKeypad && (
                 <div className={`transition-all duration-300 ${isSubmitting ? 'opacity-30 pointer-events-none' : 'opacity-75 hover:opacity-100'}`}>
-                  <Keypad value={userInput} onChange={setUserInput} onSubmit={submitAnswer} onHint={requestHint} />
+                  <Keypad 
+                    value={userInput} 
+                    onChange={setUserInput} 
+                    onSubmit={submitAnswer} 
+                    onHint={requestHint}
+                    inputRef={inputRef}
+                  />
 
                   {/* Instructions - compact */}
                   <div className="mt-3 p-2 bg-gray-50 rounded-lg border border-gray-200 text-center opacity-60">

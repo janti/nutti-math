@@ -112,7 +112,7 @@ export default function MenuPage() {
     }
 
     return (
-        <div className="h-[750px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 overflow-hidden flex items-start justify-center py-2">
+        <div className="h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 overflow-hidden flex items-start justify-center py-2">
             <div className="max-w-4xl mx-auto w-full px-4">
                 {/* Main content card with background */}
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 max-h-[98vh] overflow-y-auto">
