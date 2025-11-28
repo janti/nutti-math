@@ -1,10 +1,10 @@
 {
   "app": {
-    "title": "Nutti the Squirrel – Math Game"
+    "title": "Nutti Squirrel – Math Game"
   },
   "landing": {
     "title": "Nutti Math",
-    "subtitle": "Master multiplication tables with your friendly squirrel companion!",
+    "subtitle": "Learn math with your fun squirrel friend!",
     "cta": "Play Now",
     "feature1": "Targeted Practice",
     "feature2": "Fun Story",
@@ -20,73 +20,73 @@
     "equations": "Equations"
   },
   "home": {
-    "heading": "Nutti the Squirrel – Math Game",
-    "subtitle": "100 multiplications • 10 rounds • feedback in breaks",
+    "heading": "Nutti Squirrel – Math Game",
+    "subtitle": "100 calculations • 10 rounds • feedback during breaks",
     "alias": "Nickname",
     "difficulty": "Difficulty",
-    "start": "Start game",
+    "start": "Start Game",
     "mix": "Mix",
     "kb": "Keyboard: 0–9, Enter, Backspace, H (hint).",
-    "kbStart": "Tip: Type your name and press Enter to start!",
-    "roundCount": "Number of rounds",
-    "gameInfo": "10 tasks per round • Nutti's feedback in breaks",
+    "kbStart": "Hint: Type name and press Enter to start!",
+    "roundCount": "Rounds",
+    "gameInfo": "10 tasks per round • Nutti's feedback on breaks",
     "rounds": "Rounds",
     "topic": "Topic",
     "teacherView": "Teacher View",
-    "readStory": "Read story"
+    "readStory": "Read Story"
   },
   "story": {
-    "skip": "Skip story",
+    "skip": "Skip Story",
     "previous": "Previous",
     "next": "Next",
-    "start": "Let's start!",
+    "start": "Let's Start!",
     "page": "Page",
     "mute": "🔇 Mute",
     "unmute": "🔊 Unmute",
-    "readAgain": "🎤 Read aloud",
+    "readAgain": "🎤 Read Aloud",
     "reading": "🎤 Reading...",
     "loading": "⏳ Loading...",
     "muted": "🔇 Muted",
-    "stopReading": "⏹️ Stop reading",
+    "stopReading": "⏹️ Stop Reading",
     "pages": {
       "1": {
-        "title": "Nutti the Squirrel and the Secret of Nuts",
-        "text": "Once upon a time there was a lively squirrel named Nutti who lived in a big oak tree. Nutti was different from other squirrels - he loved mathematics!"
+        "title": "Nutti Squirrel and the Secret of Nuts",
+        "text": "Once upon a time, there was a lively squirrel named Nutti who lived in a big oak tree. Nutti was different from other squirrels - he loved mathematics!"
       },
       "2": {
         "title": "Preparing for Winter",
-        "text": "Autumn was coming and Nutti knew he had to collect nuts for the winter. But how many nuts would he really need?"
+        "text": "Autumn was coming, and Nutti knew he had to collect nuts for the winter. But how many nuts would he actually need?"
       },
       "3": {
         "title": "The Power of Multiplication Tables",
-        "text": "Nutti remembered that his grandmother had taught him multiplication tables. 'If you collect 7 nuts a day for 8 days, how many will you have in total?' grandma had asked."
+        "text": "Nutti remembered that his grandmother had taught him multiplication tables. 'If you collect 7 nuts a day for 8 days, how many do you have in total?' grandmother had asked."
       },
       "4": {
         "title": "The Adventure Begins",
-        "text": "Nutti decided he would learn all the multiplication tables perfectly. This way he could quickly calculate how many nuts he would have at any time!"
+        "text": "Nutti decided he would learn all multiplication tables perfectly. That way, he could quickly calculate how many nuts he had at any time!"
       },
       "5": {
         "title": "Join Nutti's Adventure!",
-        "text": "Now you can help Nutti learn the multiplication tables! Every correct answer helps Nutti collect nuts for the winter. Are you ready?"
+        "text": "Now you can help Nutti learn multiplication tables! Every correct answer helps Nutti collect nuts for the winter. Are you ready?"
       }
     },
     "funFacts": {
-      "page3": "Did you know? 7 × 8 = 56 nuts! That would last Nutti almost two weeks.",
-      "page5": "Tip: Use the keyboard: 0-9, Enter, Backspace and H (hint)!"
+      "page3": "Did you know? 7 × 8 = 56 nuts! That would be enough for Nutti for almost two weeks.",
+      "page5": "Hint: Use the keyboard: 0-9, Enter, Backspace, and H (hint)!"
     }
   },
   "acorns": {
     "reward": "Acorn Reward!",
     "earned": "You earned {count} acorn{plural}!",
     "collection": "Acorn Collection",
-    "total": "You collected {total} acorns in {rounds} rounds!",
+    "total": "You collected a total of {total} nuts in {rounds} rounds!",
     "acorns": "Acorns",
     "acornsCount": "{count} acorns in {rounds} rounds"
   },
   "teacher": {
     "title": "Teacher View",
-    "selectStudent": "Select student:",
-    "allStudents": "All students",
+    "selectStudent": "Select Student:",
+    "allStudents": "All Students",
     "stats": "Statistics",
     "games": "Games",
     "questions": "Questions",
@@ -95,31 +95,31 @@
     "accuracy": "Accuracy",
     "hints": "Hints",
     "time": "Time",
-    "averageTime": "Average time",
-    "gameHistory": "Game history",
+    "averageTime": "Average Time",
+    "gameHistory": "Game History",
     "difficulty": "Difficulty",
     "speed": "Speed",
     "perQuestion": "per question",
-    "showDetails": "Show details",
+    "showDetails": "Show Details",
     "correct_answer": "correct",
     "hint_count": "hint",
-    "exportData": "Export data",
-    "clearAll": "Clear all",
+    "exportData": "Export Data",
+    "clearAll": "Clear All",
     "clearConfirm": "Are you sure you want to delete all results? This cannot be undone.",
     "noResults": "No results for student:",
     "selectToView": "Select a student to view results",
-    "roundBreakdown": "Round breakdown",
+    "roundBreakdown": "Round Breakdown",
     "roundNumber": "Round {number}",
-    "totalRounds": "Total rounds: {count}",
+    "totalRounds": "Total Rounds: {count}",
     "questionsPerRound": "questions/round",
-    "roundStats": "{correct}/{total} correct, {time}s, {hints} hints",
+    "roundStats": "{correct}/{total} correct, {time}s, {hints} hint",
     "perGame": "game",
-    "allStudentsStats": "All students - Statistics",
-    "allGames": "All games",
+    "allStudentsStats": "All Students - Statistics",
+    "allGames": "All Games",
     "studentStats": "{student} - Statistics",
-    "studentHistory": "{student} - Game history",
+    "studentHistory": "{student} - Game History",
     "noGamesYet": "No games played yet. Play a game first!",
-    "resultsWillShow": "Results will appear here when students have played games."
+    "resultsWillShow": "Results will appear here once students have played games."
   },
   "play": {
     "round": "Round {n} / 10",
@@ -144,16 +144,16 @@
   "break": {
     "done": "Round complete!",
     "stats": "Correct {correct}/{total}, total time {totalTime} s, average {avg} s.",
-    "generating": "Generating feedback…",
+    "generating": "Generating feedback...",
     "continue": "Continue to next round",
-    "stop": "Finish",
+    "stop": "Quit",
     "allRounds": "All rounds:",
     "roundResult": "Round {round}: {seconds} s",
-    "currentStats": "This round's stats",
-    "totalCorrect": "Total correct",
-    "totalTime": "Total time",
+    "currentStats": "Current round stats",
+    "totalCorrect": "Total Correct",
+    "totalTime": "Total Time",
     "averageTime": "Average",
-    "previousRounds": "Previous rounds",
+    "previousRounds": "Previous Rounds",
     "nuttiSays": "Nutti says",
     "skipAiFeedback": "Nutti's feedback skipped",
     "correct": "{correct}/{total} correct",
@@ -163,49 +163,42 @@
   },
   "results": {
     "title": "Great practice!",
-    "summary": "Total {total} tasks, correct {correct}. Time spent {seconds} s.",
+    "summary": "Total {total} tasks, {correct} correct. Time {seconds} s.",
     "tasks": "Tasks",
     "correct": "Correct",
     "accuracy": "Accuracy",
-    "totalTime": "Total time",
-    "roundDetails": "Round details",
+    "totalTime": "Total Time",
+    "roundDetails": "Round Details",
     "round": "Round {number}",
-    "newGame": "New game",
-    "finalFeedback": "Nutti's Final Words",
+    "newGame": "New Game",
+    "finalFeedback": "Nutti's Final Feedback",
     "generatingFinalFeedback": "Nutti is thinking...",
     "finalFeedbackSkipped": "Final feedback skipped"
   },
   "alias": {
-    "placeholder": "e.g., Starry"
+    "placeholder": "e.g. Star"
   },
   "difficulty": {
     "1-5": "1–5",
     "1-10": "1–10",
     "6-10": "6–10",
-    "2-12": "2–12"
+    "2-12": "2–12",
+    "1-12": "1–12"
   },
   "common": {
-    "unknown": "Unknown",
-    "round": "Round",
-    "rounds": "Rounds",
-    "acorns": "Acorns",
-    "totalAcorns": "Total Acorns",
-    "acornsEarned": "Acorns Earned",
-    "performance": "Performance",
-    "speed": "Speed",
-    "average": "Average"
+    "unknown": "Unknown"
   },
   "layout": {
-    "nuttiAlt": "Nutti the Squirrel mascot"
+    "nuttiAlt": "Nutti Squirrel Mascot"
   },
   "nutti": {
-    "name": "Nutti the Squirrel",
+    "name": "Nutti Squirrel",
     "fallbackIcon": "🐿️",
-    "screenReader": "Mascot: Nutti the Squirrel, mood {mood}",
+    "screenReader": "Mascot: Nutti Squirrel, mood {mood}",
     "moods": {
       "happy": "🍯 Ready to help!",
       "thinking": "🧮 Let's calculate together!",
-      "excited": "🎉 Great work!"
+      "excited": "🎉 Great job!"
     }
   },
   "icons": {
@@ -246,6 +239,7 @@
       "10": "🔟"
     },
     "difficulty6to10": "🌟",
+    "difficulty1to12": "📚",
     "difficulty2to12": "🍪",
     "difficultyMix": "🍬",
     "pointingDown": "👇"

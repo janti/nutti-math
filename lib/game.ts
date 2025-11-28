@@ -26,7 +26,7 @@ export function calculateTotalAcorns(rounds: Array<{ correct: number, total: num
   return rounds.reduce((sum, round) => sum + calculateAcorns(round.correct, round.total, round.avgMs), 0)
 }
 
-export function factPool(range: '1-5' | '1-10' | '6-10' | '2-12' | 'mix'): Fact[] {
+export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix'): Fact[] {
   let start: number, end: number
 
   switch (range) {
@@ -36,6 +36,8 @@ export function factPool(range: '1-5' | '1-10' | '6-10' | '2-12' | 'mix'): Fact[
       start = 1; end = 10; break
     case '6-10':
       start = 6; end = 10; break
+    case '1-12':
+      start = 1; end = 12; break
     case '2-12':
       start = 2; end = 12; break
     case 'mix':

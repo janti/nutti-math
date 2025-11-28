@@ -7,7 +7,7 @@ import NuttiBadge from '@/components/NuttiBadge'
 // TypeScript interfaces
 interface GameSettings {
     alias: string
-    range: '1-5' | '1-10' | '6-10' | '2-12' | 'mix'
+    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix'
     rounds: 1 | 2 | 3 | 5 | 10
 }
 
@@ -17,7 +17,7 @@ export default function MenuPage() {
 
     // Game configuration state
     const [alias, setAlias] = useState('')
-    const [range, setRange] = useState<GameSettings['range']>('1-5')
+    const [range, setRange] = useState<GameSettings['range']>('1-10')
     const [rounds, setRounds] = useState<GameSettings['rounds']>(1)
     const [topic, setTopic] = useState('multiplication')
 
@@ -98,34 +98,34 @@ export default function MenuPage() {
     ]
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-nutti-beige/30 via-white to-cyan-50/40 py-4">
-            <div className="max-w-4xl mx-auto">
+        <div className="h-[750px] bg-gradient-to-br from-nutti-beige/30 via-white to-cyan-50/40 overflow-hidden flex items-start justify-center py-2">
+            <div className="max-w-4xl mx-auto w-full px-4">
                 {/* Main content card with background */}
-                <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-6 space-y-4">
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 max-h-[98vh] overflow-y-auto">
                     {/* Header - compact */}
-                    <div className="text-center mb-1">
+                    <div className="text-center">
                         <NuttiBadge />
                     </div>
 
-                    {/* Main content - normal grid without flex-1 */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {/* Main content - grid with top alignment and spacing */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mt-4">
 
                         {/* Left column: Title and alias */}
-                        <div className="space-y-3">
-                            <div className="card bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-nutti-teal/30 p-4">
-                                <div className="text-center mb-4">
-                                    <div className="text-2xl mb-2">{t('icons.gameInfo')}</div>
-                                    <h1 className="text-2xl font-extrabold mb-3 text-nutti-teal">{t('home.heading')}</h1>
-                                    <p className="text-base text-nutti-orange font-semibold bg-white/70 rounded-xl p-3 border border-nutti-beige">
+                        <div className="flex flex-col gap-3 h-full">
+                            <div className="card bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-nutti-teal/30 p-4 h-full flex flex-col justify-between">
+                                <div className="text-center mb-2">
+                                    <div className="text-xl mb-1">{t('icons.gameInfo')}</div>
+                                    <h1 className="text-xl font-extrabold mb-2 text-nutti-teal">{t('home.heading')}</h1>
+                                    <p className="text-sm text-nutti-orange font-semibold bg-white/70 rounded-xl p-2 border border-nutti-beige">
                                         {t('home.gameInfo', { rounds })}
                                     </p>
                                 </div>
 
                                 {/* Alias input */}
-                                <div className="p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-nutti-orange/30">
-                                    <div className="text-center mb-3">
-                                        <span className="text-xl">{t('icons.alias')}</span>
-                                        <span className="text-base font-bold text-orange-700 ml-2">{t('home.alias')}</span>
+                                <div className="p-2 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl border border-nutti-orange/30">
+                                    <div className="text-center mb-2">
+                                        <span className="text-lg">{t('icons.alias')}</span>
+                                        <span className="text-sm font-bold text-orange-700 ml-2">{t('home.alias')}</span>
                                     </div>
                                     <input
                                         value={alias}
@@ -135,53 +135,27 @@ export default function MenuPage() {
                                                 startNewGame()
                                             }
                                         }}
-                                        className="w-full rounded-lg border border-nutti-beige p-3 text-xl text-center font-semibold bg-white/90 focus:ring-2 focus:ring-nutti-orange/30 focus:border-nutti-orange transition-all"
+                                        className="w-full rounded-lg border border-nutti-beige p-2 text-lg text-center font-semibold bg-white/90 focus:ring-2 focus:ring-nutti-orange/30 focus:border-nutti-orange transition-all"
                                         placeholder={t('alias.placeholder') as string}
                                     />
-                                </div>
-                            </div>
-
-                            {/* Topic Selection */}
-                            <div className="card bg-gradient-to-br from-purple-50 to-fuchsia-50 border-2 border-purple-200 p-4">
-                                <div className="text-center mb-3">
-                                    <span className="text-xl">📚</span>
-                                    <span className="text-base font-bold text-purple-700 ml-2">{t('home.topic')}</span>
-                                </div>
-                                <div className="grid grid-cols-3 gap-2">
-                                    {topics.map((tItem) => (
-                                        <button
-                                            key={tItem.id}
-                                            onClick={() => tItem.enabled && setTopic(tItem.id)}
-                                            disabled={!tItem.enabled}
-                                            className={`p-2 rounded-lg border-2 transition-all flex flex-col items-center justify-center gap-1 ${topic === tItem.id
-                                                ? 'bg-purple-100 border-purple-400 text-purple-800 shadow-md'
-                                                : tItem.enabled
-                                                    ? 'bg-white border-gray-200 text-gray-700 hover:bg-purple-50'
-                                                    : 'bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed'
-                                                }`}
-                                        >
-                                            <span className="text-xl">{tItem.icon}</span>
-                                            <span className="text-xs font-medium">{t(`topics.${tItem.label}`)}</span>
-                                        </button>
-                                    ))}
                                 </div>
                             </div>
                         </div>
 
                         {/* Right column: Settings */}
-                        <div className="space-y-3">
+                        <div className="flex flex-col gap-3">
                             {/* Rounds selection */}
-                            <div className="card bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 p-4">
-                                <div className="text-center mb-3">
-                                    <span className="text-xl">{t('icons.rounds')}</span>
-                                    <span className="text-base font-bold text-green-700 ml-2">{t('home.rounds')}</span>
+                            <div className="card bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 p-3">
+                                <div className="text-center mb-2">
+                                    <span className="text-lg">{t('icons.rounds')}</span>
+                                    <span className="text-sm font-bold text-green-700 ml-2">{t('home.rounds')}</span>
                                 </div>
                                 <div className="grid grid-cols-5 gap-2">
                                     {[1, 2, 3, 5, 10].map(n => (
                                         <button
                                             key={n}
                                             onClick={() => setRounds(n as GameSettings['rounds'])}
-                                            className={`py-3 text-base font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${rounds === n
+                                            className={`py-2 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${rounds === n
                                                 ? 'bg-gradient-to-r from-green-200 to-emerald-200 border-green-400 text-green-700 shadow-lg'
                                                 : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-green-50'
                                                 }`}
@@ -193,15 +167,15 @@ export default function MenuPage() {
                             </div>
 
                             {/* Difficulty selection */}
-                            <div className="card bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 p-4">
-                                <div className="text-center mb-3">
-                                    <span className="text-xl">{t('icons.difficulty')}</span>
-                                    <span className="text-base font-bold text-red-700 ml-2">{t('home.difficulty')}</span>
+                            <div className="card bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 p-3">
+                                <div className="text-center mb-2">
+                                    <span className="text-lg">{t('icons.difficulty')}</span>
+                                    <span className="text-sm font-bold text-red-700 ml-2">{t('home.difficulty')}</span>
                                 </div>
                                 <div className="grid grid-cols-2 gap-2">
                                     <button
                                         onClick={() => setRange('1-5')}
-                                        className={`py-3 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-5'
+                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-5'
                                             ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
                                             : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
                                             }`}
@@ -209,17 +183,8 @@ export default function MenuPage() {
                                         🧸 1-5
                                     </button>
                                     <button
-                                        onClick={() => setRange('6-10')}
-                                        className={`py-3 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '6-10'
-                                            ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
-                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
-                                            }`}
-                                    >
-                                        {t('icons.difficulty6to10')} 6-10
-                                    </button>
-                                    <button
                                         onClick={() => setRange('1-10')}
-                                        className={`py-3 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10'
+                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10'
                                             ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
                                             : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
                                             }`}
@@ -227,8 +192,26 @@ export default function MenuPage() {
                                         1-10
                                     </button>
                                     <button
+                                        onClick={() => setRange('6-10')}
+                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '6-10'
+                                            ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
+                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
+                                            }`}
+                                    >
+                                        {t('icons.difficulty6to10')} 6-10
+                                    </button>
+                                    <button
+                                        onClick={() => setRange('1-12')}
+                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-12'
+                                            ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
+                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
+                                            }`}
+                                    >
+                                        {t('icons.difficulty1to12')} 1-12
+                                    </button>
+                                    <button
                                         onClick={() => setRange('2-12')}
-                                        className={`py-3 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '2-12'
+                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '2-12'
                                             ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
                                             : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
                                             }`}
@@ -237,7 +220,7 @@ export default function MenuPage() {
                                     </button>
                                     <button
                                         onClick={() => setRange('mix')}
-                                        className={`py-3 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 col-span-2 ${range === 'mix'
+                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix'
                                             ? 'bg-gradient-to-r from-nutti-beige to-yellow-200 border-nutti-orange text-nutti-orange shadow-lg'
                                             : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-beige/50'
                                             }`}
@@ -249,13 +232,39 @@ export default function MenuPage() {
                         </div>
                     </div>
 
+                    {/* Topic Selection - Full Width */}
+                    <div className="card bg-gradient-to-br from-purple-50 to-fuchsia-50 border-2 border-purple-200 p-3 mt-3">
+                        <div className="text-center mb-2">
+                            <span className="text-lg">📚</span>
+                            <span className="text-sm font-bold text-purple-700 ml-2">{t('home.topic')}</span>
+                        </div>
+                        <div className="grid grid-cols-3 lg:grid-cols-6 gap-2">
+                            {topics.map((tItem) => (
+                                <button
+                                    key={tItem.id}
+                                    onClick={() => tItem.enabled && setTopic(tItem.id)}
+                                    disabled={!tItem.enabled}
+                                    className={`p-2 rounded-lg border-2 transition-all flex flex-col items-center justify-center gap-1 ${topic === tItem.id
+                                        ? 'bg-purple-100 border-purple-400 text-purple-800 shadow-md'
+                                        : tItem.enabled
+                                            ? 'bg-white border-gray-200 text-gray-700 hover:bg-purple-50'
+                                            : 'bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed'
+                                        }`}
+                                >
+                                    <span className="text-lg">{tItem.icon}</span>
+                                    <span className="text-xs font-medium">{t(`topics.${tItem.label}`)}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
                     {/* Bottom section - better visual separation */}
-                    <div className="mt-6 pt-4 border-t border-gray-100">
-                        <div className="space-y-4">
+                    <div className="mt-2 pt-2 border-t border-gray-100">
+                        <div className="space-y-1.5">
                             {/* Start button with better visual hierarchy */}
                             <div className="text-center">
                                 <button
-                                    className={`text-xl px-12 py-4 font-bold rounded-xl shadow-lg transform transition-all ${alias.trim()
+                                    className={`text-lg px-8 py-3 font-bold rounded-xl shadow-lg transform transition-all ${alias.trim()
                                         ? 'bg-gradient-to-r from-nutti-teal to-cyan-500 text-white hover:from-nutti-teal/90 hover:to-cyan-500/90 hover:scale-105 focus:ring-4 focus:ring-nutti-teal/30'
                                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                         }`}
@@ -267,12 +276,12 @@ export default function MenuPage() {
                             </div>
 
                             {/* Instructions */}
-                            <div className="p-3 bg-gradient-to-r from-gray-50 to-slate-50 rounded-xl border border-gray-200 text-center">
-                                <span className="text-base">{t('icons.keyboard')}</span>
+                            <div className="p-2 bg-gradient-to-r from-gray-50 to-slate-50 rounded-xl border border-gray-200 text-center">
+                                <span className="text-sm">{t('icons.keyboard')}</span>
                                 {alias.trim() ? (
-                                    <p className="text-sm text-nutti-teal font-bold mt-2 animate-pulse">{t('home.kbStart')}</p>
+                                    <p className="text-xs text-nutti-teal font-bold mt-1 animate-pulse">{t('home.kbStart')}</p>
                                 ) : (
-                                    <p className="text-sm text-slate-600 font-medium mt-2">{t('home.kb')}</p>
+                                    <p className="text-xs text-slate-600 font-medium mt-1">{t('home.kb')}</p>
                                 )}
                             </div>
                         </div>

@@ -26,7 +26,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-nutti-beige/30 via-white to-cyan-50/40 flex flex-col items-center justify-center p-4">
+    <div className="h-[750px] bg-gradient-to-br from-nutti-beige/30 via-white to-cyan-50/40 flex flex-col items-center justify-center p-4 overflow-hidden">
       <div className="max-w-2xl w-full bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/50 p-8 text-center space-y-8">
         <div className="transform hover:scale-105 transition-transform duration-300">
           <NuttiBadge />

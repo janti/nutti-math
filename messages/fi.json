@@ -4,7 +4,7 @@
   },
   "landing": {
     "title": "Nutti Matikka",
-    "subtitle": "Opi kertotaulut hauskan orava-kaverin kanssa!",
+    "subtitle": "Opi matematiikkaa hauskan orava-kaverin kanssa!",
     "cta": "Pelaa Nyt",
     "feature1": "Kohdennettu harjoittelu",
     "feature2": "Hauska tarina",
@@ -182,7 +182,8 @@
     "1-5": "1–5",
     "1-10": "1–10",
     "6-10": "6–10",
-    "2-12": "2–12"
+    "2-12": "2–12",
+    "1-12": "1–12"
   },
   "common": {
     "unknown": "Tuntematon"
@@ -238,6 +239,7 @@
       "10": "🔟"
     },
     "difficulty6to10": "🌟",
+    "difficulty1to12": "📚",
     "difficulty2to12": "🍪",
     "difficultyMix": "🍬",
     "pointingDown": "👇"
