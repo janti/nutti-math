@@ -112,10 +112,10 @@ export default function MenuPage() {
     }
 
     return (
-        <div className="min-h-screen lg:h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 overflow-auto lg:overflow-hidden flex items-start justify-center py-2">
-            <div className="max-w-4xl mx-auto w-full px-4 min-h-[calc(100vh-1rem)] lg:h-full flex flex-col">
+        <div className="h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 overflow-hidden flex items-start justify-center py-2">
+            <div className="max-w-4xl mx-auto w-full px-4 h-full flex flex-col">
                 {/* Main content card with background */}
-                <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 flex-1 min-h-0 overflow-y-auto flex flex-col">
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 flex-1 overflow-y-auto flex flex-col">
                     {/* Header - full width */}
                     <div className="text-center mb-2 relative flex-shrink-0">
                         <NuttiBadge />

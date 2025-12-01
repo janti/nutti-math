@@ -171,8 +171,8 @@
     "totalTime": "Total Time",
     "roundDetails": "Round Details",
     "round": "Round {number}",
-    "newGame": "New Game",
-    "finalFeedback": "Nutti's Final Feedback",
+    "newGame": "Back to start",
+    "finalFeedback": "Nutti's final feedback",
     "generatingFinalFeedback": "Nutti is thinking...",
     "finalFeedbackSkipped": "Final feedback skipped"
   },

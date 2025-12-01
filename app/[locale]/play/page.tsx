@@ -259,7 +259,7 @@ export default function Play() {
 
 
   return (
-    <div className="h-[800px] bg-gradient-to-br from-blue-50/40 via-white to-nutti-primary/10 py-4 overflow-y-auto">
+    <div className="h-[800px] bg-gradient-to-br from-blue-50/40 via-white to-nutti-primary/10 py-4 overflow-hidden">
       <div className="max-w-4xl mx-auto h-full">
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 space-y-3 h-full flex flex-col relative">
 

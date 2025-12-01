@@ -32,20 +32,20 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen lg:max-h-[800px] lg:h-[800px] bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
+    <div className="h-[800px] bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute top-10 left-10 w-16 h-16 bg-yellow-200 rounded-full opacity-20 animate-pulse"></div>
       <div className="absolute top-32 right-16 w-12 h-12 bg-pink-200 rounded-full opacity-30 animate-bounce delay-1000"></div>
       <div className="absolute bottom-20 left-20 w-10 h-10 bg-green-200 rounded-full opacity-25 animate-pulse delay-2000"></div>
       
-      <div className="max-w-4xl mx-auto h-full min-h-screen lg:min-h-0 px-4">
-        <div className="h-full min-h-screen lg:min-h-0 flex flex-col py-4 lg:py-4">
+      <div className="max-w-4xl mx-auto h-full px-4">
+        <div className="h-full flex flex-col py-4">
           {/* Header Section */}
-          <div className="text-center mb-4 lg:mb-2">
-            <div className="mb-4 lg:mb-3">
+          <div className="text-center mb-2">
+            <div className="mb-3">
               <NuttiBadge />
             </div>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-nutti-primary via-purple-600 to-pink-500 mb-4 lg:mb-3">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-nutti-primary via-purple-600 to-pink-500 mb-3">
               {t('title')}
             </h1>
             <p className="text-base md:text-lg text-gray-700 font-medium leading-relaxed max-w-2xl mx-auto">
