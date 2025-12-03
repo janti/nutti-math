@@ -133,7 +133,9 @@
     "quit": "Avsluta spel",
     "quitConfirm": "Är du säker på att du vill avsluta?",
     "quitCancel": "Avbryt",
-    "quitOk": "Avsluta"
+    "quitOk": "Avsluta",
+    "correct": "Rätt!",
+    "incorrect": "Fel"
   },
   "keypad": {
     "title": "Nummerplatta",

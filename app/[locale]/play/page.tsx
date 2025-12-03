@@ -57,6 +57,8 @@ export default function Play() {
   const [showEmptyHint, setShowEmptyHint] = useState(false)
   const [showKeypad, setShowKeypad] = useState(true)
   const [showQuitConfirm, setShowQuitConfirm] = useState(false)
+  const [showFeedback, setShowFeedback] = useState(false)
+  const [feedbackType, setFeedbackType] = useState<'correct' | 'incorrect' | null>(null)
 
   const handleQuit = () => {
     router.push(`/${locale}/menu`)
@@ -132,8 +134,8 @@ export default function Play() {
     // Calculate answer metrics
     const timeSpentMs = Math.round(performance.now() - questionStartTime.current)
     const userAnswer = Number(userInput || NaN)
-    const correctAnswer = settings.gameType === 'addition' 
-      ? currentQuestion.a + currentQuestion.b 
+    const correctAnswer = settings.gameType === 'addition'
+      ? currentQuestion.a + currentQuestion.b
       : currentQuestion.a * currentQuestion.b
     const isCorrect = userAnswer === correctAnswer
 
@@ -154,12 +156,22 @@ export default function Play() {
     const updatedAnswers = [...answers, answerEntry]
     setAnswers(updatedAnswers)
 
-    // Check if round is complete
-    if (currentQuestionIndex + 1 >= facts.length) {
-      saveRoundAndNavigate(updatedAnswers)
-    } else {
-      moveToNextQuestion()
-    }
+    // Show visual feedback
+    setFeedbackType(isCorrect ? 'correct' : 'incorrect')
+    setShowFeedback(true)
+
+    // Wait for feedback animation, then proceed
+    setTimeout(() => {
+      setShowFeedback(false)
+      setFeedbackType(null)
+
+      // Check if round is complete
+      if (currentQuestionIndex + 1 >= facts.length) {
+        saveRoundAndNavigate(updatedAnswers)
+      } else {
+        moveToNextQuestion()
+      }
+    }, 150)
 
     console.log('Question completed. Moving to next question, hints reset to 0')
   }
@@ -214,17 +226,17 @@ export default function Play() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          ...currentQuestion, 
-          locale, 
-          gameType: settings.gameType 
+        body: JSON.stringify({
+          ...currentQuestion,
+          locale,
+          gameType: settings.gameType
         })
       })
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
-      
+
       const { hint } = await response.json()
       setHint(hint)
       setCurrentHints(prev => prev + 1)
@@ -262,6 +274,7 @@ export default function Play() {
     <div className="h-[800px] bg-gradient-to-br from-blue-50/40 via-white to-nutti-primary/10 py-4 overflow-hidden">
       <div className="max-w-4xl mx-auto h-full">
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 space-y-3 h-full flex flex-col relative">
+
 
           {/* Quit Confirmation Modal */}
           {showQuitConfirm && (
@@ -364,13 +377,25 @@ export default function Play() {
                     {isSubmitting ? '⏳' : t('icons.lightning')} {t('play.submit')}
                   </button>
                 </div>
-                {/* Fixed space for hint message to prevent layout jumping */}
-                <div className="h-6 mt-2 flex justify-center">
-                  {showEmptyHint && (
+                {/* Fixed space for feedback and hint messages */}
+                <div className="h-8 mt-3 flex justify-center items-center">
+                  {showFeedback && feedbackType ? (
+                    <div className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${feedbackType === 'correct'
+                      ? 'bg-green-100 text-green-700 border border-green-300'
+                      : 'bg-red-100 text-red-700 border border-red-300'
+                      }`}>
+                      <span className="text-2xl">
+                        {feedbackType === 'correct' ? '✓' : '✗'}
+                      </span>
+                      <span className="font-semibold text-sm">
+                        {feedbackType === 'correct' ? t('play.correct') : t('play.incorrect')}
+                      </span>
+                    </div>
+                  ) : showEmptyHint ? (
                     <p className="text-sm text-red-600 animate-pulse">
                       {t('icons.pointingDown')} {t('play.enterAnswerHint')}
                     </p>
-                  )}
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -392,10 +417,10 @@ export default function Play() {
                 </div>
 
                 <div className={`transition-all duration-300 space-y-3 ${isSubmitting ? 'opacity-30 pointer-events-none' : 'opacity-75 hover:opacity-100'}`}>
-                  <Keypad 
-                    value={userInput} 
-                    onChange={setUserInput} 
-                    onSubmit={submitAnswer} 
+                  <Keypad
+                    value={userInput}
+                    onChange={setUserInput}
+                    onSubmit={submitAnswer}
                     onHint={requestHint}
                     inputRef={inputRef}
                   />
