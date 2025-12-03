@@ -24,7 +24,7 @@ interface RoundData {
 interface GameSettings {
   rounds: number
   range: string
-  gameType?: 'multiplication' | 'addition' | 'equations'
+  gameType?: 'multiplication' | 'addition' | 'equations' | 'division'
 }
 
 export default function Break() {

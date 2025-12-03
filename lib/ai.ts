@@ -34,7 +34,7 @@ const MODEL = hasOpenAI ? 'gpt-3.5-turbo' : (process.env.AZURE_OPENAI_DEPLOYMENT
 
 type Locale = 'fi' | 'en' | 'sv'
 
-function sysHint(locale: Locale, gameType: 'multiplication' | 'addition' | 'equations' = 'multiplication') {
+function sysHint(locale: Locale, gameType: 'multiplication' | 'addition' | 'equations' | 'division' = 'multiplication') {
   if (gameType === 'addition') {
     switch (locale) {
       case 'en': return 'You are a helpful math tutor for children learning addition. Give a clear, encouraging hint to help solve the addition problem. Never give the direct answer. Focus on counting strategies, number bonds, or mental math tricks. Maximum 15 words. Use simple language.'
@@ -47,6 +47,12 @@ function sysHint(locale: Locale, gameType: 'multiplication' | 'addition' | 'equa
       case 'sv': return 'Du är en hjälpsam mattlärare för barn som lär sig lösa ekvationer med fruktsymboler. Ge ett tydligt, uppmuntrande tips för att hitta det saknade värdet. Ge aldrig det direkta svaret. Fokusera på omvända operationer och logiskt tänkande. Maximalt 15 ord. Använd enkelt språk.'
       default: return 'Olet avulias matematiikanopettaja lapsille, jotka opettelevat yhtälöiden ratkaisemista hedelmäsymboleilla. Anna selkeä, kannustava vihje puuttuvan arvon löytämiseksi. Älä koskaan anna suoraa vastausta. Keskity käänteisiin laskutoimituksiin ja loogiseen ajatteluun. Maksimissaan 15 sanaa. Käytä selkeää kieltä.'
     }
+  } else if (gameType === 'division') {
+    switch (locale) {
+      case 'en': return 'You are a helpful math tutor for children learning division. Give a clear, encouraging hint to help solve the division problem. Never give the direct answer. Focus on inverse multiplication, equal groups, or sharing strategies. Maximum 15 words. Use simple language.'
+      case 'sv': return 'Du är en hjälpsam mattlärare för barn som lär sig division. Ge ett tydligt, uppmuntrande tips för att hjälpa lösa divisionsproblemet. Ge aldrig det direkta svaret. Fokusera på omvänd multiplikation, lika grupper eller delningsstrategier. Maximalt 15 ord. Använd enkelt språk.'
+      default: return 'Olet avulias matematiikanopettaja lapsille, jotka opettelevat jakolaskua. Anna selkeä, kannustava vihje jakolaskun ratkaisemiseksi. Älä koskaan anna suoraa vastausta. Keskity käänteiseen kertolaskuun, yhtä suuriin ryhmiin tai jakamisstrategioihin. Maksimissaan 15 sanaa. Käytä selkeää kieltä.'
+    }
   } else {
     switch (locale) {
       case 'en': return 'You are a helpful math tutor for children learning multiplication tables. Give a clear, encouraging hint to help solve the multiplication problem. Never give the direct answer. Focus on patterns, skip counting, or memory tricks. Maximum 15 words. Use simple language.'
@@ -55,7 +61,7 @@ function sysHint(locale: Locale, gameType: 'multiplication' | 'addition' | 'equa
     }
   }
 }
-function userHint(a: number, b: number, locale: Locale, gameType: 'multiplication' | 'addition' | 'equations' = 'multiplication', equation?: string) {
+function userHint(a: number, b: number, locale: Locale, gameType: 'multiplication' | 'addition' | 'equations' | 'division' = 'multiplication', equation?: string) {
   if (gameType === 'equations' && equation) {
     switch (locale) {
       case 'en': return `Give a helpful hint for solving the equation: ${equation}. Do not give the direct answer. Help the child understand how to find the missing value.`
@@ -67,6 +73,12 @@ function userHint(a: number, b: number, locale: Locale, gameType: 'multiplicatio
       case 'en': return `Give a helpful hint for the addition problem ${a} + ${b}. Do not give the answer ${a + b}. Help the child think about it.`
       case 'sv': return `Ge ett hjälpsamt tips för additionsproblemet ${a} + ${b}. Ge inte svaret ${a + b}. Hjälp barnet att tänka på det.`
       default: return `Anna hyödyllinen vihje yhteenlaskuun ${a} + ${b}. Älä anna vastausta ${a + b}. Auta lasta ajattelemaan asiaa.`
+    }
+  } else if (gameType === 'division') {
+    switch (locale) {
+      case 'en': return `Give a helpful hint for the division problem ${a} ÷ ${b}. Do not give the answer ${a / b}. Help the child think about it.`
+      case 'sv': return `Ge ett hjälpsamt tips för divisionsproblemet ${a} ÷ ${b}. Ge inte svaret ${a / b}. Hjälp barnet att tänka på det.`
+      default: return `Anna hyödyllinen vihje jakolaskuun ${a} ÷ ${b}. Älä anna vastausta ${a / b}. Auta lasta ajattelemaan asiaa.`
     }
   } else {
     switch (locale) {
@@ -94,7 +106,7 @@ function userFeedback(stats: any, locale: Locale) {
   }
 }
 
-export async function aiHint(a: number, b: number, locale: Locale = 'fi', gameType: 'multiplication' | 'addition' | 'equations' = 'multiplication', equation?: string) {
+export async function aiHint(a: number, b: number, locale: Locale = 'fi', gameType: 'multiplication' | 'addition' | 'equations' | 'division' = 'multiplication', equation?: string) {
   const c = createOpenAIClient()
   const r = await (c as any).chat.completions.create({
     model: MODEL,

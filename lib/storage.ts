@@ -9,9 +9,9 @@ export interface GameResult {
   /** Timestamp when the game was completed */
   timestamp: number
   /** Game range played (multiplication or addition) */
-  range: '1-5'|'1-10'|'6-10'|'1-12'|'2-12'|'mix'|'1-10-add'|'1-20-add'|'1-50-add'|'50-100-add'|'1-100-add'|'mix-add'|'equations-easy'|'equations-medium'|'equations-hard'
+  range: '1-5'|'1-10'|'6-10'|'1-12'|'2-12'|'mix'|'1-10-add'|'1-20-add'|'1-50-add'|'50-100-add'|'1-100-add'|'mix-add'|'equations-easy'|'equations-medium'|'equations-hard'|'1-5-div'|'1-10-div'|'1-12-div'|'mix-div'
   /** Game type */
-  gameType?: 'multiplication'|'addition'|'equations'
+  gameType?: 'multiplication'|'addition'|'equations'|'division'
   /** Total number of questions answered */
   totalQuestions: number
   /** Number of correct answers */

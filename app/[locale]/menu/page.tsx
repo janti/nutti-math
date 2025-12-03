@@ -7,9 +7,9 @@ import NuttiBadge from '@/components/NuttiBadge'
 // TypeScript interfaces
 interface GameSettings {
     alias: string
-    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | 'equations-easy' | 'equations-medium' | 'equations-hard'
+    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div'
     rounds: 1 | 2 | 3 | 5 | 10
-    gameType: 'multiplication' | 'addition' | 'equations'
+    gameType: 'multiplication' | 'addition' | 'equations' | 'division'
 }
 
 export default function MenuPage() {
@@ -21,7 +21,7 @@ export default function MenuPage() {
     const [range, setRange] = useState<GameSettings['range']>('1-10')
     const [rounds, setRounds] = useState<GameSettings['rounds']>(1)
     const [topic, setTopic] = useState('multiplication')
-    const [gameType, setGameType] = useState<'multiplication' | 'addition'>('multiplication')
+    const [gameType, setGameType] = useState<'multiplication' | 'addition' | 'division'>('multiplication')
 
     /**
      * Clear localStorage and start a new game with current settings
@@ -98,7 +98,7 @@ export default function MenuPage() {
 
     const topics = [
         { id: 'multiplication', icon: '✖️', label: 'multiplication', enabled: true },
-        { id: 'division', icon: '➗', label: 'division', enabled: false },
+        { id: 'division', icon: '➗', label: 'division', enabled: true },
         { id: 'addition', icon: '➕', label: 'addition', enabled: true },
         { id: 'subtraction', icon: '➖', label: 'subtraction', enabled: false },
         { id: 'wordProblems', icon: '📝', label: 'wordProblems', enabled: false },
@@ -119,6 +119,10 @@ export default function MenuPage() {
             setGameType('equations')
             setRange('equations-easy')
             console.log('Set equations gameType and range to equations-easy')
+        } else if (topicId === 'division') {
+            setGameType('division')
+            setRange('1-5-div')
+            console.log('Set division gameType and range to 1-5-div')
         }
     }
 
@@ -354,6 +358,45 @@ export default function MenuPage() {
                                                     }`}
                                             >
                                                 🍓 {t('difficulty.hard')}
+                                            </button>
+                                        </>
+                                    ) : gameType === 'division' ? (
+                                        <>
+                                            <button
+                                                onClick={() => setRange('1-5-div')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-5-div'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                🧸 1-5
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('1-10-div')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10-div'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                1-10
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('1-12-div')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-12-div'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                1-12
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('mix-div')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix-div'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                {t('icons.difficultyMix')} {t('home.mix')}
                                             </button>
                                         </>
                                     ) : null}

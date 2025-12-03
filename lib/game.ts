@@ -58,9 +58,13 @@ export function calculateTotalAcorns(rounds: Array<{ correct: number, total: num
   return rounds.reduce((sum, round) => sum + calculateAcorns(round.correct, round.total, round.avgMs), 0)
 }
 
-export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | 'equations-easy' | 'equations-medium' | 'equations-hard', gameType: 'multiplication' | 'addition' | 'equations' = 'multiplication'): Fact[] {
+export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div', gameType: 'multiplication' | 'addition' | 'equations' | 'division' = 'multiplication'): Fact[] {
   if (gameType === 'addition') {
     return additionFactPool(range)
+  }
+  
+  if (gameType === 'division') {
+    return divisionFactPool(range)
   }
   
   // For equations, we still return Fact[] but they should be converted to EquationFact[] elsewhere
@@ -206,6 +210,80 @@ function additionFactPool(range: string): Fact[] {
   
   return pool
 }
+
+function divisionFactPool(range: string): Fact[] {
+  const pool: Fact[] = []
+  
+  switch (range) {
+    case '1-5-div':
+      // Generate division facts with divisors 1-5 and results 1-5
+      for (let b = 1; b <= 5; b++) {
+        for (let result = 1; result <= 5; result++) {
+          const a = b * result // Ensure exact division
+          pool.push({ a, b })
+        }
+      }
+      break
+    case '1-10-div':
+      // Generate division facts with divisors 1-10 and results 1-10
+      for (let b = 1; b <= 10; b++) {
+        for (let result = 1; result <= 10; result++) {
+          const a = b * result
+          pool.push({ a, b })
+        }
+      }
+      break
+    case '1-12-div':
+      // Generate division facts with divisors 1-12 and results 1-12
+      for (let b = 1; b <= 12; b++) {
+        for (let result = 1; result <= 12; result++) {
+          const a = b * result
+          pool.push({ a, b })
+        }
+      }
+      break
+    case 'mix-div':
+      // Generate a mix of division facts
+      // Include facts from 1-5 range
+      for (let b = 1; b <= 5; b++) {
+        for (let result = 1; result <= 5; result++) {
+          const a = b * result
+          pool.push({ a, b })
+        }
+      }
+      // Include some facts from 1-10 range
+      for (let b = 1; b <= 10; b++) {
+        for (let result = 1; result <= 10; result++) {
+          const a = b * result
+          if (Math.random() < 0.7) { // 70% chance to include
+            pool.push({ a, b })
+          }
+        }
+      }
+      // Include some facts from 1-12 range  
+      for (let b = 1; b <= 12; b++) {
+        for (let result = 1; result <= 12; result++) {
+          const a = b * result
+          if (Math.random() < 0.3) { // 30% chance to include
+            pool.push({ a, b })
+          }
+        }
+      }
+      break
+    default:
+      // Default to 1-5 for unknown ranges
+      for (let b = 1; b <= 5; b++) {
+        for (let result = 1; result <= 5; result++) {
+          const a = b * result
+          pool.push({ a, b })
+        }
+      }
+      break
+  }
+  
+  return pool
+}
+
 export const shuffle = <T,>(arr: T[]) => arr.map(v => [Math.random(), v] as const).sort((a, b) => a[0] - b[0]).map(x => x[1])
 export const pickFacts = (pool: Fact[], n: number) => {
   const result = shuffle(pool).slice(0, n)

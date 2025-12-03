@@ -21,9 +21,9 @@ interface Answer {
 
 interface GameSettings {
   alias: string
-  range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | 'equations-easy' | 'equations-medium' | 'equations-hard'
+  range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div'
   rounds: number
-  gameType: 'multiplication' | 'addition' | 'equations'
+  gameType: 'multiplication' | 'addition' | 'equations' | 'division'
 }
 
 interface Fact {
@@ -182,6 +182,8 @@ export default function Play() {
     } else if (currentQuestion) {
       correctAnswer = settings.gameType === 'addition'
         ? currentQuestion.a + currentQuestion.b
+        : settings.gameType === 'division'
+        ? currentQuestion.a / currentQuestion.b
         : currentQuestion.a * currentQuestion.b
       a = currentQuestion.a
       b = currentQuestion.b
@@ -202,7 +204,7 @@ export default function Play() {
       hintsUsed: currentHints
     }
 
-    const operation = isEquationMode ? 'equation' : settings.gameType === 'addition' ? '+' : 'x'
+    const operation = isEquationMode ? 'equation' : settings.gameType === 'addition' ? '+' : settings.gameType === 'division' ? '÷' : 'x'
     console.log('Saving answer:', a, operation, b, '=', userAnswer, 'hints used:', currentHints, 'time:', timeSpentMs, 'ms')
 
     // Update state and prepare for next question
@@ -316,7 +318,7 @@ export default function Play() {
       if (isEquationMode && currentEquation) {
         console.log('Hint requested for equation:', formatEquation(currentEquation), '- Total hints for this question:', currentHints + 1)
       } else if (currentQuestion) {
-        const operation = settings.gameType === 'addition' ? '+' : 'x'
+        const operation = settings.gameType === 'addition' ? '+' : settings.gameType === 'division' ? '÷' : 'x'
         console.log('Hint requested for', currentQuestion.a, operation, currentQuestion.b, '- Total hints for this question:', currentHints + 1)
       }
     } catch (error) {
@@ -427,7 +429,7 @@ export default function Play() {
                   </>
                 ) : currentQuestion ? (
                   <div className="text-6xl lg:text-7xl font-black tracking-tight text-nutti-primary select-none mb-3 drop-shadow-sm">
-                    {currentQuestion.a} {settings.gameType === 'addition' ? '+' : '×'} {currentQuestion.b}
+                    {currentQuestion.a} {settings.gameType === 'addition' ? '+' : settings.gameType === 'division' ? '÷' : '×'} {currentQuestion.b}
                   </div>
                 ) : null}
                 <div className="text-3xl">{t('icons.sparkles')}</div>
