@@ -247,6 +247,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                         <span className="text-gray-600">{t('teacher.gameType')}:</span>
                         <div className="font-medium">
                           {result.gameType === 'addition' ? '➕ ' + t('topics.addition') : 
+                           result.gameType === 'subtraction' ? '➖ ' + t('topics.subtraction') :
                            result.gameType === 'equations' ? '📐 ' + t('topics.equations') : 
                            result.gameType === 'division' ? '➗ ' + t('topics.division') : 
                            '✖️ ' + t('topics.multiplication')}
@@ -360,7 +361,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                                       >
                                         <div className="font-mono">
                                           {result.gameType === 'equations' ? `🍎 equation: ${fact.userAnswer}` : 
-                                           `${fact.a} ${result.gameType === 'addition' ? '+' : result.gameType === 'division' ? '÷' : '×'} ${fact.b} = ${fact.userAnswer}`}
+                                           `${fact.a} ${result.gameType === 'addition' ? '+' : result.gameType === 'subtraction' ? '−' : result.gameType === 'division' ? '÷' : '×'} ${fact.b} = ${fact.userAnswer}`}
                                           {!fact.isCorrect && (
                                             <span className="text-red-600"> ({t('teacher.correct_answer')}: {fact.correctAnswer})</span>
                                           )}
@@ -386,7 +387,7 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                               >
                                 <div className="font-mono">
                                   {result.gameType === 'equations' ? `🍎 equation: ${fact.userAnswer}` : 
-                                   `${fact.a} ${result.gameType === 'addition' ? '+' : result.gameType === 'division' ? '÷' : '×'} ${fact.b} = ${fact.userAnswer}`}
+                                   `${fact.a} ${result.gameType === 'addition' ? '+' : result.gameType === 'subtraction' ? '−' : result.gameType === 'division' ? '÷' : '×'} ${fact.b} = ${fact.userAnswer}`}
                                   {!fact.isCorrect && (
                                     <span className="text-red-600"> ({t('teacher.correct_answer')}: {fact.correctAnswer})</span>
                                   )}

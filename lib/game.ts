@@ -58,9 +58,13 @@ export function calculateTotalAcorns(rounds: Array<{ correct: number, total: num
   return rounds.reduce((sum, round) => sum + calculateAcorns(round.correct, round.total, round.avgMs), 0)
 }
 
-export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div', gameType: 'multiplication' | 'addition' | 'equations' | 'division' = 'multiplication'): Fact[] {
+export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div', gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' = 'multiplication'): Fact[] {
   if (gameType === 'addition') {
     return additionFactPool(range)
+  }
+  
+  if (gameType === 'subtraction') {
+    return subtractionFactPool(range)
   }
   
   if (gameType === 'division') {
@@ -276,6 +280,110 @@ function divisionFactPool(range: string): Fact[] {
         for (let result = 1; result <= 5; result++) {
           const a = b * result
           pool.push({ a, b })
+        }
+      }
+      break
+  }
+  
+  return pool
+}
+
+function subtractionFactPool(range: string): Fact[] {
+  const pool: Fact[] = []
+  
+  switch (range) {
+    case '1-10-sub':
+      // Generate subtraction facts where minuend is 1-10, subtrahend is 1-10, and result is positive
+      for (let a = 1; a <= 10; a++) {
+        for (let b = 1; b <= Math.min(a, 10); b++) {
+          if (a - b >= 0) { // Ensure non-negative result
+            pool.push({ a, b })
+          }
+        }
+      }
+      break
+    case '1-20-sub':
+      // Generate subtraction facts where minuend is 1-20, subtrahend is 1-20, and result is positive
+      for (let a = 1; a <= 20; a++) {
+        for (let b = 1; b <= Math.min(a, 20); b++) {
+          if (a - b >= 0) {
+            pool.push({ a, b })
+          }
+        }
+      }
+      break
+    case '1-50-sub':
+      // Generate subtraction facts where minuend is 1-50, subtrahend is 1-25, and result is positive
+      for (let a = 1; a <= 50; a++) {
+        for (let b = 1; b <= Math.min(a, 25); b++) {
+          if (a - b >= 0) {
+            pool.push({ a, b })
+          }
+        }
+      }
+      break
+    case '50-100-sub':
+      // Generate subtraction facts where minuend is 50-100, subtrahend is 25-50, and result is positive
+      for (let a = 50; a <= 100; a++) {
+        for (let b = 25; b <= Math.min(a, 50); b++) {
+          if (a - b >= 0) {
+            pool.push({ a, b })
+          }
+        }
+      }
+      break
+    case '1-100-sub':
+      // Generate subtraction facts where minuend is 1-100, subtrahend is 1-50, and result is positive
+      for (let a = 1; a <= 100; a++) {
+        for (let b = 1; b <= Math.min(a, 50); b++) {
+          if (a - b >= 0) {
+            pool.push({ a, b })
+          }
+        }
+      }
+      break
+    case 'mix-sub':
+      // Generate a mix of all subtraction ranges
+      // Include facts from 1-10 range
+      for (let a = 1; a <= 10; a++) {
+        for (let b = 1; b <= Math.min(a, 10); b++) {
+          if (a - b >= 0) {
+            pool.push({ a, b })
+          }
+        }
+      }
+      // Include some facts from 1-20 range
+      for (let a = 11; a <= 20; a++) {
+        for (let b = 1; b <= Math.min(a, 20); b++) {
+          if (a - b >= 0 && Math.random() < 0.5) { // 50% chance to include
+            pool.push({ a, b })
+          }
+        }
+      }
+      // Include some facts from 1-50 range
+      for (let a = 21; a <= 50; a++) {
+        for (let b = 1; b <= Math.min(a, 25); b++) {
+          if (a - b >= 0 && Math.random() < 0.3) { // 30% chance to include
+            pool.push({ a, b })
+          }
+        }
+      }
+      // Include some facts from 50-100 range
+      for (let a = 50; a <= 100; a++) {
+        for (let b = 25; b <= Math.min(a, 50); b++) {
+          if (a - b >= 0 && Math.random() < 0.2) { // 20% chance to include
+            pool.push({ a, b })
+          }
+        }
+      }
+      break
+    default:
+      // Default to 1-10 for unknown ranges
+      for (let a = 1; a <= 10; a++) {
+        for (let b = 1; b <= Math.min(a, 10); b++) {
+          if (a - b >= 0) {
+            pool.push({ a, b })
+          }
         }
       }
       break

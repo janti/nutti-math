@@ -32,7 +32,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="h-[800px] bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
+    <div className="h-[850px] bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute top-10 left-10 w-16 h-16 bg-yellow-200 rounded-full opacity-20 animate-pulse"></div>
       <div className="absolute top-32 right-16 w-12 h-12 bg-pink-200 rounded-full opacity-30 animate-bounce delay-1000"></div>

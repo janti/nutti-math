@@ -21,9 +21,9 @@ interface Answer {
 
 interface GameSettings {
   alias: string
-  range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div'
+  range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div'
   rounds: number
-  gameType: 'multiplication' | 'addition' | 'equations' | 'division'
+  gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division'
 }
 
 interface Fact {
@@ -182,6 +182,8 @@ export default function Play() {
     } else if (currentQuestion) {
       correctAnswer = settings.gameType === 'addition'
         ? currentQuestion.a + currentQuestion.b
+        : settings.gameType === 'subtraction'
+        ? currentQuestion.a - currentQuestion.b
         : settings.gameType === 'division'
         ? currentQuestion.a / currentQuestion.b
         : currentQuestion.a * currentQuestion.b
@@ -204,7 +206,7 @@ export default function Play() {
       hintsUsed: currentHints
     }
 
-    const operation = isEquationMode ? 'equation' : settings.gameType === 'addition' ? '+' : settings.gameType === 'division' ? '÷' : 'x'
+    const operation = isEquationMode ? 'equation' : settings.gameType === 'addition' ? '+' : settings.gameType === 'subtraction' ? '−' : settings.gameType === 'division' ? '÷' : 'x'
     console.log('Saving answer:', a, operation, b, '=', userAnswer, 'hints used:', currentHints, 'time:', timeSpentMs, 'ms')
 
     // Update state and prepare for next question
@@ -355,7 +357,7 @@ export default function Play() {
 
 
   return (
-    <div className="h-[800px] bg-gradient-to-br from-blue-50/40 via-white to-nutti-primary/10 py-4 overflow-hidden">
+    <div className="h-[850px] bg-gradient-to-br from-blue-50/40 via-white to-nutti-primary/10 py-4 overflow-hidden">
       <div className="max-w-4xl mx-auto h-full">
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 space-y-3 h-full flex flex-col relative">
 
@@ -429,7 +431,7 @@ export default function Play() {
                   </>
                 ) : currentQuestion ? (
                   <div className="text-6xl lg:text-7xl font-black tracking-tight text-nutti-primary select-none mb-3 drop-shadow-sm">
-                    {currentQuestion.a} {settings.gameType === 'addition' ? '+' : settings.gameType === 'division' ? '÷' : '×'} {currentQuestion.b}
+                    {currentQuestion.a} {settings.gameType === 'addition' ? '+' : settings.gameType === 'subtraction' ? '−' : settings.gameType === 'division' ? '÷' : '×'} {currentQuestion.b}
                   </div>
                 ) : null}
                 <div className="text-3xl">{t('icons.sparkles')}</div>

@@ -7,9 +7,9 @@ import NuttiBadge from '@/components/NuttiBadge'
 // TypeScript interfaces
 interface GameSettings {
     alias: string
-    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div'
+    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div'
     rounds: 1 | 2 | 3 | 5 | 10
-    gameType: 'multiplication' | 'addition' | 'equations' | 'division'
+    gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division'
 }
 
 export default function MenuPage() {
@@ -21,7 +21,7 @@ export default function MenuPage() {
     const [range, setRange] = useState<GameSettings['range']>('1-10')
     const [rounds, setRounds] = useState<GameSettings['rounds']>(1)
     const [topic, setTopic] = useState('multiplication')
-    const [gameType, setGameType] = useState<'multiplication' | 'addition' | 'division'>('multiplication')
+    const [gameType, setGameType] = useState<'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division'>('multiplication')
 
     /**
      * Clear localStorage and start a new game with current settings
@@ -100,7 +100,7 @@ export default function MenuPage() {
         { id: 'multiplication', icon: '✖️', label: 'multiplication', enabled: true },
         { id: 'division', icon: '➗', label: 'division', enabled: true },
         { id: 'addition', icon: '➕', label: 'addition', enabled: true },
-        { id: 'subtraction', icon: '➖', label: 'subtraction', enabled: false },
+        { id: 'subtraction', icon: '➖', label: 'subtraction', enabled: true },
         { id: 'wordProblems', icon: '📝', label: 'wordProblems', enabled: false },
         { id: 'equations', icon: '📐', label: 'equations', enabled: true },
     ]
@@ -112,6 +112,9 @@ export default function MenuPage() {
         if (topicId === 'addition') {
             setGameType('addition')
             setRange('1-100-add')
+        } else if (topicId === 'subtraction') {
+            setGameType('subtraction')
+            setRange('1-100-sub')
         } else if (topicId === 'multiplication') {
             setGameType('multiplication')
             setRange('1-10')
@@ -127,7 +130,7 @@ export default function MenuPage() {
     }
 
     return (
-        <div className="h-[800px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 overflow-hidden flex items-start justify-center py-2">
+        <div className="h-[850px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 overflow-hidden flex items-start justify-center py-2">
             <div className="max-w-4xl mx-auto w-full px-4 h-full flex flex-col">
                 {/* Main content card with background */}
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 flex-1 overflow-y-auto flex flex-col">
@@ -323,6 +326,63 @@ export default function MenuPage() {
                                             <button
                                                 onClick={() => setRange('mix-add')}
                                                 className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix-add'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                {t('icons.difficultyMix')} {t('home.mix')}
+                                            </button>
+                                        </>
+                                    ) : gameType === 'subtraction' ? (
+                                        <>
+                                            <button
+                                                onClick={() => setRange('1-10-sub')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10-sub'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                🧸 1-10
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('1-20-sub')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20-sub'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                1-20
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('1-50-sub')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-50-sub'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                1-50
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('50-100-sub')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '50-100-sub'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                50-100
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('1-100-sub')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-100-sub'
+                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                    }`}
+                                            >
+                                                1-100
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('mix-sub')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix-sub'
                                                     ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
                                                     : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
                                                     }`}
