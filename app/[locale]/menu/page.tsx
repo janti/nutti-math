@@ -7,9 +7,9 @@ import NuttiBadge from '@/components/NuttiBadge'
 // TypeScript interfaces
 interface GameSettings {
     alias: string
-    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add'
+    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | 'equations-easy' | 'equations-medium' | 'equations-hard'
     rounds: 1 | 2 | 3 | 5 | 10
-    gameType: 'multiplication' | 'addition'
+    gameType: 'multiplication' | 'addition' | 'equations'
 }
 
 export default function MenuPage() {
@@ -59,6 +59,7 @@ export default function MenuPage() {
      */
     const saveGameSettings = () => {
         const gameSettings: GameSettings = { alias, range, rounds, gameType }
+        console.log('Saving game settings:', gameSettings)
         localStorage.setItem('nutti.settings', JSON.stringify(gameSettings))
         localStorage.setItem('nutti.roundNo', '1')
     }
@@ -67,6 +68,11 @@ export default function MenuPage() {
      * Precompute first round facts for better game performance
      */
     const precomputeFirstRoundFacts = () => {
+        if (gameType === 'equations') {
+            // Don't precompute for equations as they are generated dynamically
+            console.log('Skipping precompute for equations gameType')
+            return
+        }
         import('@/lib/game').then(({ factPool, pickFacts }) => {
             const firstFacts = pickFacts(factPool(range, gameType), 10)
             localStorage.setItem(`nutti.facts.1.${range}`, JSON.stringify(firstFacts))
@@ -96,11 +102,12 @@ export default function MenuPage() {
         { id: 'addition', icon: '➕', label: 'addition', enabled: true },
         { id: 'subtraction', icon: '➖', label: 'subtraction', enabled: false },
         { id: 'wordProblems', icon: '📝', label: 'wordProblems', enabled: false },
-        { id: 'equations', icon: '📐', label: 'equations', enabled: false },
+        { id: 'equations', icon: '📐', label: 'equations', enabled: true },
     ]
 
     // Update gameType and reset range when topic changes
     const handleTopicChange = (topicId: string) => {
+        console.log('Topic changed to:', topicId)
         setTopic(topicId)
         if (topicId === 'addition') {
             setGameType('addition')
@@ -108,6 +115,10 @@ export default function MenuPage() {
         } else if (topicId === 'multiplication') {
             setGameType('multiplication')
             setRange('1-10')
+        } else if (topicId === 'equations') {
+            setGameType('equations')
+            setRange('equations-easy')
+            console.log('Set equations gameType and range to equations-easy')
         }
     }
 
@@ -258,7 +269,7 @@ export default function MenuPage() {
                                                 {t('icons.difficultyMix')} {t('home.mix')}
                                             </button>
                                         </>
-                                    ) : (
+                                    ) : gameType === 'addition' ? (
                                         <>
                                             <button
                                                 onClick={() => setRange('1-10-add')}
@@ -315,7 +326,37 @@ export default function MenuPage() {
                                                 {t('icons.difficultyMix')} {t('home.mix')}
                                             </button>
                                         </>
-                                    )}
+                                    ) : gameType === 'equations' ? (
+                                        <>
+                                            <button
+                                                onClick={() => setRange('equations-easy')}
+                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-easy'
+                                                    ? 'bg-gradient-to-r from-green-200 to-emerald-200 border-green-400 text-green-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-green-50'
+                                                    }`}
+                                            >
+                                                🍎 {t('difficulty.easy')}
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('equations-medium')}
+                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-medium'
+                                                    ? 'bg-gradient-to-r from-yellow-200 to-orange-200 border-yellow-400 text-yellow-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-yellow-50'
+                                                    }`}
+                                            >
+                                                🍊 {t('difficulty.medium')}
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('equations-hard')}
+                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 w-full ${range === 'equations-hard'
+                                                    ? 'bg-gradient-to-r from-red-200 to-pink-200 border-red-400 text-red-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-red-50'
+                                                    }`}
+                                            >
+                                                🍓 {t('difficulty.hard')}
+                                            </button>
+                                        </>
+                                    ) : null}
                                 </div>
                             </div>
                         </div>

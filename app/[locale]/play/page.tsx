@@ -5,7 +5,8 @@ import { useParams, useRouter } from 'next/navigation'
 import Keypad from '@/components/Keypad'
 import Progress from '@/components/Progress'
 import NuttiBadge from '@/components/NuttiBadge'
-import { factPool, pickFacts } from '@/lib/game'
+import { factPool, pickFacts, generateEquationFacts, getEquationAnswer, formatEquation } from '@/lib/game'
+import type { EquationFact } from '@/lib/game'
 
 // TypeScript interfaces
 interface Answer {
@@ -20,9 +21,9 @@ interface Answer {
 
 interface GameSettings {
   alias: string
-  range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add'
+  range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | 'equations-easy' | 'equations-medium' | 'equations-hard'
   rounds: number
-  gameType: 'multiplication' | 'addition'
+  gameType: 'multiplication' | 'addition' | 'equations'
 }
 
 interface Fact {
@@ -42,7 +43,9 @@ export default function Play() {
 
   // Question data and progress
   const [facts, setFacts] = useState<Fact[]>([])
+  const [equationFacts, setEquationFacts] = useState<EquationFact[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
+  const [factsReady, setFactsReady] = useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 
   // User input and feedback
@@ -69,6 +72,9 @@ export default function Play() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    // Prevent running multiple times
+    if (isLoaded) return
+    
     // Reset hint counter when component mounts or facts change
     setCurrentHints(0)
 
@@ -79,34 +85,65 @@ export default function Play() {
     )
     const savedRoundNo = Number(localStorage.getItem('nutti.roundNo') || '1')
 
-    // Check if facts are already precomputed
-    const precomputedKey = `nutti.facts.${savedRoundNo}.${savedSettings.range}`
-    let roundFacts: Fact[] = JSON.parse(localStorage.getItem(precomputedKey) || 'null')
+    if (savedSettings.gameType === 'equations') {
+      // Generate equation facts directly
+      console.log('Detected equations gameType, range:', savedSettings.range)
+      const difficulty = savedSettings.range === 'equations-easy' ? 'easy' : 
+                        savedSettings.range === 'equations-medium' ? 'medium' : 
+                        savedSettings.range === 'equations-hard' ? 'hard' : 'easy'
+      console.log('Generating equations with difficulty:', difficulty, 'range:', savedSettings.range)
+      const eqFacts = generateEquationFacts(difficulty, 10)
+      console.log('Generated equation facts:', eqFacts)
+      setEquationFacts(eqFacts)
+      setFacts([]) // Clear regular facts
+      setFactsReady(true)
+      console.log('Play: Generated', eqFacts.length, 'equation facts for round', savedRoundNo, 'difficulty:', difficulty)
+    } else {
+      // Check if facts are already precomputed
+      const precomputedKey = `nutti.facts.${savedRoundNo}.${savedSettings.range}`
+      let roundFacts: Fact[] = JSON.parse(localStorage.getItem(precomputedKey) || 'null')
 
-    if (!roundFacts) {
-      // Compute only if no cache exists
-      roundFacts = pickFacts(factPool(savedSettings.range, savedSettings.gameType || 'multiplication'), 10)
-      localStorage.setItem(precomputedKey, JSON.stringify(roundFacts))
+      if (!roundFacts) {
+        // Compute only if no cache exists
+        roundFacts = pickFacts(factPool(savedSettings.range, savedSettings.gameType || 'multiplication'), 10)
+        localStorage.setItem(precomputedKey, JSON.stringify(roundFacts))
+      }
+
+      setFacts(roundFacts)
+      setEquationFacts([]) // Clear equation facts
+      setFactsReady(true)
+      console.log('Play: Loaded', roundFacts.length, 'facts for round', savedRoundNo, '- Expected: 10')
     }
 
     setSettings(savedSettings)
     setRoundNo(savedRoundNo)
-    setFacts(roundFacts)
     setIsLoaded(true)
-    console.log('Play: Loaded', roundFacts.length, 'facts for round', savedRoundNo, '- Expected: 10')
     document.body.tabIndex = -1
     document.body.focus()
     // Focus input field when game starts
     setTimeout(() => inputRef.current?.focus(), 200)
 
-  }, [])
+  }, [isLoaded])
 
   const currentQuestion = facts[currentQuestionIndex]
+  const currentEquation = equationFacts[currentQuestionIndex]
+  const isEquationMode = settings.gameType === 'equations'
+  const totalQuestions = isEquationMode ? equationFacts.length : facts.length
+
+  // Debug log to see what's happening
+  console.log('Play render:', {
+    isEquationMode,
+    equationFactsLength: equationFacts.length,
+    factsLength: facts.length,
+    totalQuestions,
+    currentQuestionIndex,
+    isLoaded
+  })
 
   // Separate effect for keyboard listener to avoid dependency issues
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() === 'h' && !isSubmitting && facts.length > 0 && currentQuestionIndex < facts.length) {
+      if (e.key.toLowerCase() === 'h' && !isSubmitting && totalQuestions > 0 && currentQuestionIndex < totalQuestions) {
         e.preventDefault()
         requestHint()
       }
@@ -114,13 +151,13 @@ export default function Play() {
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isSubmitting, facts, currentQuestionIndex])
+  }, [isSubmitting, totalQuestions, currentQuestionIndex])
 
   /**
    * Submit the current answer and move to next question
    */
   const submitAnswer = () => {
-    if (!currentQuestion || isSubmitting) return
+    if ((!currentQuestion && !currentEquation) || isSubmitting) return
 
     // Check if input is empty
     if (!userInput.trim()) {
@@ -134,14 +171,30 @@ export default function Play() {
     // Calculate answer metrics
     const timeSpentMs = Math.round(performance.now() - questionStartTime.current)
     const userAnswer = Number(userInput || NaN)
-    const correctAnswer = settings.gameType === 'addition'
-      ? currentQuestion.a + currentQuestion.b
-      : currentQuestion.a * currentQuestion.b
+    
+    let correctAnswer: number
+    let a: number, b: number
+    
+    if (isEquationMode && currentEquation) {
+      correctAnswer = getEquationAnswer(currentEquation)
+      a = currentEquation.a
+      b = currentEquation.b
+    } else if (currentQuestion) {
+      correctAnswer = settings.gameType === 'addition'
+        ? currentQuestion.a + currentQuestion.b
+        : currentQuestion.a * currentQuestion.b
+      a = currentQuestion.a
+      b = currentQuestion.b
+    } else {
+      setIsSubmitting(false)
+      return
+    }
+    
     const isCorrect = userAnswer === correctAnswer
 
     const answerEntry: Answer = {
-      a: currentQuestion.a,
-      b: currentQuestion.b,
+      a: a,
+      b: b,
       ms: timeSpentMs,
       correct: correctAnswer,
       child: userAnswer,
@@ -149,8 +202,8 @@ export default function Play() {
       hintsUsed: currentHints
     }
 
-    const operation = settings.gameType === 'addition' ? '+' : 'x'
-    console.log('Saving answer:', currentQuestion.a, operation, currentQuestion.b, '=', userAnswer, 'hints used:', currentHints, 'time:', timeSpentMs, 'ms')
+    const operation = isEquationMode ? 'equation' : settings.gameType === 'addition' ? '+' : 'x'
+    console.log('Saving answer:', a, operation, b, '=', userAnswer, 'hints used:', currentHints, 'time:', timeSpentMs, 'ms')
 
     // Update state and prepare for next question
     const updatedAnswers = [...answers, answerEntry]
@@ -166,7 +219,7 @@ export default function Play() {
       setFeedbackType(null)
 
       // Check if round is complete
-      if (currentQuestionIndex + 1 >= facts.length) {
+      if (currentQuestionIndex + 1 >= totalQuestions) {
         saveRoundAndNavigate(updatedAnswers)
       } else {
         moveToNextQuestion()
@@ -217,20 +270,39 @@ export default function Play() {
    * Request an AI hint for the current question
    */
   const requestHint = async () => {
-    if (!currentQuestion || isLoadingHint) return
+    if ((!currentQuestion && !currentEquation) || isLoadingHint) return
 
     setIsLoadingHint(true)
     try {
+      let requestBody: any
+      
+      if (isEquationMode && currentEquation) {
+        // For equations, send the equation info
+        requestBody = {
+          equation: formatEquation(currentEquation),
+          variableIcon: currentEquation.variableIcon,
+          answer: getEquationAnswer(currentEquation),
+          locale,
+          gameType: 'equations'
+        }
+      } else if (currentQuestion) {
+        // For regular math problems
+        requestBody = {
+          ...currentQuestion,
+          locale,
+          gameType: settings.gameType
+        }
+      } else {
+        setIsLoadingHint(false)
+        return
+      }
+      
       const response = await fetch('/api/ai/hint', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...currentQuestion,
-          locale,
-          gameType: settings.gameType
-        })
+        body: JSON.stringify(requestBody)
       })
 
       if (!response.ok) {
@@ -240,8 +312,13 @@ export default function Play() {
       const { hint } = await response.json()
       setHint(hint)
       setCurrentHints(prev => prev + 1)
-      const operation = settings.gameType === 'addition' ? '+' : 'x'
-      console.log('Hint requested for', currentQuestion.a, operation, currentQuestion.b, '- Total hints for this question:', currentHints + 1)
+      
+      if (isEquationMode && currentEquation) {
+        console.log('Hint requested for equation:', formatEquation(currentEquation), '- Total hints for this question:', currentHints + 1)
+      } else if (currentQuestion) {
+        const operation = settings.gameType === 'addition' ? '+' : 'x'
+        console.log('Hint requested for', currentQuestion.a, operation, currentQuestion.b, '- Total hints for this question:', currentHints + 1)
+      }
     } catch (error) {
       console.error('Error fetching hint:', error)
       setHint(t('play.hintError'))
@@ -251,7 +328,7 @@ export default function Play() {
   }
 
   // Show loading screen if facts are not ready
-  if (!isLoaded || facts.length === 0) {
+  if (!isLoaded || !factsReady || totalQuestions === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 py-8">
         <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg text-center">
@@ -264,7 +341,12 @@ export default function Play() {
     )
   }
 
-  if (!currentQuestion) {
+  // Check if we have a valid question/equation for the current mode
+  if (isEquationMode && !currentEquation) {
+    return <div className="card text-center"><p>{t('play.noTasks')}</p></div>
+  }
+  
+  if (!isEquationMode && !currentQuestion) {
     return <div className="card text-center"><p>{t('play.noTasks')}</p></div>
   }
 
@@ -315,7 +397,7 @@ export default function Play() {
               </button>
               <NuttiBadge mood="thinking" />
             </div>
-            <div className="w-1/3"><Progress value={(currentQuestionIndex / facts.length) * 100} /></div>
+            <div className="w-1/3"><Progress value={(currentQuestionIndex / totalQuestions) * 100} /></div>
           </div>
 
           {/* Main game area - flexible grid layout */}
@@ -334,9 +416,20 @@ export default function Play() {
               {/* Problem display - ENHANCED & PROMINENT */}
               <div className="p-6 bg-gradient-to-br from-white to-blue-50 rounded-2xl border-3 border-nutti-primary/40 text-center shadow-lg transform hover:scale-[1.02] transition-all">
                 <div className="text-4xl mb-3">{t('icons.calculator')}</div>
-                <div className="text-6xl lg:text-7xl font-black tracking-tight text-nutti-primary select-none mb-3 drop-shadow-sm">
-                  {currentQuestion.a} {settings.gameType === 'addition' ? '+' : '×'} {currentQuestion.b}
-                </div>
+                {isEquationMode && currentEquation ? (
+                  <>
+                    <div className={`${showKeypad ? 'text-xl lg:text-3xl' : 'text-4xl lg:text-6xl'} font-black tracking-tight text-nutti-primary select-none mb-3 drop-shadow-sm`}>
+                      {formatEquation(currentEquation)}
+                    </div>
+                    <div className="text-sm text-gray-600 mb-2">
+                      {t('play.equationHint')}
+                    </div>
+                  </>
+                ) : currentQuestion ? (
+                  <div className="text-6xl lg:text-7xl font-black tracking-tight text-nutti-primary select-none mb-3 drop-shadow-sm">
+                    {currentQuestion.a} {settings.gameType === 'addition' ? '+' : '×'} {currentQuestion.b}
+                  </div>
+                ) : null}
                 <div className="text-3xl">{t('icons.sparkles')}</div>
               </div>
 

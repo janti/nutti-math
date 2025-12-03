@@ -2,7 +2,7 @@ import { GameStorage, GameResult } from '@/lib/storage'
 import { useTranslations } from 'next-intl'
 import { useState, useEffect } from 'react'
 import AcornDisplay from './AcornDisplay'
-import { calculateAcorns } from '@/lib/game'
+import { calculateAcorns, calculateAcornsForEquations } from '@/lib/game'
 
 interface TeacherViewProps {
   onClose: () => void
@@ -14,6 +14,15 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
   const [nicknames, setNicknames] = useState<string[]>([])
   const [results, setResults] = useState<GameResult[]>([])
   const [stats, setStats] = useState<any>(null)
+
+  // Function to format difficulty level for display
+  const formatDifficulty = (range: string): string => {
+    if (range.startsWith('equations-')) {
+      const level = range.replace('equations-', '')
+      return `🍎 ${t(`difficulty.${level}`)}`
+    }
+    return range
+  }
 
   // Function to get acorns, preferring saved data over calculation
   const calculateRetroactiveAcorns = (result: GameResult): number => {
@@ -34,7 +43,9 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
         }
         // Calculate acorns for this round retroactively
         const avgMs = round.timeSpentInRound > 0 ? Math.round((round.timeSpentInRound * 1000) / round.questionsInRound) : 5000
-        const calculated = calculateAcorns(round.correctInRound, round.questionsInRound, avgMs)
+        const calculated = result.gameType === 'equations' ? 
+          calculateAcornsForEquations(round.correctInRound, round.questionsInRound, avgMs) :
+          calculateAcorns(round.correctInRound, round.questionsInRound, avgMs)
         console.log(`Round ${round.roundNo}: calculated acorns = ${calculated}`)
         return total + calculated
       }, 0)
@@ -44,7 +55,9 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
 
     // Final fallback: estimate from overall game stats
     const avgMs = result.timeSpent > 0 ? Math.round((result.timeSpent * 1000) / result.totalQuestions) : 5000
-    const acornsPerRound = calculateAcorns(result.correctAnswers, result.totalQuestions, avgMs)
+    const acornsPerRound = result.gameType === 'equations' ? 
+      calculateAcornsForEquations(result.correctAnswers, result.totalQuestions, avgMs) :
+      calculateAcorns(result.correctAnswers, result.totalQuestions, avgMs)
     const estimated = Math.max(1, Math.round(acornsPerRound * (result.totalRounds || 1) / 10))
     console.log(`Final fallback estimate: ${estimated}`)
     return estimated
@@ -233,12 +246,14 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                       <div>
                         <span className="text-gray-600">{t('teacher.gameType')}:</span>
                         <div className="font-medium">
-                          {result.gameType === 'addition' ? '➕ ' + t('topics.addition') : '✖️ ' + t('topics.multiplication')}
+                          {result.gameType === 'addition' ? '➕ ' + t('topics.addition') : 
+                           result.gameType === 'equations' ? '📐 ' + t('topics.equations') : 
+                           '✖️ ' + t('topics.multiplication')}
                         </div>
                       </div>
                       <div>
                         <span className="text-gray-600">{t('teacher.difficulty')}:</span>
-                        <div className="font-medium">{result.range}</div>
+                        <div className="font-medium">{formatDifficulty(result.range)}</div>
                       </div>
                       <div>
                         <span className="text-gray-600">{t('teacher.time')}:</span>
@@ -343,7 +358,8 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                                           }`}
                                       >
                                         <div className="font-mono">
-                                          {fact.a} {result.gameType === 'addition' ? '+' : '×'} {fact.b} = {fact.userAnswer}
+                                          {result.gameType === 'equations' ? `🍎 equation: ${fact.userAnswer}` : 
+                                           `${fact.a} ${result.gameType === 'addition' ? '+' : '×'} ${fact.b} = ${fact.userAnswer}`}
                                           {!fact.isCorrect && (
                                             <span className="text-red-600"> ({t('teacher.correct_answer')}: {fact.correctAnswer})</span>
                                           )}
@@ -368,7 +384,8 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                                   }`}
                               >
                                 <div className="font-mono">
-                                  {fact.a} {result.gameType === 'addition' ? '+' : '×'} {fact.b} = {fact.userAnswer}
+                                  {result.gameType === 'equations' ? `🍎 equation: ${fact.userAnswer}` : 
+                                   `${fact.a} ${result.gameType === 'addition' ? '+' : '×'} ${fact.b} = ${fact.userAnswer}`}
                                   {!fact.isCorrect && (
                                     <span className="text-red-600"> ({t('teacher.correct_answer')}: {fact.correctAnswer})</span>
                                   )}

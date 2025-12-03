@@ -135,7 +135,8 @@
     "quitCancel": "Avbryt",
     "quitOk": "Avsluta",
     "correct": "Rätt!",
-    "incorrect": "Fel"
+    "incorrect": "Fel",
+    "equationHint": "Vilket nummer på fruktens plats gör ekvationen korrekt?"
   },
   "keypad": {
     "title": "Nummerplatta",
@@ -187,7 +188,10 @@
     "1-10": "1–10",
     "6-10": "6–10",
     "2-12": "2–12",
-    "1-12": "1–12"
+    "1-12": "1–12",
+    "easy": "Lätt",
+    "medium": "Mellan",
+    "hard": "Svår"
   },
   "common": {
     "unknown": "Okänd",

@@ -135,7 +135,8 @@
     "quitCancel": "Peruuta",
     "quitOk": "Lopeta",
     "correct": "Oikein!",
-    "incorrect": "Väärin"
+    "incorrect": "Väärin",
+    "equationHint": "Mikä numero hedelmän paikalla tekisi yhtälön oikeaksi?"
   },
   "keypad": {
     "title": "Numeronäppäimistö",
@@ -187,7 +188,10 @@
     "1-10": "1–10",
     "6-10": "6–10",
     "2-12": "2–12",
-    "1-12": "1–12"
+    "1-12": "1–12",
+    "easy": "Helppo",
+    "medium": "Keskitaso",
+    "hard": "Vaikea"
   },
   "common": {
     "unknown": "Tuntematon",

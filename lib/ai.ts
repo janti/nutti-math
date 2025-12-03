@@ -34,12 +34,18 @@ const MODEL = hasOpenAI ? 'gpt-3.5-turbo' : (process.env.AZURE_OPENAI_DEPLOYMENT
 
 type Locale = 'fi' | 'en' | 'sv'
 
-function sysHint(locale: Locale, gameType: 'multiplication' | 'addition' = 'multiplication') {
+function sysHint(locale: Locale, gameType: 'multiplication' | 'addition' | 'equations' = 'multiplication') {
   if (gameType === 'addition') {
     switch (locale) {
       case 'en': return 'You are a helpful math tutor for children learning addition. Give a clear, encouraging hint to help solve the addition problem. Never give the direct answer. Focus on counting strategies, number bonds, or mental math tricks. Maximum 15 words. Use simple language.'
       case 'sv': return 'Du är en hjälpsam mattlärare för barn som lär sig addition. Ge ett tydligt, uppmuntrande tips för att hjälpa lösa additionsproblemet. Ge aldrig det direkta svaret. Fokusera på räknestrategier eller mentala mattricks. Maximalt 15 ord. Använd enkelt språk.'
       default: return 'Olet avulias matematiikanopettaja lapsille, jotka opettelevat yhteenlaskua. Anna selkeä, kannustava vihje yhteenlaskun ratkaisemiseksi. Älä koskaan anna suoraa vastausta. Keskity laskustrategioihin, lukuparehin tai päässälaskutekniikoihin. Maksimissaan 15 sanaa. Käytä selkeää kieltä.'
+    }
+  } else if (gameType === 'equations') {
+    switch (locale) {
+      case 'en': return 'You are a helpful math tutor for children learning to solve equations with fruit symbols. Give a clear, encouraging hint to help find the missing value. Never give the direct answer. Focus on inverse operations and logical thinking. Maximum 15 words. Use simple language.'
+      case 'sv': return 'Du är en hjälpsam mattlärare för barn som lär sig lösa ekvationer med fruktsymboler. Ge ett tydligt, uppmuntrande tips för att hitta det saknade värdet. Ge aldrig det direkta svaret. Fokusera på omvända operationer och logiskt tänkande. Maximalt 15 ord. Använd enkelt språk.'
+      default: return 'Olet avulias matematiikanopettaja lapsille, jotka opettelevat yhtälöiden ratkaisemista hedelmäsymboleilla. Anna selkeä, kannustava vihje puuttuvan arvon löytämiseksi. Älä koskaan anna suoraa vastausta. Keskity käänteisiin laskutoimituksiin ja loogiseen ajatteluun. Maksimissaan 15 sanaa. Käytä selkeää kieltä.'
     }
   } else {
     switch (locale) {
@@ -49,8 +55,14 @@ function sysHint(locale: Locale, gameType: 'multiplication' | 'addition' = 'mult
     }
   }
 }
-function userHint(a: number, b: number, locale: Locale, gameType: 'multiplication' | 'addition' = 'multiplication') {
-  if (gameType === 'addition') {
+function userHint(a: number, b: number, locale: Locale, gameType: 'multiplication' | 'addition' | 'equations' = 'multiplication', equation?: string) {
+  if (gameType === 'equations' && equation) {
+    switch (locale) {
+      case 'en': return `Give a helpful hint for solving the equation: ${equation}. Do not give the direct answer. Help the child understand how to find the missing value.`
+      case 'sv': return `Ge ett hjälpsamt tips för att lösa ekvationen: ${equation}. Ge inte det direkta svaret. Hjälp barnet förstå hur man hittar det saknade värdet.`
+      default: return `Anna hyödyllinen vihje yhtälön ratkaisemiseksi: ${equation}. Älä anna suoraa vastausta. Auta lasta ymmärtämään miten puuttuva arvo löydetään.`
+    }
+  } else if (gameType === 'addition') {
     switch (locale) {
       case 'en': return `Give a helpful hint for the addition problem ${a} + ${b}. Do not give the answer ${a + b}. Help the child think about it.`
       case 'sv': return `Ge ett hjälpsamt tips för additionsproblemet ${a} + ${b}. Ge inte svaret ${a + b}. Hjälp barnet att tänka på det.`
@@ -82,11 +94,11 @@ function userFeedback(stats: any, locale: Locale) {
   }
 }
 
-export async function aiHint(a: number, b: number, locale: Locale = 'fi', gameType: 'multiplication' | 'addition' = 'multiplication') {
+export async function aiHint(a: number, b: number, locale: Locale = 'fi', gameType: 'multiplication' | 'addition' | 'equations' = 'multiplication', equation?: string) {
   const c = createOpenAIClient()
   const r = await (c as any).chat.completions.create({
     model: MODEL,
-    messages: [{ role: 'user', content: `${sysHint(locale, gameType)} ${userHint(a, b, locale, gameType)}` }],
+    messages: [{ role: 'user', content: `${sysHint(locale, gameType)} ${userHint(a, b, locale, gameType, equation)}` }],
     temperature: 0.4,
     max_tokens: 60,
     presence_penalty: 0.1,

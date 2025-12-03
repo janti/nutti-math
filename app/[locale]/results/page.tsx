@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import NuttiBadge from '@/components/NuttiBadge'
 import { GameStorage, GameResult, FactResult } from '@/lib/storage'
 import AcornDisplay from '@/components/AcornDisplay'
-import { calculateAcorns, calculateTotalAcorns } from '@/lib/game'
+import { calculateAcorns, calculateTotalAcorns, calculateAcornsForEquations } from '@/lib/game'
 
 // TypeScript interfaces
 interface GameSummary {
@@ -161,7 +161,11 @@ export default function Results() {
           correctInRound: round.answers?.filter((a: Answer) => a.isCorrect).length || 0,
           timeSpentInRound: (round.answers?.reduce((sum: number, a: Answer) => sum + a.ms, 0) || 0) / 1000,
           hintsInRound: round.answers?.reduce((sum: number, a: Answer) => sum + ((a as any).hintsUsed || 0), 0) || 0,
-          acornsInRound: calculateAcorns(
+          acornsInRound: gameType === 'equations' ? calculateAcornsForEquations(
+            round.answers?.filter((a: Answer) => a.isCorrect).length || 0,
+            round.answers?.length || 0,
+            Math.round((round.answers?.reduce((sum: number, a: Answer) => sum + a.ms, 0) || 0) / Math.max(1, round.answers?.length || 1))
+          ) : calculateAcorns(
             round.answers?.filter((a: Answer) => a.isCorrect).length || 0,
             round.answers?.length || 0,
             Math.round((round.answers?.reduce((sum: number, a: Answer) => sum + a.ms, 0) || 0) / Math.max(1, round.answers?.length || 1))

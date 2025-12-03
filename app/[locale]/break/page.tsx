@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation'
 import NuttiBadge from '@/components/NuttiBadge'
 import Progress from '@/components/Progress'
 import { AcornReward } from '@/components/AcornDisplay'
-import { calculateAcorns } from '@/lib/game'
+import { calculateAcorns, calculateAcornsForEquations } from '@/lib/game'
 
 // Types
 interface RoundData {
@@ -24,7 +24,7 @@ interface RoundData {
 interface GameSettings {
   rounds: number
   range: string
-  gameType?: 'multiplication' | 'addition'
+  gameType?: 'multiplication' | 'addition' | 'equations'
 }
 
 export default function Break() {
@@ -48,7 +48,8 @@ export default function Break() {
       // Load data from localStorage
       const payload = JSON.parse(localStorage.getItem('nutti.last-round') || 'null')
       const prevRounds = JSON.parse(localStorage.getItem('nutti.all-rounds') || '[]')
-      const gameSettings = JSON.parse(localStorage.getItem('nutti.settings') || '{"rounds":10}')
+      const gameSettings = JSON.parse(localStorage.getItem('nutti.settings') || '{"gameType":"multiplication","rounds":10}')
+      const gameType = gameSettings.gameType || 'multiplication'
 
       setData(payload)
       setSettings(gameSettings)
@@ -66,7 +67,11 @@ export default function Break() {
           // Add acorn count to the payload before saving
           const roundWithAcorns = {
             ...payload,
-            acorns: calculateAcorns(
+            acorns: gameType === 'equations' ? calculateAcornsForEquations(
+              payload.answers.filter((a: any) => a.isCorrect).length,
+              payload.answers.length,
+              Math.round(payload.answers.reduce((sum: number, answer: any) => sum + answer.ms, 0) / payload.answers.length)
+            ) : calculateAcorns(
               payload.answers.filter((a: any) => a.isCorrect).length,
               payload.answers.length,
               Math.round(payload.answers.reduce((sum: number, answer: any) => sum + answer.ms, 0) / payload.answers.length)
@@ -122,6 +127,10 @@ export default function Break() {
   }, [])
   if (!data) return <p>—</p>
 
+  // Get game settings for acorn calculation
+  const gameSettings = JSON.parse(localStorage.getItem('nutti.settings') || '{"gameType":"multiplication"}')
+  const gameType = gameSettings.gameType || 'multiplication'
+
   // Calculate round statistics
   const correct = data.answers.filter((a: any) => a.isCorrect).length
   const total = data.answers.length
@@ -131,7 +140,9 @@ export default function Break() {
   const totalSeconds = (totalMs / 1000).toFixed(1)
 
   // Calculate acorns earned for this round
-  const acornsEarned = calculateAcorns(correct, total, avgMs)
+  const acornsEarned = gameType === 'equations' ? 
+    calculateAcornsForEquations(correct, total, avgMs) : 
+    calculateAcorns(correct, total, avgMs)
   return (
     <div className="h-[800px] bg-gradient-to-br from-green-50/40 via-white to-nutti-secondary/20 py-4 overflow-hidden">
       <div className="max-w-4xl mx-auto h-full">
