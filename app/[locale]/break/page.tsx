@@ -236,35 +236,37 @@ export default function Break() {
 
           {/* Action buttons - better positioned with more space */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8 mb-6">
-            <a
-              className="btn text-lg px-8 py-4 bg-gradient-to-r from-nutti-primary to-blue-500 hover:from-nutti-primary/90 hover:to-blue-500/90 shadow-lg transform hover:scale-105 transition-all w-full sm:w-auto"
-              href={`/${loc}/play`}
-              rel="prefetch"
-              onClick={() => {
-                const currentRoundNo = Number(localStorage.getItem('nutti.roundNo') || '1');
-                const nextRound = currentRoundNo + 1;
-                localStorage.setItem('nutti.roundNo', String(nextRound));
+            {data && data.roundNo < settings.rounds ? (
+              <a
+                className="btn text-lg px-8 py-4 bg-gradient-to-r from-nutti-primary to-blue-500 hover:from-nutti-primary/90 hover:to-blue-500/90 shadow-lg transform hover:scale-105 transition-all w-full sm:w-auto"
+                href={`/${loc}/play`}
+                rel="prefetch"
+                onClick={() => {
+                  const currentRoundNo = Number(localStorage.getItem('nutti.roundNo') || '1');
+                  const nextRound = currentRoundNo + 1;
+                  localStorage.setItem('nutti.roundNo', String(nextRound));
 
-                // Precompute next round facts for optimization
-                const gameSettings = JSON.parse(localStorage.getItem('nutti.settings') || '{"range":"2-12"}')
-                const precomputeKey = `nutti.facts.${nextRound}.${gameSettings.range}`
+                  // Precompute next round facts for optimization
+                  const gameSettings = JSON.parse(localStorage.getItem('nutti.settings') || '{"range":"2-12"}')
+                  const precomputeKey = `nutti.facts.${nextRound}.${gameSettings.range}`
 
-                // Only if not already computed
-                if (!localStorage.getItem(precomputeKey)) {
-                  import('@/lib/game').then(({ factPool, pickFacts }) => {
-                    const nextFacts = pickFacts(factPool(gameSettings.range as any, gameSettings.gameType || 'multiplication'), 10)
-                    localStorage.setItem(precomputeKey, JSON.stringify(nextFacts))
-                  })
-                }
-              }}
-            >
-              {t('icons.rocket')} {t('break.continue')}
-            </a>
+                  // Only if not already computed
+                  if (!localStorage.getItem(precomputeKey)) {
+                    import('@/lib/game').then(({ factPool, pickFacts }) => {
+                      const nextFacts = pickFacts(factPool(gameSettings.range as any, gameSettings.gameType || 'multiplication'), 10)
+                      localStorage.setItem(precomputeKey, JSON.stringify(nextFacts))
+                    })
+                  }
+                }}
+              >
+                {t('icons.rocket')} {t('break.continue')}
+              </a>
+            ) : null}
             <a
               className="px-8 py-4 text-lg rounded-lg border-2 border-nutti-accent text-nutti-accent font-semibold hover:bg-nutti-accent hover:text-white transition-all transform hover:scale-105 w-full sm:w-auto"
               href={`/${loc}/results`}
             >
-              {t('icons.finish')} {t('break.stop')}
+              {t('icons.finish')} {data && data.roundNo >= settings.rounds ? t('break.gameComplete') : t('break.stop')}
             </a>
 
           </div>

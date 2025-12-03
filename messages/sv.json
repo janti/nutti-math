@@ -150,6 +150,7 @@
     "generating": "Genererar feedback…",
     "continue": "Fortsätt till nästa omgång",
     "stop": "Avsluta",
+    "gameComplete": "Visa resultat",
     "allRounds": "Alla omgångar:",
     "roundResult": "Omgång {round}: {seconds} s",
     "currentStats": "Denna omgångs statistik",

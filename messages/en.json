@@ -150,6 +150,7 @@
     "generating": "Generating feedback...",
     "continue": "Continue to next round",
     "stop": "Quit",
+    "gameComplete": "View results",
     "allRounds": "All rounds:",
     "roundResult": "Round {round}: {seconds} s",
     "currentStats": "Current round stats",

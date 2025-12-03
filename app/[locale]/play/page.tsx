@@ -198,10 +198,10 @@ export default function Play() {
       answers: finalAnswers,
       alias: settings.alias
     }))
-    console.log('Play: Round', roundNo, 'complete. Next:', roundNo >= settings.rounds ? 'Results' : 'Break')
+    console.log('Play: Round', roundNo, 'complete. Going to break page.')
 
-    const nextRoute = roundNo >= settings.rounds ? 'results' : 'break'
-    router.push(`/${locale}/${nextRoute}`)
+    // Always go to break page after completing a round
+    router.push(`/${locale}/break`)
   }
 
   /**

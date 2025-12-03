@@ -150,6 +150,7 @@
     "generating": "Luodaan palautetta…",
     "continue": "Jatka seuraavaan erään",
     "stop": "Lopeta",
+    "gameComplete": "Siirry tuloksiin",
     "allRounds": "Kaikki erät:",
     "roundResult": "Erä {round}: {seconds} s",
     "currentStats": "Tämän erän tilastot",
