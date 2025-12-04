@@ -17,8 +17,8 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * - nutti.png, apple-touch-icon.png (static images)
+     * - nutti.png, apple-touch-icon.png, pahkina.png, pahkina_reunukset.png (static images)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|nutti.png|apple-touch-icon.png).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|nutti.png|apple-touch-icon.png|pahkina.png|pahkina_reunukset.png).*)',
   ],
 };

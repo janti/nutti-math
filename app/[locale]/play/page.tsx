@@ -21,9 +21,16 @@ interface Answer {
 
 interface GameSettings {
   alias: string
-  range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div'
+  range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div' | 'word-problems-easy' | 'word-problems-medium' | 'word-problems-hard'
   rounds: number
-  gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division'
+  gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems'
+}
+
+interface WordProblem {
+  problem: string
+  equation: string
+  answer: number
+  operation: 'addition' | 'multiplication' | 'subtraction' | 'division'
 }
 
 interface Fact {
@@ -34,8 +41,8 @@ interface Fact {
 export default function Play() {
   const params = useParams()
   const router = useRouter()
-  const locale = params.locale as string || 'fi'
   const t = useTranslations()
+  const locale = (params.locale as string) || 'fi'
 
   // Game configuration state
   const [settings, setSettings] = useState<GameSettings>({ alias: 'Guest', range: '2-12', rounds: 10, gameType: 'multiplication' })
@@ -44,6 +51,7 @@ export default function Play() {
   // Question data and progress
   const [facts, setFacts] = useState<Fact[]>([])
   const [equationFacts, setEquationFacts] = useState<EquationFact[]>([])
+  const [wordProblems, setWordProblems] = useState<WordProblem[]>([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [factsReady, setFactsReady] = useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -67,13 +75,48 @@ export default function Play() {
     router.push(`/${locale}/menu`)
   }
 
+  // Helper function to generate and cache word problems
+  const generateAndCacheWordProblems = async (locale: string, range: string): Promise<WordProblem[]> => {
+    const operations: ('addition' | 'subtraction' | 'multiplication' | 'division')[] = 
+      ['addition', 'subtraction', 'multiplication', 'division']
+    const problems: WordProblem[] = []
+
+    for (let i = 0; i < 10; i++) {
+      const operation = operations[Math.floor(Math.random() * operations.length)]
+      try {
+        const response = await fetch('/api/wordproblems/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ locale, operation, range })
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          problems.push({ ...data, operation })
+        }
+      } catch (error) {
+        console.error('Error generating word problem', i, error)
+      }
+    }
+
+    if (problems.length > 0) {
+      const cacheKey = `nutti.wordproblems.${locale}.${range}`
+      localStorage.setItem(cacheKey, JSON.stringify(problems))
+      console.log(`Cached ${problems.length} word problems for ${locale}/${range}`)
+    }
+
+    return problems
+  }
+
   // Performance tracking
   const questionStartTime = useRef<number>(performance.now())
   const inputRef = useRef<HTMLInputElement>(null)
+  const isGeneratingRef = useRef<boolean>(false)
 
   useEffect(() => {
     // Prevent running multiple times
     if (isLoaded) return
+    if (isGeneratingRef.current) return
     
     // Reset hint counter when component mounts or facts change
     setCurrentHints(0)
@@ -98,6 +141,60 @@ export default function Play() {
       setFacts([]) // Clear regular facts
       setFactsReady(true)
       console.log('Play: Generated', eqFacts.length, 'equation facts for round', savedRoundNo, 'difficulty:', difficulty)
+    } else if (savedSettings.gameType === 'wordProblems') {
+      // Use cached word problems or generate new ones
+      console.log('Detected wordProblems gameType, range:', savedSettings.range, 'locale:', locale)
+      
+      // Prevent duplicate generation
+      if (isGeneratingRef.current) {
+        console.log('Already processing word problems, skipping...')
+        return
+      }
+      
+      isGeneratingRef.current = true
+      setFactsReady(false)
+      
+      const cacheKey = `nutti.wordproblems.${locale}.${savedSettings.range}`
+      
+      // Try to use cached problems first
+      const cachedProblems = localStorage.getItem(cacheKey)
+      
+      if (cachedProblems) {
+        console.log('Using cached word problems from:', cacheKey, 'locale:', locale)
+        const problems = JSON.parse(cachedProblems)
+        setWordProblems(problems)
+        setFacts([])
+        setEquationFacts([])
+        setFactsReady(true)
+        isGeneratingRef.current = false
+        
+        // Start timer
+        setTimeout(() => {
+          questionStartTime.current = performance.now()
+        }, 100)
+        
+        // Pre-fetch next set for THIS SPECIFIC difficulty in background
+        console.log('Pre-fetching next word problem set for locale:', locale, 'range:', savedSettings.range)
+        setTimeout(() => {
+          generateAndCacheWordProblems(locale, savedSettings.range)
+        }, 1000) // Small delay to not interfere with game start
+      } else {
+        // No cache, generate now
+        console.log('No cache found, generating word problems for locale:', locale)
+        generateAndCacheWordProblems(locale, savedSettings.range).then(problems => {
+          if (problems && problems.length > 0) {
+            setWordProblems(problems)
+            setFacts([])
+            setEquationFacts([])
+            setFactsReady(true)
+            setTimeout(() => {
+              questionStartTime.current = performance.now()
+            }, 100)
+          }
+        }).finally(() => {
+          isGeneratingRef.current = false
+        })
+      }
     } else {
       // Check if facts are already precomputed
       const precomputedKey = `nutti.facts.${savedRoundNo}.${savedSettings.range}`
@@ -127,8 +224,10 @@ export default function Play() {
 
   const currentQuestion = facts[currentQuestionIndex]
   const currentEquation = equationFacts[currentQuestionIndex]
+  const currentWordProblem = wordProblems[currentQuestionIndex]
   const isEquationMode = settings.gameType === 'equations'
-  const totalQuestions = isEquationMode ? equationFacts.length : facts.length
+  const isWordProblemMode = settings.gameType === 'wordProblems'
+  const totalQuestions = isEquationMode ? equationFacts.length : isWordProblemMode ? wordProblems.length : facts.length
 
   // Debug log to see what's happening
   console.log('Play render:', {
@@ -157,7 +256,7 @@ export default function Play() {
    * Submit the current answer and move to next question
    */
   const submitAnswer = () => {
-    if ((!currentQuestion && !currentEquation) || isSubmitting) return
+    if ((!currentQuestion && !currentEquation && !currentWordProblem) || isSubmitting) return
 
     // Check if input is empty
     if (!userInput.trim()) {
@@ -175,7 +274,12 @@ export default function Play() {
     let correctAnswer: number
     let a: number, b: number
     
-    if (isEquationMode && currentEquation) {
+    if (isWordProblemMode && currentWordProblem) {
+      correctAnswer = currentWordProblem.answer
+      // For word problems, we'll use dummy values for a and b in storage
+      a = correctAnswer
+      b = 0
+    } else if (isEquationMode && currentEquation) {
       correctAnswer = getEquationAnswer(currentEquation)
       a = currentEquation.a
       b = currentEquation.b
@@ -203,7 +307,12 @@ export default function Play() {
       correct: correctAnswer,
       child: userAnswer,
       isCorrect,
-      hintsUsed: currentHints
+      hintsUsed: currentHints,
+      // Add word problem data if applicable
+      ...(isWordProblemMode && currentWordProblem ? {
+        problem: currentWordProblem.problem,
+        equation: currentWordProblem.equation
+      } : {})
     }
 
     const operation = isEquationMode ? 'equation' : settings.gameType === 'addition' ? '+' : settings.gameType === 'subtraction' ? '−' : settings.gameType === 'division' ? '÷' : 'x'
@@ -274,13 +383,22 @@ export default function Play() {
    * Request an AI hint for the current question
    */
   const requestHint = async () => {
-    if ((!currentQuestion && !currentEquation) || isLoadingHint) return
+    if ((!currentQuestion && !currentEquation && !currentWordProblem) || isLoadingHint) return
 
     setIsLoadingHint(true)
     try {
       let requestBody: any
       
-      if (isEquationMode && currentEquation) {
+      if (isWordProblemMode && currentWordProblem) {
+        // For word problems, send problem text and equation
+        requestBody = {
+          problem: currentWordProblem.problem,
+          equation: currentWordProblem.equation,
+          answer: currentWordProblem.answer,
+          locale,
+          gameType: 'wordProblems'
+        }
+      } else if (isEquationMode && currentEquation) {
         // For equations, send the equation info
         requestBody = {
           equation: formatEquation(currentEquation),
@@ -345,12 +463,16 @@ export default function Play() {
     )
   }
 
-  // Check if we have a valid question/equation for the current mode
+  // Check if we have a valid question/equation/word problem for the current mode
+  if (isWordProblemMode && !currentWordProblem) {
+    return <div className="card text-center"><p>{t('play.noTasks')}</p></div>
+  }
+  
   if (isEquationMode && !currentEquation) {
     return <div className="card text-center"><p>{t('play.noTasks')}</p></div>
   }
   
-  if (!isEquationMode && !currentQuestion) {
+  if (!isEquationMode && !isWordProblemMode && !currentQuestion) {
     return <div className="card text-center"><p>{t('play.noTasks')}</p></div>
   }
 
@@ -419,8 +541,12 @@ export default function Play() {
 
               {/* Problem display - ENHANCED & PROMINENT */}
               <div className="p-6 bg-gradient-to-br from-white to-blue-50 rounded-2xl border-3 border-nutti-primary/40 text-center shadow-lg transform hover:scale-[1.02] transition-all">
-                <div className="text-4xl mb-3">{t('icons.calculator')}</div>
-                {isEquationMode && currentEquation ? (
+                <div className="text-4xl mb-3">{isWordProblemMode ? '📝' : t('icons.calculator')}</div>
+                {isWordProblemMode && currentWordProblem ? (
+                  <div className="text-lg lg:text-xl font-semibold text-gray-800 leading-relaxed px-2">
+                    {currentWordProblem.problem}
+                  </div>
+                ) : isEquationMode && currentEquation ? (
                   <>
                     <div className={`${showKeypad ? 'text-xl lg:text-3xl' : 'text-4xl lg:text-6xl'} font-black tracking-tight text-nutti-primary select-none mb-3 drop-shadow-sm`}>
                       {formatEquation(currentEquation)}

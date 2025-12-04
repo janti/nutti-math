@@ -34,8 +34,14 @@ const MODEL = hasOpenAI ? 'gpt-3.5-turbo' : (process.env.AZURE_OPENAI_DEPLOYMENT
 
 type Locale = 'fi' | 'en' | 'sv'
 
-function sysHint(locale: Locale, gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' = 'multiplication') {
-  if (gameType === 'addition') {
+function sysHint(locale: Locale, gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems' = 'multiplication') {
+  if (gameType === 'wordProblems') {
+    switch (locale) {
+      case 'en': return 'You are a helpful math tutor for children solving word problems. Give a clear, encouraging hint to help understand what the problem is asking. Never give the direct answer. Help identify key information and the math operation needed. Maximum 20 words. Use simple language.'
+      case 'sv': return 'Du är en hjälpsam mattlärare för barn som löser textproblem. Ge ett tydligt, uppmuntrande tips för att hjälpa förstå vad problemet frågar. Ge aldrig det direkta svaret. Hjälp identifiera nyckelinformation och den matematiska operationen som behövs. Maximalt 20 ord. Använd enkelt språk.'
+      default: return 'Olet avulias matematiikanopettaja lapsille, jotka ratkaisevat sanallisia tehtäviä. Anna selkeä, kannustava vihje ymmärtämään mitä tehtävä kysyy. Älä koskaan anna suoraa vastausta. Auta tunnistamaan tärkeät tiedot ja tarvittava laskutoimitus. Maksimissaan 20 sanaa. Käytä selkeää kieltä.'
+    }
+  } else if (gameType === 'addition') {
     switch (locale) {
       case 'en': return 'You are a helpful math tutor for children learning addition. Give a clear, encouraging hint to help solve the addition problem. Never give the direct answer. Focus on counting strategies, number bonds, or mental math tricks. Maximum 15 words. Use simple language.'
       case 'sv': return 'Du är en hjälpsam mattlärare för barn som lär sig addition. Ge ett tydligt, uppmuntrande tips för att hjälpa lösa additionsproblemet. Ge aldrig det direkta svaret. Fokusera på räknestrategier eller mentala mattricks. Maximalt 15 ord. Använd enkelt språk.'
@@ -67,8 +73,14 @@ function sysHint(locale: Locale, gameType: 'multiplication' | 'addition' | 'subt
     }
   }
 }
-function userHint(a: number, b: number, locale: Locale, gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' = 'multiplication', equation?: string) {
-  if (gameType === 'equations' && equation) {
+function userHint(a: number, b: number, locale: Locale, gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems' = 'multiplication', equation?: string) {
+  if (gameType === 'wordProblems' && equation) {
+    switch (locale) {
+      case 'en': return `Give a helpful hint for this word problem. The equation is: ${equation}. Do not give the direct answer. Help the child understand what operation to use and why.`
+      case 'sv': return `Ge ett hjälpsamt tips för detta textproblem. Ekvationen är: ${equation}. Ge inte det direkta svaret. Hjälp barnet förstå vilken operation som ska användas och varför.`
+      default: return `Anna hyödyllinen vihje tälle sanalliselle tehtävälle. Yhtälö on: ${equation}. Älä anna suoraa vastausta. Auta lasta ymmärtämään mitä laskutoimitusta käytetään ja miksi.`
+    }
+  } else if (gameType === 'equations' && equation) {
     switch (locale) {
       case 'en': return `Give a helpful hint for solving the equation: ${equation}. Do not give the direct answer. Help the child understand how to find the missing value.`
       case 'sv': return `Ge ett hjälpsamt tips för att lösa ekvationen: ${equation}. Ge inte det direkta svaret. Hjälp barnet förstå hur man hittar det saknade värdet.`
@@ -118,7 +130,7 @@ function userFeedback(stats: any, locale: Locale) {
   }
 }
 
-export async function aiHint(a: number, b: number, locale: Locale = 'fi', gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' = 'multiplication', equation?: string) {
+export async function aiHint(a: number, b: number, locale: Locale = 'fi', gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems' = 'multiplication', equation?: string) {
   const c = createOpenAIClient()
   const r = await (c as any).chat.completions.create({
     model: MODEL,

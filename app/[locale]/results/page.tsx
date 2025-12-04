@@ -19,7 +19,11 @@ interface Answer {
   b: number
   ms: number
   isCorrect: boolean
-  hintsUsed?: number // Add hints field
+  hintsUsed?: number
+  correct?: number // Correct answer
+  child?: number // User's answer
+  problem?: string // Word problem text
+  equation?: string // Word problem equation
 }
 
 interface Round {
@@ -142,16 +146,34 @@ export default function Results() {
 
         // Create FactResults from all answers with round numbers
         const facts: FactResult[] = allRounds.flatMap((round: Round) =>
-          round.answers?.map((answer: Answer) => ({
-            a: answer.a,
-            b: answer.b,
-            userAnswer: (answer as any).child || 0, // Get user's actual answer
-            correctAnswer: gameType === 'addition' ? answer.a + answer.b : answer.a * answer.b,
-            isCorrect: answer.isCorrect,
-            timeSpent: answer.ms / 1000,
-            hintsUsed: (answer as any).hintsUsed || 0, // Get actual hints used
-            roundNo: round.roundNo // Add round number to each fact
-          })) || []
+          round.answers?.map((answer: Answer) => {
+            let correctAnswer: number
+            if (gameType === 'wordProblems' || gameType === 'equations') {
+              correctAnswer = answer.correct || answer.a // For word problems and equations, correct answer is stored
+            } else if (gameType === 'addition') {
+              correctAnswer = answer.a + answer.b
+            } else if (gameType === 'subtraction') {
+              correctAnswer = answer.a - answer.b
+            } else if (gameType === 'division') {
+              correctAnswer = answer.a / answer.b
+            } else {
+              correctAnswer = answer.a * answer.b
+            }
+            
+            return {
+              a: answer.a,
+              b: answer.b,
+              userAnswer: answer.child || 0,
+              correctAnswer: correctAnswer,
+              isCorrect: answer.isCorrect,
+              timeSpent: answer.ms / 1000,
+              hintsUsed: answer.hintsUsed || 0,
+              roundNo: round.roundNo,
+              // Include word problem data if present
+              problem: answer.problem,
+              equation: answer.equation
+            }
+          }) || []
         )
 
         // Calculate round-by-round results

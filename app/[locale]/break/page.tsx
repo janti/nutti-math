@@ -40,6 +40,47 @@ export default function Break() {
   const [aiRequested, setAiRequested] = useState(false)
   const aiRequestedRef = useRef(false)
   const [settings, setSettings] = useState<GameSettings>({ rounds: 10, range: '2-12' })
+  
+  // Pre-fetch next word problems set if using word problems (only for current difficulty)
+  useEffect(() => {
+    const savedSettings = JSON.parse(localStorage.getItem('nutti.settings') || '{}')
+    if (savedSettings.gameType === 'wordProblems' && savedSettings.range) {
+      const currentLocale = loc || 'fi'
+      console.log('Pre-fetching next word problems set for next round, difficulty:', savedSettings.range)
+      generateAndCacheWordProblems(currentLocale, savedSettings.range)
+    }
+  }, [loc])
+
+  const generateAndCacheWordProblems = async (locale: string, range: string) => {
+    const operations: ('addition' | 'subtraction' | 'multiplication' | 'division')[] = 
+      ['addition', 'subtraction', 'multiplication', 'division']
+    const problems: any[] = []
+
+    for (let i = 0; i < 10; i++) {
+      const operation = operations[Math.floor(Math.random() * operations.length)]
+      try {
+        const response = await fetch('/api/wordproblems/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ locale, operation, range })
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          problems.push({ ...data, operation })
+        }
+      } catch (error) {
+        console.error('Error pre-fetching word problem', i, error)
+      }
+    }
+
+    if (problems.length > 0) {
+      const cacheKey = `nutti.wordproblems.${locale}.${range}`
+      localStorage.setItem(cacheKey, JSON.stringify(problems))
+      console.log(`Pre-fetched and cached ${problems.length} word problems for next round`)
+    }
+  }
+  
   useEffect(() => {
     console.log('Break useEffect running, aiRequested:', aiRequested)
 

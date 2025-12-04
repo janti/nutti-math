@@ -3,10 +3,18 @@ import { aiHint } from '@/lib/ai'
 
 export async function POST(req: NextRequest) {
   try {
-    const { a, b, locale = 'fi', gameType = 'multiplication', equation } = await req.json()
+    const { a, b, locale = 'fi', gameType = 'multiplication', equation, problem } = await req.json()
     
-    // For equations, we need the equation string, for others we need a and b
-    if (gameType === 'equations') {
+    // For word problems, we need the problem text
+    if (gameType === 'wordProblems') {
+      if (!problem) {
+        return NextResponse.json({ error: 'Missing problem parameter for wordProblems gameType' }, { status: 400 })
+      }
+      const hint = await aiHint(0, 0, locale, gameType, problem)
+      return NextResponse.json({ hint })
+    }
+    // For equations, we need the equation string
+    else if (gameType === 'equations') {
       if (!equation) {
         return NextResponse.json({ error: 'Missing equation parameter for equations gameType' }, { status: 400 })
       }

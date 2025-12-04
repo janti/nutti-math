@@ -21,6 +21,10 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
       const level = range.replace('equations-', '')
       return `🍎 ${t(`difficulty.${level}`)}`
     }
+    if (range.startsWith('word-problems-')) {
+      const level = range.replace('word-problems-', '')
+      return `📝 ${t(`difficulty.${level}`)}`
+    }
     return range
   }
 
@@ -249,7 +253,8 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                           {result.gameType === 'addition' ? '➕ ' + t('topics.addition') : 
                            result.gameType === 'subtraction' ? '➖ ' + t('topics.subtraction') :
                            result.gameType === 'equations' ? '📐 ' + t('topics.equations') : 
-                           result.gameType === 'division' ? '➗ ' + t('topics.division') : 
+                           result.gameType === 'division' ? '➗ ' + t('topics.division') :
+                           result.gameType === 'wordProblems' ? '📝 ' + t('topics.wordProblems') :
                            '✖️ ' + t('topics.multiplication')}
                         </div>
                       </div>
@@ -359,8 +364,14 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                                         className={`p-2 rounded ${fact.isCorrect ? 'bg-green-100' : 'bg-red-100'
                                           }`}
                                       >
-                                        <div className="font-mono">
-                                          {result.gameType === 'equations' ? `🍎 equation: ${fact.userAnswer}` : 
+                                        <div className="font-mono text-xs">
+                                          {result.gameType === 'equations' ? `🍎 equation: ${fact.userAnswer}` :
+                                           result.gameType === 'wordProblems' ? (
+                                             <div>
+                                               <div className="font-normal mb-1">{fact.problem}</div>
+                                               <div className="text-gray-600">{fact.equation} = {fact.userAnswer}</div>
+                                             </div>
+                                           ) :
                                            `${fact.a} ${result.gameType === 'addition' ? '+' : result.gameType === 'subtraction' ? '−' : result.gameType === 'division' ? '÷' : '×'} ${fact.b} = ${fact.userAnswer}`}
                                           {!fact.isCorrect && (
                                             <span className="text-red-600"> ({t('teacher.correct_answer')}: {fact.correctAnswer})</span>
@@ -385,8 +396,14 @@ export default function TeacherView({ onClose }: TeacherViewProps) {
                                 className={`p-2 rounded ${fact.isCorrect ? 'bg-green-100' : 'bg-red-100'
                                   }`}
                               >
-                                <div className="font-mono">
-                                  {result.gameType === 'equations' ? `🍎 equation: ${fact.userAnswer}` : 
+                                <div className="font-mono text-xs">
+                                  {result.gameType === 'equations' ? `🍎 equation: ${fact.userAnswer}` :
+                                   result.gameType === 'wordProblems' ? (
+                                     <div>
+                                       <div className="font-normal mb-1">{fact.problem}</div>
+                                       <div className="text-gray-600">{fact.equation} = {fact.userAnswer}</div>
+                                     </div>
+                                   ) :
                                    `${fact.a} ${result.gameType === 'addition' ? '+' : result.gameType === 'subtraction' ? '−' : result.gameType === 'division' ? '÷' : '×'} ${fact.b} = ${fact.userAnswer}`}
                                   {!fact.isCorrect && (
                                     <span className="text-red-600"> ({t('teacher.correct_answer')}: {fact.correctAnswer})</span>

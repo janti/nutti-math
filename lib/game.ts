@@ -11,6 +11,14 @@ export type EquationFact = {
   variableIcon: string; // fruit emoji like 🍎, 🍊, 🍌
 }
 
+// Word problem type
+export type WordProblem = {
+  problem: string; // The word problem text
+  equation: string; // Visual representation like "5 + 3"
+  answer: number; // Correct answer
+  operation: 'addition' | 'multiplication' | 'subtraction' | 'division';
+}
+
 // Acorn scoring system - calculates acorns earned based on performance
 export function calculateAcorns(correct: number, total: number, averageMs: number): number {
   const accuracy = correct / total
@@ -53,12 +61,33 @@ export function calculateAcornsForEquations(correct: number, total: number, aver
   return 1  // Less than 40% accuracy gets 1 acorn
 }
 
+// Special acorn calculation for word problems (most generous with time)
+export function calculateAcornsForWordProblems(correct: number, total: number, averageMs: number): number {
+  const accuracy = correct / total
+  const avgSeconds = averageMs / 1000
+
+  // Always give at least 1 acorn for participation
+  if (correct === 0) return 1
+  if (accuracy === 1.0) {
+    if (avgSeconds <= 15) return 5     // Fast (very generous: 15s)
+    if (avgSeconds <= 30) return 4     // Medium (very generous: 30s)
+    return 3                           // Slow but perfect (no time limit)
+  }
+
+  // Scale acorns based on accuracy (2-4 acorns) - same accuracy requirements
+  if (accuracy >= 0.8) return 4       // 8-9 correct
+  if (accuracy >= 0.6) return 3       // 6-7 correct  
+  if (accuracy >= 0.4) return 2       // 4-5 correct
+
+  return 1  // Less than 40% accuracy gets 1 acorn
+}
+
 // Calculate total acorns from all rounds
 export function calculateTotalAcorns(rounds: Array<{ correct: number, total: number, avgMs: number }>): number {
   return rounds.reduce((sum, round) => sum + calculateAcorns(round.correct, round.total, round.avgMs), 0)
 }
 
-export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div', gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' = 'multiplication'): Fact[] {
+export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div' | 'word-problems-easy' | 'word-problems-medium' | 'word-problems-hard', gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems' = 'multiplication'): Fact[] {
   if (gameType === 'addition') {
     return additionFactPool(range)
   }
@@ -74,6 +103,11 @@ export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix
   // For equations, we still return Fact[] but they should be converted to EquationFact[] elsewhere
   if (gameType === 'equations' || range.startsWith('equations-')) {
     // Return empty array - equations will be generated separately
+    return []
+  }
+  
+  // For word problems, return empty array - they will be generated via AI
+  if (gameType === 'wordProblems' || range.startsWith('word-problems-')) {
     return []
   }
   

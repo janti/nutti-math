@@ -65,6 +65,7 @@ export default function LandingPage() {
                 width={200}
                 height={240}
                 className="relative rounded-xl shadow-lg"
+                style={{ height: 'auto' }}
                 priority
                 sizes="(max-width: 768px) 60vw, (max-width: 1200px) 25vw, 20vw"
               />

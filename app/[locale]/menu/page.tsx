@@ -1,20 +1,22 @@
 'use client'
 import { useTranslations } from 'next-intl'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import NuttiBadge from '@/components/NuttiBadge'
 
 // TypeScript interfaces
 interface GameSettings {
     alias: string
-    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div'
+    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div' | 'word-problems-easy' | 'word-problems-medium' | 'word-problems-hard'
     rounds: 1 | 2 | 3 | 5 | 10
-    gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division'
+    gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems'
 }
 
 export default function MenuPage() {
     const t = useTranslations()
     const router = useRouter()
+    const params = useParams()
+    const locale = (params.locale as string) || 'fi'
 
     // Game configuration state
     const [alias, setAlias] = useState('')
@@ -22,6 +24,7 @@ export default function MenuPage() {
     const [rounds, setRounds] = useState<GameSettings['rounds']>(1)
     const [topic, setTopic] = useState('multiplication')
     const [gameType, setGameType] = useState<'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division'>('multiplication')
+    const [isLoadingWordProblems, setIsLoadingWordProblems] = useState(false)
 
     /**
      * Clear localStorage and start a new game with current settings
@@ -81,6 +84,81 @@ export default function MenuPage() {
     }
 
     /**
+     * Pre-fetch word problems for all difficulty levels when menu loads
+     */
+    useEffect(() => {
+        // Wait for locale to be available
+        if (!locale) {
+            console.log('Locale not yet available, skipping word problems pre-fetch')
+            return
+        }
+        
+        console.log('Pre-fetching word problems for locale:', locale)
+        const difficulties = ['word-problems-easy', 'word-problems-medium', 'word-problems-hard']
+        let needsFetch = false
+        
+        // Check if any difficulty level needs fetching
+        for (const diff of difficulties) {
+            const cachedKey = `nutti.wordproblems.${locale}.${diff}`
+            if (!localStorage.getItem(cachedKey)) {
+                needsFetch = true
+                console.log('Need to fetch:', diff)
+                break
+            }
+        }
+        
+        // Fetch all difficulty levels in background
+        if (needsFetch) {
+            setIsLoadingWordProblems(true)
+            
+            Promise.all(
+                difficulties.map(diff => {
+                    console.log('Starting fetch for:', diff, 'with locale:', locale)
+                    return generateAndCacheWordProblems(locale, diff)
+                })
+            ).finally(() => {
+                setIsLoadingWordProblems(false)
+                console.log('All word problem difficulty levels cached for locale:', locale)
+            })
+        }
+    }, [locale])
+
+    /**
+     * Generate and cache word problems
+     */
+    const generateAndCacheWordProblems = async (locale: string, range: string) => {
+        console.log('generateAndCacheWordProblems called with locale:', locale, 'range:', range)
+        const operations: ('addition' | 'subtraction' | 'multiplication' | 'division')[] = 
+            ['addition', 'subtraction', 'multiplication', 'division']
+        const problems: any[] = []
+
+        for (let i = 0; i < 10; i++) {
+            const operation = operations[Math.floor(Math.random() * operations.length)]
+            try {
+                console.log(`Generating problem ${i + 1}/10, locale: ${locale}, operation: ${operation}`)
+                const response = await fetch('/api/wordproblems/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ locale, operation, range })
+                })
+                
+                if (response.ok) {
+                    const data = await response.json()
+                    problems.push({ ...data, operation })
+                }
+            } catch (error) {
+                console.error('Error pre-fetching word problem', i, error)
+            }
+        }
+
+        if (problems.length > 0) {
+            const cacheKey = `nutti.wordproblems.${locale}.${range}`
+            localStorage.setItem(cacheKey, JSON.stringify(problems))
+            console.log(`Cached ${problems.length} word problems for ${locale}/${range}`)
+        }
+    }
+
+    /**
      * Cleanup effect to ensure all audio is stopped when leaving the page
      */
     useEffect(() => {
@@ -101,8 +179,8 @@ export default function MenuPage() {
         { id: 'division', icon: '➗', label: 'division', enabled: true },
         { id: 'addition', icon: '➕', label: 'addition', enabled: true },
         { id: 'subtraction', icon: '➖', label: 'subtraction', enabled: true },
-        { id: 'wordProblems', icon: '📝', label: 'wordProblems', enabled: false },
         { id: 'equations', icon: '📐', label: 'equations', enabled: true },
+        { id: 'wordProblems', icon: '📝', label: 'wordProblems', enabled: true },
     ]
 
     // Update gameType and reset range when topic changes
@@ -126,6 +204,24 @@ export default function MenuPage() {
             setGameType('division')
             setRange('1-5-div')
             console.log('Set division gameType and range to 1-5-div')
+        } else if (topicId === 'wordProblems') {
+            setGameType('wordProblems' as any)
+            const newRange = 'word-problems-easy' as any
+            setRange(newRange)
+            console.log('Set wordProblems gameType and range to word-problems-easy')
+            
+            // Pre-fetch all difficulty levels if not in cache
+            const difficulties = ['word-problems-easy', 'word-problems-medium', 'word-problems-hard']
+            const needsFetch = difficulties.some(diff => 
+                !localStorage.getItem(`nutti.wordproblems.${locale}.${diff}`)
+            )
+            
+            if (needsFetch) {
+                setIsLoadingWordProblems(true)
+                Promise.all(
+                    difficulties.map(diff => generateAndCacheWordProblems(locale, diff))
+                ).finally(() => setIsLoadingWordProblems(false))
+            }
         }
     }
 
@@ -459,6 +555,36 @@ export default function MenuPage() {
                                                 {t('icons.difficultyMix')} {t('home.mix')}
                                             </button>
                                         </>
+                                    ) : gameType === 'wordProblems' ? (
+                                        <>
+                                            <button
+                                                onClick={() => setRange('word-problems-easy' as any)}
+                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-easy'
+                                                    ? 'bg-gradient-to-r from-green-200 to-emerald-200 border-green-400 text-green-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-green-50'
+                                                    }`}
+                                            >
+                                                📗 {t('difficulty.easy')}
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('word-problems-medium' as any)}
+                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-medium'
+                                                    ? 'bg-gradient-to-r from-yellow-200 to-orange-200 border-yellow-400 text-yellow-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-yellow-50'
+                                                    }`}
+                                            >
+                                                📙 {t('difficulty.medium')}
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('word-problems-hard' as any)}
+                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 w-full ${range === 'word-problems-hard'
+                                                    ? 'bg-gradient-to-r from-red-200 to-pink-200 border-red-400 text-red-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-red-50'
+                                                    }`}
+                                            >
+                                                📕 {t('difficulty.hard')}
+                                            </button>
+                                        </>
                                     ) : null}
                                 </div>
                             </div>
@@ -472,22 +598,31 @@ export default function MenuPage() {
                             <span className="text-sm font-bold text-purple-700 ml-2">{t('home.topic')}</span>
                         </div>
                         <div className="grid grid-cols-3 lg:grid-cols-6 gap-2">
-                            {topics.map((tItem) => (
+                            {topics.map((tItem) => {
+                                const isWordProblemsLoading = tItem.id === 'wordProblems' && isLoadingWordProblems
+                                const isDisabled = !tItem.enabled || isWordProblemsLoading
+                                
+                                // Hide word problems completely until loaded
+                                if (tItem.id === 'wordProblems' && isLoadingWordProblems) {
+                                    return null
+                                }
+                                
+                                return (
                                 <button
                                     key={tItem.id}
-                                    onClick={() => tItem.enabled && handleTopicChange(tItem.id)}
-                                    disabled={!tItem.enabled}
+                                    onClick={() => !isDisabled && handleTopicChange(tItem.id)}
+                                    disabled={isDisabled}
                                     className={`p-2 rounded-lg border-2 transition-all flex flex-col items-center justify-center gap-1 ${topic === tItem.id
                                         ? 'bg-purple-100 border-purple-400 text-purple-800 shadow-md'
                                         : tItem.enabled
                                             ? 'bg-white border-gray-200 text-gray-700 hover:bg-purple-50'
-                                            : 'bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed'
+                                            : 'bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed opacity-50'
                                         }`}
                                 >
-                                    <span className="text-lg">{tItem.icon}</span>
+                                    <span className="text-2xl">{tItem.icon}</span>
                                     <span className="text-xs font-medium">{t(`topics.${tItem.label}`)}</span>
                                 </button>
-                            ))}
+                            )})}
                         </div>
                     </div>
                             </div>
