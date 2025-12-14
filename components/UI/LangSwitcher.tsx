@@ -13,7 +13,7 @@ export default function LangSwitcher({ locale }: { locale: string }) {
         parts[0] = l
         const href = '/' + parts.join('/')
         return (
-          <button key={l} onClick={() => r.push(href)}
+          <button key={l} onClick={() => window.location.href = href}
             className={`px-2 py-1 rounded-lg border ${active ? 'bg-nutti-secondary border-blue-300' : 'bg-white'}`}
             aria-current={active ? 'page' : undefined}>
             {l.toUpperCase()}

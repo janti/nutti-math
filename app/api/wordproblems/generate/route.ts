@@ -39,12 +39,12 @@ function getSystemPrompt(locale: Locale, operation: Operation): string {
     multiplication: '×',
     division: '÷'
   }
-  
+
   const symbol = operationSymbols[operation]
-  
+
   if (locale === 'en') {
     const divisionNote = operation === 'division' ? '\n- CRITICAL: Division MUST result in whole numbers with NO remainder. Choose numbers carefully so they divide evenly.' : ''
-    
+
     return `You are a creative math teacher creating word problems IN ENGLISH for children (ages 7-10).
 
 CRITICAL: Respond ONLY in ENGLISH. Do not use Finnish, Swedish, or any other language.
@@ -58,9 +58,9 @@ Create a ${operation} word problem that is:
 
 CRITICAL - OPERATION TYPE:
 ${operation === 'addition' ? '- Problem MUST be ADDITION (+). Do NOT create multiplication, subtraction, or division!\n- Example CORRECT: "Tom has 5 balls. He gets 3 more balls."\n- Example WRONG: "Tom has 5 boxes with 3 balls each" (THIS IS MULTIPLICATION!)' :
-operation === 'subtraction' ? '- Problem MUST be SUBTRACTION (−). Do NOT create addition, multiplication, or division!\n- Example CORRECT: "Lisa has 8 candies. She eats 3 candies."\n- Example WRONG: "Lisa has 8 candies. She gets 3 more" (THIS IS ADDITION!)' :
-operation === 'multiplication' ? '- Problem MUST be MULTIPLICATION (×). Do NOT create addition, subtraction, or division!\n- Example CORRECT: "Emma has 4 boxes. Each box has 3 balls."\n- Example WRONG: "Emma has 4 balls. She gets 3 more" (THIS IS ADDITION!)' :
-'- Problem MUST be DIVISION (÷). Do NOT create addition, subtraction, or multiplication!\n- Example CORRECT: "Ben has 12 candies. He shares them equally among 3 friends."\n- Example WRONG: "Ben has 12 candies and 3 friends total" (NOT DIVISION!)'}
+        operation === 'subtraction' ? '- Problem MUST be SUBTRACTION (−). Do NOT create addition, multiplication, or division!\n- Example CORRECT: "Lisa has 8 candies. She eats 3 candies."\n- Example WRONG: "Lisa has 8 candies. She gets 3 more" (THIS IS ADDITION!)' :
+          operation === 'multiplication' ? '- Problem MUST be MULTIPLICATION (×). Do NOT create addition, subtraction, or division!\n- Example CORRECT: "Emma has 4 boxes. Each box has 3 balls."\n- Example WRONG: "Emma has 4 balls. She gets 3 more" (THIS IS ADDITION!)' :
+            '- Problem MUST be DIVISION (÷). Do NOT create addition, subtraction, or multiplication!\n- Example CORRECT: "Ben has 12 candies. He gives them all to his 3 friends to share equally."\n- Example WRONG: "Ben has 12 candies and 3 friends total" (NOT DIVISION!)'}\n\nCRITICAL FOR SHARING PROBLEMS: \n- Explicitly state "how many does EACH FRIEND get" or "how many does EACH PERSON get" only if it is CLEAR who the people are.\n- Avoid ambiguity about whether the sharer is included. E.g., "Shares with 3 friends" -> 3 people total receiving items.
 
 BE CREATIVE AND VARIED! Don't repeat same words or situations. Use different:
 
@@ -91,10 +91,10 @@ PROBLEM: Amy plays in the park and finds 3 pinecones. Her sister finds 5 pinecon
 PROBLEM: Ben's bookshelf has 8 comic books. He lends 3 books to a friend. How many books are left on the shelf?
 PROBLEM: Sarah bakes muffins. She puts 4 blueberries in each muffin. If she bakes 5 muffins, how many blueberries does she need?`
   }
-  
+
   if (locale === 'sv') {
     const divisionNote = operation === 'division' ? '\n- VIKTIGT: Divisionen MÅSTE gå jämnt ut (ingen rest). Välj tal noggrant så att de går jämnt upp.' : ''
-    
+
     return `Du är en kreativ mattelärare som skapar textproblem PÅ SVENSKA för barn (7-10 år).
 
 KRITISKT: Svara ENDAST på SVENSKA. Använd inte engelska, finska eller något annat språk.
@@ -108,9 +108,9 @@ Skapa ett ${operation === 'addition' ? 'additions' : operation === 'subtraction'
 
 KRITISKT - RÄKNESÄTT:
 ${operation === 'addition' ? '- Problemet MÅSTE vara ADDITION (+). Skapa INTE multiplikation!\n- KORREKT: "Erik har 5 bollar. Han får 3 bollar till."\n- FEL: "Erik har 5 lådor med 3 bollar i varje" (MULTIPLIKATION!)' :
-operation === 'subtraction' ? '- Problemet MÅSTE vara SUBTRAKTION (−). Skapa INTE addition!\n- KORREKT: "Anna har 8 godisar. Hon äter 3 godisar."\n- FEL: "Anna har 8 godisar. Hon får 3 till" (ADDITION!)' :
-operation === 'multiplication' ? '- Problemet MÅSTE vara MULTIPLIKATION (×). Skapa INTE addition!\n- KORREKT: "Lisa har 4 lådor. Varje låda har 3 bollar."\n- FEL: "Lisa har 4 bollar. Hon får 3 till" (ADDITION!)' :
-'- Problemet MÅSTE vara DIVISION (÷). Dela lika!\n- KORREKT: "Johan har 12 godisar. Han delar dem lika mellan 3 vänner."\n- FEL: "Johan har 12 godisar och 3 vänner" (INTE DIVISION!)'}
+        operation === 'subtraction' ? '- Problemet MÅSTE vara SUBTRAKTION (−). Skapa INTE addition!\n- KORREKT: "Anna har 8 godisar. Hon äter 3 godisar."\n- FEL: "Anna har 8 godisar. Hon får 3 till" (ADDITION!)' :
+          operation === 'multiplication' ? '- Problemet MÅSTE vara MULTIPLIKATION (×). Skapa INTE addition!\n- KORREKT: "Lisa har 4 lådor. Varje låda har 3 bollar."\n- FEL: "Lisa har 4 bollar. Hon får 3 till" (ADDITION!)' :
+            '- Problemet MÅSTE vara DIVISION (÷). Dela lika!\n- KORREKT: "Johan har 12 godisar. Han ger bort alla till sina 3 vänner att dela lika."\n- FEL: "Johan har 12 godisar och 3 vänner" (INTE DIVISION!)'}\n\nKRITISKT FÖR DELNINGSPROBLEM:\n- Var tydlig med vem som får sakerna. "Hur många får VARJE VÄN?" är bättre än "varje person".\n- Undvik oklarhet om den som delar är inkluderad. T.ex. "Delar med 3 vänner" -> 3 personer får saker.
 
 VAR KREATIV OCH VARIERANDE! Upprepa inte samma ord eller situationer. Använd olika:
 
@@ -141,10 +141,10 @@ PROBLEM: Anna leker i parken och hittar 3 kottar. Hennes syster hittar 5 kottar.
 PROBLEM: Johans bokhylla har 8 serietidningar. Han lånar ut 3 tidningar till en kompis. Hur många tidningar finns kvar i hyllan?
 PROBLEM: Lisa bakar muffins. Hon lägger 4 blåbär i varje muffin. Om hon bakar 5 muffins, hur många blåbär behöver hon?`
   }
-  
+
   // Finnish (default)
   const divisionNote = operation === 'division' ? '\n- TÄRKEÄÄ: Jakolasku TÄYTYY mennä tasan (ei jakojäännöstä). Valitse jaettava huolellisesti niin että se menee tasan jakajalla.' : ''
-  
+
   return `Olet luova matematiikanopettaja, joka luo sanallisia tehtäviä SUOMEKSI lapsille (7-10 v). 
 
 KRITTISEN TÄRKEÄÄ: Vastaa VAIN ja AINOASTAAN SUOMEN KIELELLÄ. Älä käytä englantia, ruotsia tai mitään muuta kieltä.
@@ -157,10 +157,10 @@ Luo ${operation === 'addition' ? 'yhteenlasku' : operation === 'subtraction' ? '
 - Tuottaa vain kokonaislukuvastauksia${divisionNote}
 
 KRITTISEN TÄRKEÄÄ - LASKUTOIMITUS:
-${operation === 'addition' ? '- Tehtävä TÄYTYY olla YHTEENLASKU (+). ÄLÄ tee kertolaskua!\n- OIKEIN: "Matilla on 5 palloa. Hän saa 3 palloa lisää."\n- VÄÄRIN: "Matilla on 5 laatikkoa ja jokaisessa 3 palloa" (KERTOLASKU!)' : 
-operation === 'subtraction' ? '- Tehtävä TÄYTYY olla VÄHENNYSLASKU (−). ÄLÄ tee yhteenlaskua!\n- OIKEIN: "Liisalla on 8 karkkia. Hän syö 3 karkkia."\n- VÄÄRIN: "Liisalla on 8 karkkia. Hän saa 3 lisää" (YHTEENLASKU!)' :
-operation === 'multiplication' ? '- Tehtävä TÄYTYY olla KERTOLASKU (×). ÄLÄ tee yhteenlaskua!\n- OIKEIN: "Emmalla on 4 laatikkoa. Jokaisessa laatikossa on 3 palloa."\n- VÄÄRIN: "Emmalla on 4 palloa. Hän saa 3 lisää" (YHTEENLASKU!)' :
-'- Tehtävä TÄYTYY olla JAKOLASKU (÷). Jaa tasan!\n- OIKEIN: "Pekalla on 12 karkkia. Hän jakaa ne tasan 3 ystävälle."\n- VÄÄRIN: "Pekalla on 12 karkkia ja 3 kaveria" (EI JAKOLASKUA!)'}
+${operation === 'addition' ? '- Tehtävä TÄYTYY olla YHTEENLASKU (+). ÄLÄ tee kertolaskua!\n- OIKEIN: "Matilla on 5 palloa. Hän saa 3 palloa lisää."\n- VÄÄRIN: "Matilla on 5 laatikkoa ja jokaisessa 3 palloa" (KERTOLASKU!)' :
+      operation === 'subtraction' ? '- Tehtävä TÄYTYY olla VÄHENNYSLASKU (−). ÄLÄ tee yhteenlaskua!\n- OIKEIN: "Liisalla on 8 karkkia. Hän syö 3 karkkia."\n- VÄÄRIN: "Liisalla on 8 karkkia. Hän saa 3 lisää" (YHTEENLASKU!)' :
+        operation === 'multiplication' ? '- Tehtävä TÄYTYY olla KERTOLASKU (×). ÄLÄ tee yhteenlaskua!\n- OIKEIN: "Emmalla on 4 laatikkoa. Jokaisessa laatikossa on 3 palloa."\n- VÄÄRIN: "Emmalla on 4 palloa. Hän saa 3 lisää" (YHTEENLASKU!)' :
+          '- Tehtävä TÄYTYY olla JAKOLASKU (÷). Jaa tasan!\n- OIKEIN: "Pekalla on 12 karkkia. Hän antaa ne kaikki 3 ystävälleen jaettavaksi tasan."\n- VÄÄRIN: "Pekalla on 12 karkkia ja 3 kaveria" (EI JAKOLASKUA!)'}\n\nTÄRKEÄÄ JAKOLASKUISSA:\n- Ole selkeä kuka saa tavarat. "Montako karkkia KUKIN YSTÄVÄ saa?" on selkeämpi kuin "jokainen henkilö".\n- Vältä epäselvyyttä siitä, onko jakaja mukana. "Jakaa 3 ystävän kesken" -> 3 henkilöä saa tavaroita.
 
 OLE LUOVA JA VAIHTELEVA! Älä toista samoja sanoja tai tilanteita. Käytä erilaisia:
 
@@ -196,7 +196,7 @@ function getUserPrompt(operation: Operation, range: string): string {
   // Determine number range based on operation and difficulty
   let minNum = 1
   let maxNum = 20
-  
+
   if (operation === 'multiplication') {
     minNum = 2
     if (range.includes('veryhard')) {
@@ -227,7 +227,7 @@ function getUserPrompt(operation: Operation, range: string): string {
     }
     return `Create a ${operation} word problem using numbers between ${minNum} and ${maxNum}. Make it engaging and appropriate for children.`
   }
-  
+
   return `Create a ${operation} word problem using numbers between ${minNum} and ${maxNum}. Make it engaging and appropriate for children.`
 }
 
@@ -236,28 +236,28 @@ function parseAIResponse(response: string): { problem: string; equation: string;
     const problemMatch = response.match(/PROBLEM:\s*(.+?)(?=EQUATION:|$)/s)
     const equationMatch = response.match(/EQUATION:\s*(.+?)(?=ANSWER:|$)/s)
     const answerMatch = response.match(/ANSWER:\s*(\d+)/s)
-    
+
     if (!problemMatch || !equationMatch || !answerMatch) {
       console.error('Failed to parse AI response:', response)
       return null
     }
-    
+
     const problem = problemMatch[1].trim()
     let equation = equationMatch[1].trim()
-    
+
     // Normalize equation symbols
     equation = equation.replace(/−/g, '-')  // Replace MINUS SIGN (U+2212) with hyphen-minus
     equation = equation.replace(/×/g, '*')  // Replace multiplication sign
     equation = equation.replace(/÷/g, '/')  // Replace division sign
     equation = equation.replace(/\//g, '÷') // Standardize division to ÷
-    
+
     const answer = parseInt(answerMatch[1].trim())
-    
+
     if (!problem || !equation || isNaN(answer)) {
       console.error('Invalid parsed values:', { problem, equation, answer })
       return null
     }
-    
+
     // Validate the equation matches the answer
     try {
       const equationParts = equation.match(/(\d+)\s*([\+\-\*×÷\/])\s*(\d+)/)
@@ -265,7 +265,7 @@ function parseAIResponse(response: string): { problem: string; equation: string;
         const num1 = parseInt(equationParts[1])
         const operator = equationParts[2]
         const num2 = parseInt(equationParts[3])
-        
+
         let calculatedAnswer: number
         switch (operator) {
           case '+': calculatedAnswer = num1 + num2; break
@@ -274,11 +274,11 @@ function parseAIResponse(response: string): { problem: string; equation: string;
           case '/': case '÷': calculatedAnswer = num1 / num2; break
           default: calculatedAnswer = answer
         }
-        
+
         if (calculatedAnswer !== answer) {
           return null
         }
-        
+
         // Check for division remainders
         if ((operator === '/' || operator === '÷') && num1 % num2 !== 0) {
           return null
@@ -287,7 +287,7 @@ function parseAIResponse(response: string): { problem: string; equation: string;
     } catch (error) {
       // Validation failed, continue
     }
-    
+
     return { problem, equation, answer }
   } catch (error) {
     console.error('Error parsing AI response:', error)
@@ -299,19 +299,19 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { locale = 'fi', operation = 'addition', range = '1-20-add' } = body
-    
+
     const client = createOpenAIClient()
     const systemPrompt = getSystemPrompt(locale as Locale, operation as Operation)
     const userPrompt = getUserPrompt(operation as Operation, range)
-    
+
     // Retry logic for incomplete responses
     let attempts = 0
     const maxAttempts = 3
     let parsed = null
-    
+
     while (attempts < maxAttempts && !parsed) {
       attempts++
-      
+
       const response = await (client as any).chat.completions.create({
         model: MODEL,
         messages: [
@@ -321,25 +321,25 @@ export async function POST(request: NextRequest) {
         temperature: 0.7,
         max_tokens: 400,
       })
-      
+
       const aiText = response.choices?.[0]?.message?.content?.trim()
       if (!aiText) {
         continue
       }
-      
+
       // Check if response seems complete (has all three parts)
       const hasAllParts = aiText.includes('PROBLEM:') && aiText.includes('EQUATION:') && aiText.includes('ANSWER:')
       if (!hasAllParts) {
         continue
       }
-      
+
       parsed = parseAIResponse(aiText)
     }
-    
+
     if (!parsed) {
       throw new Error(`Failed to parse AI response after ${maxAttempts} attempts`)
     }
-    
+
     return NextResponse.json(parsed)
   } catch (error) {
     console.error('Error generating word problem:', error)
