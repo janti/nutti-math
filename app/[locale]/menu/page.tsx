@@ -92,11 +92,11 @@ export default function MenuPage() {
             console.log('Locale not yet available, skipping word problems pre-fetch')
             return
         }
-        
+
         console.log('Pre-fetching word problems for locale:', locale)
         const difficulties = ['word-problems-easy', 'word-problems-medium', 'word-problems-hard', 'word-problems-veryhard']
         let needsFetch = false
-        
+
         // Check if any difficulty level needs fetching
         for (const diff of difficulties) {
             const cachedKey = `nutti.wordproblems.${locale}.${diff}`
@@ -106,11 +106,11 @@ export default function MenuPage() {
                 break
             }
         }
-        
+
         // Fetch all difficulty levels in background
         if (needsFetch) {
             setIsLoadingWordProblems(true)
-            
+
             Promise.all(
                 difficulties.map(diff => {
                     console.log('Starting fetch for:', diff, 'with locale:', locale)
@@ -128,7 +128,7 @@ export default function MenuPage() {
      */
     const generateAndCacheWordProblems = async (locale: string, range: string) => {
         console.log('generateAndCacheWordProblems called with locale:', locale, 'range:', range)
-        const operations: ('addition' | 'subtraction' | 'multiplication' | 'division')[] = 
+        const operations: ('addition' | 'subtraction' | 'multiplication' | 'division')[] =
             ['addition', 'subtraction', 'multiplication', 'division']
         const problems: any[] = []
 
@@ -141,7 +141,7 @@ export default function MenuPage() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ locale, operation, range })
                 })
-                
+
                 if (response.ok) {
                     const data = await response.json()
                     problems.push({ ...data, operation })
@@ -209,13 +209,13 @@ export default function MenuPage() {
             const newRange = 'word-problems-easy' as any
             setRange(newRange)
             console.log('Set wordProblems gameType and range to word-problems-easy')
-            
+
             // Pre-fetch all difficulty levels if not in cache
             const difficulties = ['word-problems-easy', 'word-problems-medium', 'word-problems-hard', 'word-problems-veryhard']
-            const needsFetch = difficulties.some(diff => 
+            const needsFetch = difficulties.some(diff =>
                 !localStorage.getItem(`nutti.wordproblems.${locale}.${diff}`)
             )
-            
+
             if (needsFetch) {
                 setIsLoadingWordProblems(true)
                 Promise.all(
@@ -252,419 +252,425 @@ export default function MenuPage() {
                             {/* Two column layout for main content */}
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-3 mt-4">
 
-                        {/* Left column: Title and alias */}
-                        <div className="flex flex-col gap-3 h-full">
-                            <div className="card bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-nutti-primary/30 p-4 h-full flex flex-col justify-between">
-                                <div className="text-center mb-2">
-                                    <div className="text-xl mb-1">{t('icons.gameInfo')}</div>
-                                    <h1 className="text-xl font-extrabold mb-2 text-nutti-primary">{t('home.heading')}</h1>
-                                    <p className="text-sm text-nutti-accent font-semibold bg-white/70 rounded-xl p-2 border border-nutti-secondary">
-                                        {t('home.gameInfo', { rounds })}
-                                    </p>
-                                </div>
+                                {/* Left column: Title and alias */}
+                                <div className="flex flex-col gap-3 h-full">
+                                    <div className="card bg-gradient-to-br from-blue-50 to-cyan-50 border-2 border-nutti-primary/30 p-4 h-full flex flex-col justify-between">
+                                        <div className="text-center mb-2">
+                                            <div className="text-xl mb-1">{t('icons.gameInfo')}</div>
+                                            <h1 className="text-xl font-extrabold mb-2 text-nutti-primary">{t('home.heading')}</h1>
+                                            <p className="text-sm text-nutti-accent font-semibold bg-white/70 rounded-xl p-2 border border-nutti-secondary">
+                                                {t('home.gameInfo', { rounds })}
+                                            </p>
+                                        </div>
 
-                                {/* Alias input */}
-                                <div className="p-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-nutti-accent/30">
-                                    <div className="text-center mb-2">
-                                        <span className="text-lg">{t('icons.alias')}</span>
-                                        <span className="text-sm font-bold text-nutti-accent ml-2">{t('home.alias')}</span>
+                                        {/* Alias input */}
+                                        <div className="p-2 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-nutti-accent/30">
+                                            <div className="text-center mb-2">
+                                                <span className="text-lg">{t('icons.alias')}</span>
+                                                <span className="text-sm font-bold text-nutti-accent ml-2">{t('home.alias')}</span>
+                                            </div>
+                                            <input
+                                                value={alias}
+                                                onChange={e => setAlias(e.target.value.slice(0, 16))}
+                                                onKeyDown={e => {
+                                                    if (e.key === 'Enter' && alias.trim()) {
+                                                        startNewGame()
+                                                    }
+                                                }}
+                                                className="w-full rounded-lg border border-nutti-secondary p-2 text-lg text-center font-semibold bg-white/90 focus:ring-2 focus:ring-nutti-accent/30 focus:border-nutti-accent transition-all"
+                                                placeholder={t('alias.placeholder') as string}
+                                            />
+                                        </div>
                                     </div>
-                                    <input
-                                        value={alias}
-                                        onChange={e => setAlias(e.target.value.slice(0, 16))}
-                                        onKeyDown={e => {
-                                            if (e.key === 'Enter' && alias.trim()) {
-                                                startNewGame()
-                                            }
-                                        }}
-                                        className="w-full rounded-lg border border-nutti-secondary p-2 text-lg text-center font-semibold bg-white/90 focus:ring-2 focus:ring-nutti-accent/30 focus:border-nutti-accent transition-all"
-                                        placeholder={t('alias.placeholder') as string}
-                                    />
+                                </div>
+
+                                {/* Right column: Settings */}
+                                <div className="flex flex-col gap-3">
+                                    {/* Rounds selection */}
+                                    <div className="card bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 p-3">
+                                        <div className="text-center mb-2">
+                                            <span className="text-lg">{t('icons.rounds')}</span>
+                                            <span className="text-sm font-bold text-green-700 ml-2">{t('home.rounds')}</span>
+                                        </div>
+                                        <div className="grid grid-cols-5 gap-2">
+                                            {[1, 2, 3, 5, 10].map(n => (
+                                                <button
+                                                    key={n}
+                                                    onClick={() => setRounds(n as GameSettings['rounds'])}
+                                                    className={`py-2 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${rounds === n
+                                                        ? 'bg-gradient-to-r from-green-200 to-emerald-200 border-green-400 text-green-700 shadow-lg'
+                                                        : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-green-50'
+                                                        }`}
+                                                >
+                                                    {t(`icons.roundNumbers.${n}`)} {n}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Difficulty selection */}
+                                    <div className="card bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 p-3">
+                                        <div className="text-center mb-2">
+                                            <span className="text-lg">{t('icons.difficulty')}</span>
+                                            <span className="text-sm font-bold text-red-700 ml-2">{t('home.difficulty')}</span>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {gameType === 'multiplication' ? (
+                                                <>
+                                                    <button
+                                                        onClick={() => setRange('1-5')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-5'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        🧸 1-5
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-10')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        1-10
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('6-10')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '6-10'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        {t('icons.difficulty6to10')} 6-10
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-12')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-12'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        {t('icons.difficulty1to12')} 1-12
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('2-12')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '2-12'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        {t('icons.difficulty2to12')} 2-12
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-20')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20'
+                                                            ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
+                                                            }`}
+                                                    >
+                                                        🔥 1-20
+                                                    </button>
+                                                </>
+                                            ) : gameType === 'addition' ? (
+                                                <>
+                                                    <button
+                                                        onClick={() => setRange('1-10-add')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10-add'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        🧸 1-10
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-20-add')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20-add'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        1-20
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-50-add')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-50-add'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        1-50
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('50-100-add')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '50-100-add'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        50-100
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-100-add')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-100-add'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        1-100
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-200-add')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-200-add'
+                                                            ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
+                                                            }`}
+                                                    >
+                                                        🔥 1-200
+                                                    </button>
+                                                </>
+                                            ) : gameType === 'subtraction' ? (
+                                                <>
+                                                    <button
+                                                        onClick={() => setRange('1-10-sub')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10-sub'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        🧸 1-10
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-20-sub')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20-sub'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        1-20
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-50-sub')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-50-sub'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        1-50
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('50-100-sub')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '50-100-sub'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        50-100
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-100-sub')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-100-sub'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        1-100
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-200-sub')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-200-sub'
+                                                            ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
+                                                            }`}
+                                                    >
+                                                        🔥 1-200
+                                                    </button>
+                                                </>
+                                            ) : gameType === 'equations' ? (
+                                                <>
+                                                    <button
+                                                        onClick={() => setRange('equations-easy')}
+                                                        className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-easy'
+                                                            ? 'bg-gradient-to-r from-green-200 to-emerald-200 border-green-400 text-green-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-green-50'
+                                                            }`}
+                                                    >
+                                                        🍎 {t('difficulty.easy')}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('equations-medium')}
+                                                        className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-medium'
+                                                            ? 'bg-gradient-to-r from-yellow-200 to-orange-200 border-yellow-400 text-yellow-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-yellow-50'
+                                                            }`}
+                                                    >
+                                                        🍊 {t('difficulty.medium')}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('equations-hard')}
+                                                        className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-hard'
+                                                            ? 'bg-gradient-to-r from-red-200 to-pink-200 border-red-400 text-red-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-red-50'
+                                                            }`}
+                                                    >
+                                                        🍓 {t('difficulty.hard')}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('equations-veryhard')}
+                                                        className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-veryhard'
+                                                            ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
+                                                            }`}
+                                                    >
+                                                        🔥 {t('difficulty.veryhard')}
+                                                    </button>
+                                                </>
+                                            ) : gameType === 'division' ? (
+                                                <>
+                                                    <button
+                                                        onClick={() => setRange('1-5-div')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-5-div'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        🧸 1-5
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-10-div')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10-div'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        1-10
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-12-div')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-12-div'
+                                                            ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                            }`}
+                                                    >
+                                                        1-12
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('1-20-div')}
+                                                        className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20-div'
+                                                            ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
+                                                            }`}
+                                                    >
+                                                        🔥 1-20
+                                                    </button>
+                                                </>
+                                            ) : gameType === 'wordProblems' ? (
+                                                <>
+                                                    <button
+                                                        onClick={() => setRange('word-problems-easy' as any)}
+                                                        className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-easy'
+                                                            ? 'bg-gradient-to-r from-green-200 to-emerald-200 border-green-400 text-green-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-green-50'
+                                                            }`}
+                                                    >
+                                                        📗 {t('difficulty.easy')}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('word-problems-medium' as any)}
+                                                        className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-medium'
+                                                            ? 'bg-gradient-to-r from-yellow-200 to-orange-200 border-yellow-400 text-yellow-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-yellow-50'
+                                                            }`}
+                                                    >
+                                                        📙 {t('difficulty.medium')}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('word-problems-hard' as any)}
+                                                        className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-hard'
+                                                            ? 'bg-gradient-to-r from-red-200 to-pink-200 border-red-400 text-red-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-red-50'
+                                                            }`}
+                                                    >
+                                                        📕 {t('difficulty.hard')}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setRange('word-problems-veryhard' as any)}
+                                                        className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-veryhard'
+                                                            ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                            : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
+                                                            }`}
+                                                    >
+                                                        🔥 {t('difficulty.veryhard')}
+                                                    </button>
+                                                </>
+                                            ) : null}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Right column: Settings */}
-                        <div className="flex flex-col gap-3">
-                            {/* Rounds selection */}
-                            <div className="card bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 p-3">
+                            {/* Topic Selection - Full Width */}
+                            <div className="card bg-gradient-to-br from-purple-50 to-fuchsia-50 border-2 border-purple-200 p-3 mt-3">
                                 <div className="text-center mb-2">
-                                    <span className="text-lg">{t('icons.rounds')}</span>
-                                    <span className="text-sm font-bold text-green-700 ml-2">{t('home.rounds')}</span>
+                                    <span className="text-lg">📚</span>
+                                    <span className="text-sm font-bold text-purple-700 ml-2">{t('home.topic')}</span>
                                 </div>
-                                <div className="grid grid-cols-5 gap-2">
-                                    {[1, 2, 3, 5, 10].map(n => (
-                                        <button
-                                            key={n}
-                                            onClick={() => setRounds(n as GameSettings['rounds'])}
-                                            className={`py-2 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${rounds === n
-                                                ? 'bg-gradient-to-r from-green-200 to-emerald-200 border-green-400 text-green-700 shadow-lg'
-                                                : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-green-50'
-                                                }`}
-                                        >
-                                            {t(`icons.roundNumbers.${n}`)} {n}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
+                                <div className="grid grid-cols-3 lg:grid-cols-6 gap-2">
+                                    {topics.map((tItem) => {
+                                        const isWordProblemsLoading = tItem.id === 'wordProblems' && isLoadingWordProblems
+                                        const isDisabled = !tItem.enabled || isWordProblemsLoading
 
-                            {/* Difficulty selection */}
-                            <div className="card bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 p-3">
-                                <div className="text-center mb-2">
-                                    <span className="text-lg">{t('icons.difficulty')}</span>
-                                    <span className="text-sm font-bold text-red-700 ml-2">{t('home.difficulty')}</span>
-                                </div>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {gameType === 'multiplication' ? (
-                                        <>
+                                        // Don't hide word problems, just show loading state
+                                        // if (tItem.id === 'wordProblems' && isLoadingWordProblems) {
+                                        //     return null
+                                        // }
+
+                                        return (
                                             <button
-                                                onClick={() => setRange('1-5')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-5'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                key={tItem.id}
+                                                onClick={() => !isDisabled && handleTopicChange(tItem.id)}
+                                                disabled={isDisabled}
+                                                className={`p-2 rounded-lg border-2 transition-all flex flex-col items-center justify-center gap-1 ${topic === tItem.id
+                                                    ? 'bg-purple-100 border-purple-400 text-purple-800 shadow-md'
+                                                    : tItem.enabled
+                                                        ? 'bg-white border-gray-200 text-gray-700 hover:bg-purple-50'
+                                                        : 'bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed opacity-50'
                                                     }`}
                                             >
-                                                🧸 1-5
+                                                <span className="text-2xl">
+                                                    {isWordProblemsLoading ? (
+                                                        <div className="animate-spin h-6 w-6 border-2 border-purple-500 rounded-full border-t-transparent"></div>
+                                                    ) : (
+                                                        tItem.icon
+                                                    )}
+                                                </span>
+                                                <span className="text-xs font-medium">{t(`topics.${tItem.label}`)}</span>
                                             </button>
-                                            <button
-                                                onClick={() => setRange('1-10')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                1-10
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('6-10')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '6-10'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                {t('icons.difficulty6to10')} 6-10
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-12')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-12'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                {t('icons.difficulty1to12')} 1-12
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('2-12')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '2-12'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                {t('icons.difficulty2to12')} 2-12
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-20')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20'
-                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
-                                                    }`}
-                                            >
-                                                🔥 1-20
-                                            </button>
-                                        </>
-                                    ) : gameType === 'addition' ? (
-                                        <>
-                                            <button
-                                                onClick={() => setRange('1-10-add')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10-add'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                🧸 1-10
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-20-add')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20-add'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                1-20
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-50-add')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-50-add'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                1-50
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('50-100-add')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '50-100-add'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                50-100
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-100-add')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-100-add'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                1-100
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-200-add')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-200-add'
-                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
-                                                    }`}
-                                            >
-                                                🔥 1-200
-                                            </button>
-                                        </>
-                                    ) : gameType === 'subtraction' ? (
-                                        <>
-                                            <button
-                                                onClick={() => setRange('1-10-sub')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10-sub'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                🧸 1-10
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-20-sub')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20-sub'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                1-20
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-50-sub')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-50-sub'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                1-50
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('50-100-sub')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '50-100-sub'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                50-100
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-100-sub')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-100-sub'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                1-100
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-200-sub')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-200-sub'
-                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
-                                                    }`}
-                                            >
-                                                🔥 1-200
-                                            </button>
-                                        </>
-                                    ) : gameType === 'equations' ? (
-                                        <>
-                                            <button
-                                                onClick={() => setRange('equations-easy')}
-                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-easy'
-                                                    ? 'bg-gradient-to-r from-green-200 to-emerald-200 border-green-400 text-green-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-green-50'
-                                                    }`}
-                                            >
-                                                🍎 {t('difficulty.easy')}
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('equations-medium')}
-                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-medium'
-                                                    ? 'bg-gradient-to-r from-yellow-200 to-orange-200 border-yellow-400 text-yellow-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-yellow-50'
-                                                    }`}
-                                            >
-                                                🍊 {t('difficulty.medium')}
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('equations-hard')}
-                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-hard'
-                                                    ? 'bg-gradient-to-r from-red-200 to-pink-200 border-red-400 text-red-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-red-50'
-                                                    }`}
-                                            >
-                                                🍓 {t('difficulty.hard')}
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('equations-veryhard')}
-                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-veryhard'
-                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
-                                                    }`}
-                                            >
-                                                🔥 {t('difficulty.veryhard')}
-                                            </button>
-                                        </>
-                                    ) : gameType === 'division' ? (
-                                        <>
-                                            <button
-                                                onClick={() => setRange('1-5-div')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-5-div'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                🧸 1-5
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-10-div')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-10-div'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                1-10
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-12-div')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-12-div'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
-                                                    }`}
-                                            >
-                                                1-12
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('1-20-div')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20-div'
-                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
-                                                    }`}
-                                            >
-                                                🔥 1-20
-                                            </button>
-                                        </>
-                                    ) : gameType === 'wordProblems' ? (
-                                        <>
-                                            <button
-                                                onClick={() => setRange('word-problems-easy' as any)}
-                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-easy'
-                                                    ? 'bg-gradient-to-r from-green-200 to-emerald-200 border-green-400 text-green-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-green-50'
-                                                    }`}
-                                            >
-                                                📗 {t('difficulty.easy')}
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('word-problems-medium' as any)}
-                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-medium'
-                                                    ? 'bg-gradient-to-r from-yellow-200 to-orange-200 border-yellow-400 text-yellow-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-yellow-50'
-                                                    }`}
-                                            >
-                                                📙 {t('difficulty.medium')}
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('word-problems-hard' as any)}
-                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-hard'
-                                                    ? 'bg-gradient-to-r from-red-200 to-pink-200 border-red-400 text-red-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-red-50'
-                                                    }`}
-                                            >
-                                                📕 {t('difficulty.hard')}
-                                            </button>
-                                            <button
-                                                onClick={() => setRange('word-problems-veryhard' as any)}
-                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-veryhard'
-                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
-                                                    }`}
-                                            >
-                                                🔥 {t('difficulty.veryhard')}
-                                            </button>
-                                        </>
-                                    ) : null}
+                                        )
+                                    })}
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Topic Selection - Full Width */}
-                    <div className="card bg-gradient-to-br from-purple-50 to-fuchsia-50 border-2 border-purple-200 p-3 mt-3">
-                        <div className="text-center mb-2">
-                            <span className="text-lg">📚</span>
-                            <span className="text-sm font-bold text-purple-700 ml-2">{t('home.topic')}</span>
-                        </div>
-                        <div className="grid grid-cols-3 lg:grid-cols-6 gap-2">
-                            {topics.map((tItem) => {
-                                const isWordProblemsLoading = tItem.id === 'wordProblems' && isLoadingWordProblems
-                                const isDisabled = !tItem.enabled || isWordProblemsLoading
-                                
-                                // Hide word problems completely until loaded
-                                if (tItem.id === 'wordProblems' && isLoadingWordProblems) {
-                                    return null
-                                }
-                                
-                                return (
-                                <button
-                                    key={tItem.id}
-                                    onClick={() => !isDisabled && handleTopicChange(tItem.id)}
-                                    disabled={isDisabled}
-                                    className={`p-2 rounded-lg border-2 transition-all flex flex-col items-center justify-center gap-1 ${topic === tItem.id
-                                        ? 'bg-purple-100 border-purple-400 text-purple-800 shadow-md'
-                                        : tItem.enabled
-                                            ? 'bg-white border-gray-200 text-gray-700 hover:bg-purple-50'
-                                            : 'bg-gray-50 border-gray-100 text-gray-300 cursor-not-allowed opacity-50'
-                                        }`}
-                                >
-                                    <span className="text-2xl">{tItem.icon}</span>
-                                    <span className="text-xs font-medium">{t(`topics.${tItem.label}`)}</span>
-                                </button>
-                            )})}
-                        </div>
-                    </div>
-                            </div>
-                        </div>
-                        
-                        {/* Start button at bottom - flex-shrink-0 keeps it at bottom */}
-                        <div className="flex-shrink-0 border-t border-gray-100 pt-4 pb-4 lg:pb-2">
-                            <div className="text-center">
-                                <button
-                                    className={`text-base lg:text-lg px-6 lg:px-8 py-3 font-bold rounded-xl shadow-lg transform transition-all w-full max-w-xs mx-auto ${
-                                        alias.trim()
-                                            ? 'bg-gradient-to-r from-nutti-primary to-blue-500 text-white hover:from-nutti-primary/90 hover:to-blue-500/90 hover:scale-105 focus:ring-4 focus:ring-nutti-primary/30'
-                                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    {/* Start button at bottom - flex-shrink-0 keeps it at bottom */}
+                    <div className="flex-shrink-0 border-t border-gray-100 pt-4 pb-4 lg:pb-2">
+                        <div className="text-center">
+                            <button
+                                className={`text-base lg:text-lg px-6 lg:px-8 py-3 font-bold rounded-xl shadow-lg transform transition-all w-full max-w-xs mx-auto ${alias.trim()
+                                        ? 'bg-gradient-to-r from-nutti-primary to-blue-500 text-white hover:from-nutti-primary/90 hover:to-blue-500/90 hover:scale-105 focus:ring-4 focus:ring-nutti-primary/30'
+                                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                     }`}
-                                    disabled={!alias.trim()}
-                                    onClick={startNewGame}
-                                >
-                                    {t('icons.start')} {t('home.start')}
-                                </button>
-                            </div>
+                                disabled={!alias.trim()}
+                                onClick={startNewGame}
+                            >
+                                {t('icons.start')} {t('home.start')}
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-      
+        </div>
+
     )
 }
