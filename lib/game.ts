@@ -87,7 +87,7 @@ export function calculateTotalAcorns(rounds: Array<{ correct: number, total: num
   return rounds.reduce((sum, round) => sum + calculateAcorns(round.correct, round.total, round.avgMs), 0)
 }
 
-export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div' | 'word-problems-easy' | 'word-problems-medium' | 'word-problems-hard', gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems' = 'multiplication'): Fact[] {
+export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | '1-20' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | '1-200-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | '1-200-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | 'equations-veryhard' | '1-5-div' | '1-10-div' | '1-12-div' | '1-20-div' | 'word-problems-easy' | 'word-problems-medium' | 'word-problems-hard' | 'word-problems-veryhard', gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems' = 'multiplication'): Fact[] {
   if (gameType === 'addition') {
     return additionFactPool(range)
   }
@@ -124,8 +124,8 @@ export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix
       start = 1; end = 12; break
     case '2-12':
       start = 2; end = 12; break
-    case 'mix':
-      start = 1; end = 12; break
+    case '1-20':
+      start = 1; end = 20; break
     default:
       start = 2; end = 12; break
   }
@@ -194,40 +194,12 @@ function additionFactPool(range: string): Fact[] {
         }
       }
       break
-    case 'mix-add':
-      // Generate a mix of all addition ranges
-      // Include facts from 1-10 range
-      for (let result = 1; result <= 10; result++) {
-        for (let a = 1; a <= Math.min(result, 10); a++) {
+    case '1-200-add':
+      // Very hard addition: results 1-200
+      for (let result = 1; result <= 200; result++) {
+        for (let a = 1; a <= Math.min(result, 100); a++) {
           const b = result - a
-          if (b >= 1 && b <= 10) {
-            pool.push({ a, b })
-          }
-        }
-      }
-      // Include some facts from 1-20 range
-      for (let result = 11; result <= 20; result++) {
-        for (let a = 1; a <= Math.min(result, 20); a++) {
-          const b = result - a
-          if (b >= 1 && b <= 20 && Math.random() < 0.5) { // 50% chance to include
-            pool.push({ a, b })
-          }
-        }
-      }
-      // Include some facts from 1-50 range
-      for (let result = 21; result <= 50; result++) {
-        for (let a = 1; a <= Math.min(result, 25); a++) {
-          const b = result - a
-          if (b >= 1 && b <= 25 && Math.random() < 0.3) { // 30% chance to include
-            pool.push({ a, b })
-          }
-        }
-      }
-      // Include some facts from 50-100 range
-      for (let result = 50; result <= 100; result++) {
-        for (let a = 25; a <= Math.min(result, 75); a++) {
-          const b = result - a
-          if (b >= 25 && b <= 75 && Math.random() < 0.2) { // 20% chance to include
+          if (b >= 1 && b <= 100) {
             pool.push({ a, b })
           }
         }
@@ -280,31 +252,12 @@ function divisionFactPool(range: string): Fact[] {
         }
       }
       break
-    case 'mix-div':
-      // Generate a mix of division facts
-      // Include facts from 1-5 range
-      for (let b = 1; b <= 5; b++) {
-        for (let result = 1; result <= 5; result++) {
+    case '1-20-div':
+      // Very hard division: divisors 1-20 and results 1-20
+      for (let b = 1; b <= 20; b++) {
+        for (let result = 1; result <= 20; result++) {
           const a = b * result
           pool.push({ a, b })
-        }
-      }
-      // Include some facts from 1-10 range
-      for (let b = 1; b <= 10; b++) {
-        for (let result = 1; result <= 10; result++) {
-          const a = b * result
-          if (Math.random() < 0.7) { // 70% chance to include
-            pool.push({ a, b })
-          }
-        }
-      }
-      // Include some facts from 1-12 range  
-      for (let b = 1; b <= 12; b++) {
-        for (let result = 1; result <= 12; result++) {
-          const a = b * result
-          if (Math.random() < 0.3) { // 30% chance to include
-            pool.push({ a, b })
-          }
         }
       }
       break
@@ -376,36 +329,11 @@ function subtractionFactPool(range: string): Fact[] {
         }
       }
       break
-    case 'mix-sub':
-      // Generate a mix of all subtraction ranges
-      // Include facts from 1-10 range
-      for (let a = 1; a <= 10; a++) {
-        for (let b = 1; b <= Math.min(a, 10); b++) {
+    case '1-200-sub':
+      // Very hard subtraction: minuend 1-200, subtrahend 1-100
+      for (let a = 1; a <= 200; a++) {
+        for (let b = 1; b <= Math.min(a, 100); b++) {
           if (a - b >= 0) {
-            pool.push({ a, b })
-          }
-        }
-      }
-      // Include some facts from 1-20 range
-      for (let a = 11; a <= 20; a++) {
-        for (let b = 1; b <= Math.min(a, 20); b++) {
-          if (a - b >= 0 && Math.random() < 0.5) { // 50% chance to include
-            pool.push({ a, b })
-          }
-        }
-      }
-      // Include some facts from 1-50 range
-      for (let a = 21; a <= 50; a++) {
-        for (let b = 1; b <= Math.min(a, 25); b++) {
-          if (a - b >= 0 && Math.random() < 0.3) { // 30% chance to include
-            pool.push({ a, b })
-          }
-        }
-      }
-      // Include some facts from 50-100 range
-      for (let a = 50; a <= 100; a++) {
-        for (let b = 25; b <= Math.min(a, 50); b++) {
-          if (a - b >= 0 && Math.random() < 0.2) { // 20% chance to include
             pool.push({ a, b })
           }
         }
@@ -437,7 +365,7 @@ export const pickFacts = (pool: Fact[], n: number) => {
 const fruitIcons = ['🍎', '🍊', '🍌', '🍇', '🍓', '🍒', '🥝', '🍑', '🥭', '🍍']
 
 // Generate equation-based problems with missing values (only on left side)
-export function generateEquationFacts(difficulty: 'easy' | 'medium' | 'hard', count: number = 10): EquationFact[] {
+export function generateEquationFacts(difficulty: 'easy' | 'medium' | 'hard' | 'veryhard', count: number = 10): EquationFact[] {
   console.log('generateEquationFacts called with:', { difficulty, count })
   const facts: EquationFact[] = []
   
@@ -498,7 +426,7 @@ export function generateEquationFacts(difficulty: 'easy' | 'medium' | 'hard', co
         result = Math.floor(Math.random() * 10) + 1
         a = result * b
       }
-    } else { // hard
+    } else if (difficulty === 'hard') {
       // 50% chance for 3-number equations on hard difficulty
       const useThreeNumbers = Math.random() < 0.5
       
@@ -543,6 +471,56 @@ export function generateEquationFacts(difficulty: 'easy' | 'medium' | 'hard', co
           // Hard division: ? ÷ 1-12 = result
           b = Math.floor(Math.random() * 12) + 1
           result = Math.floor(Math.random() * 12) + 1
+          a = result * b
+        }
+        facts.push({ a, b, result, operation, missingValue, variableIcon })
+      }
+    } else if (difficulty === 'veryhard') {
+      // Very hard: More complex equations with larger numbers and more frequent 3-number equations
+      // 70% chance for 3-number equations
+      const useThreeNumbers = Math.random() < 0.7
+      
+      if (useThreeNumbers && (operation === 'addition' || operation === 'subtraction')) {
+        // Three-number equations: a + b + c = result or a - b - c = result
+        const missingOptions: Array<'a' | 'b' | 'c'> = ['a', 'b', 'c']
+        missingValue = missingOptions[Math.floor(Math.random() * missingOptions.length)] as 'a' | 'b' | 'c'
+        
+        if (operation === 'addition') {
+          // Very hard three-number addition: larger numbers (up to 50 each)
+          b = Math.floor(Math.random() * 50) + 1
+          const c = Math.floor(Math.random() * 50) + 1
+          result = Math.floor(Math.random() * 60) + b + c + 1
+          a = result - b - c
+          facts.push({ a, b, c, result, operation, missingValue, variableIcon })
+        } else { // subtraction
+          // Very hard three-number subtraction: larger numbers
+          b = Math.floor(Math.random() * 40) + 1
+          const c = Math.floor(Math.random() * 30) + 1
+          result = Math.floor(Math.random() * 40) + 1
+          a = result + b + c
+          facts.push({ a, b, c, result, operation, missingValue, variableIcon })
+        }
+      } else {
+        // Regular two-number equations with challenging numbers
+        if (operation === 'addition') {
+          // Very hard addition: ? + 1-100 = result (quick mental math with larger numbers)
+          b = Math.floor(Math.random() * 100) + 1
+          result = Math.floor(Math.random() * 100) + b + 1
+          a = result - b
+        } else if (operation === 'multiplication') {
+          // Very hard multiplication: ? × 1-20 = result (still reasonable for mental math)
+          b = Math.floor(Math.random() * 20) + 1
+          a = Math.floor(Math.random() * 15) + 1
+          result = a * b
+        } else if (operation === 'subtraction') {
+          // Very hard subtraction: ? - 1-100 = result
+          b = Math.floor(Math.random() * 100) + 1
+          result = Math.floor(Math.random() * 100) + 1
+          a = result + b
+        } else { // division
+          // Very hard division: ? ÷ 1-20 = result (up to 20, keeping it doable for kids)
+          b = Math.floor(Math.random() * 20) + 1
+          result = Math.floor(Math.random() * 15) + 1
           a = result * b
         }
         facts.push({ a, b, result, operation, missingValue, variableIcon })

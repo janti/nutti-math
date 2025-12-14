@@ -21,7 +21,7 @@ interface Answer {
 
 interface GameSettings {
   alias: string
-  range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div' | 'word-problems-easy' | 'word-problems-medium' | 'word-problems-hard'
+  range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | '1-20' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | '1-200-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | '1-200-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | 'equations-veryhard' | '1-5-div' | '1-10-div' | '1-12-div' | '1-20-div' | 'word-problems-easy' | 'word-problems-medium' | 'word-problems-hard' | 'word-problems-veryhard'
   rounds: number
   gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems'
 }
@@ -133,7 +133,8 @@ export default function Play() {
       console.log('Detected equations gameType, range:', savedSettings.range)
       const difficulty = savedSettings.range === 'equations-easy' ? 'easy' : 
                         savedSettings.range === 'equations-medium' ? 'medium' : 
-                        savedSettings.range === 'equations-hard' ? 'hard' : 'easy'
+                        savedSettings.range === 'equations-hard' ? 'hard' :
+                        savedSettings.range === 'equations-veryhard' ? 'veryhard' : 'easy'
       console.log('Generating equations with difficulty:', difficulty, 'range:', savedSettings.range)
       const eqFacts = generateEquationFacts(difficulty, 10)
       console.log('Generated equation facts:', eqFacts)

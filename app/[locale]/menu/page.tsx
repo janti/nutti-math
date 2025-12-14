@@ -7,7 +7,7 @@ import NuttiBadge from '@/components/NuttiBadge'
 // TypeScript interfaces
 interface GameSettings {
     alias: string
-    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | 'mix' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | 'mix-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | 'mix-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | '1-5-div' | '1-10-div' | '1-12-div' | 'mix-div' | 'word-problems-easy' | 'word-problems-medium' | 'word-problems-hard'
+    range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | '1-20' | '1-10-add' | '1-20-add' | '1-50-add' | '50-100-add' | '1-100-add' | '1-200-add' | '1-10-sub' | '1-20-sub' | '1-50-sub' | '50-100-sub' | '1-100-sub' | '1-200-sub' | 'equations-easy' | 'equations-medium' | 'equations-hard' | 'equations-veryhard' | '1-5-div' | '1-10-div' | '1-12-div' | '1-20-div' | 'word-problems-easy' | 'word-problems-medium' | 'word-problems-hard' | 'word-problems-veryhard'
     rounds: 1 | 2 | 3 | 5 | 10
     gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems'
 }
@@ -94,7 +94,7 @@ export default function MenuPage() {
         }
         
         console.log('Pre-fetching word problems for locale:', locale)
-        const difficulties = ['word-problems-easy', 'word-problems-medium', 'word-problems-hard']
+        const difficulties = ['word-problems-easy', 'word-problems-medium', 'word-problems-hard', 'word-problems-veryhard']
         let needsFetch = false
         
         // Check if any difficulty level needs fetching
@@ -211,7 +211,7 @@ export default function MenuPage() {
             console.log('Set wordProblems gameType and range to word-problems-easy')
             
             // Pre-fetch all difficulty levels if not in cache
-            const difficulties = ['word-problems-easy', 'word-problems-medium', 'word-problems-hard']
+            const difficulties = ['word-problems-easy', 'word-problems-medium', 'word-problems-hard', 'word-problems-veryhard']
             const needsFetch = difficulties.some(diff => 
                 !localStorage.getItem(`nutti.wordproblems.${locale}.${diff}`)
             )
@@ -363,13 +363,13 @@ export default function MenuPage() {
                                                 {t('icons.difficulty2to12')} 2-12
                                             </button>
                                             <button
-                                                onClick={() => setRange('mix')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                onClick={() => setRange('1-20')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20'
+                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
                                                     }`}
                                             >
-                                                {t('icons.difficultyMix')} {t('home.mix')}
+                                                🔥 1-20
                                             </button>
                                         </>
                                     ) : gameType === 'addition' ? (
@@ -420,13 +420,13 @@ export default function MenuPage() {
                                                 1-100
                                             </button>
                                             <button
-                                                onClick={() => setRange('mix-add')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix-add'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                onClick={() => setRange('1-200-add')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-200-add'
+                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
                                                     }`}
                                             >
-                                                {t('icons.difficultyMix')} {t('home.mix')}
+                                                🔥 1-200
                                             </button>
                                         </>
                                     ) : gameType === 'subtraction' ? (
@@ -477,13 +477,13 @@ export default function MenuPage() {
                                                 1-100
                                             </button>
                                             <button
-                                                onClick={() => setRange('mix-sub')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix-sub'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                onClick={() => setRange('1-200-sub')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-200-sub'
+                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
                                                     }`}
                                             >
-                                                {t('icons.difficultyMix')} {t('home.mix')}
+                                                🔥 1-200
                                             </button>
                                         </>
                                     ) : gameType === 'equations' ? (
@@ -508,12 +508,21 @@ export default function MenuPage() {
                                             </button>
                                             <button
                                                 onClick={() => setRange('equations-hard')}
-                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 w-full ${range === 'equations-hard'
+                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-hard'
                                                     ? 'bg-gradient-to-r from-red-200 to-pink-200 border-red-400 text-red-700 shadow-lg'
                                                     : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-red-50'
                                                     }`}
                                             >
                                                 🍓 {t('difficulty.hard')}
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('equations-veryhard')}
+                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'equations-veryhard'
+                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
+                                                    }`}
+                                            >
+                                                🔥 {t('difficulty.veryhard')}
                                             </button>
                                         </>
                                     ) : gameType === 'division' ? (
@@ -546,13 +555,13 @@ export default function MenuPage() {
                                                 1-12
                                             </button>
                                             <button
-                                                onClick={() => setRange('mix-div')}
-                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'mix-div'
-                                                    ? 'bg-gradient-to-r from-nutti-secondary to-blue-200 border-nutti-accent text-nutti-accent shadow-lg'
-                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-nutti-secondary/50'
+                                                onClick={() => setRange('1-20-div')}
+                                                className={`py-2 text-xs font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === '1-20-div'
+                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
                                                     }`}
                                             >
-                                                {t('icons.difficultyMix')} {t('home.mix')}
+                                                🔥 1-20
                                             </button>
                                         </>
                                     ) : gameType === 'wordProblems' ? (
@@ -577,12 +586,21 @@ export default function MenuPage() {
                                             </button>
                                             <button
                                                 onClick={() => setRange('word-problems-hard' as any)}
-                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 w-full ${range === 'word-problems-hard'
+                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-hard'
                                                     ? 'bg-gradient-to-r from-red-200 to-pink-200 border-red-400 text-red-700 shadow-lg'
                                                     : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-red-50'
                                                     }`}
                                             >
                                                 📕 {t('difficulty.hard')}
+                                            </button>
+                                            <button
+                                                onClick={() => setRange('word-problems-veryhard' as any)}
+                                                className={`py-2 px-4 text-sm font-bold rounded-lg border-2 transition-all transform hover:scale-105 ${range === 'word-problems-veryhard'
+                                                    ? 'bg-gradient-to-r from-purple-200 to-violet-200 border-purple-400 text-purple-700 shadow-lg'
+                                                    : 'bg-white/80 border-gray-300 text-gray-700 hover:bg-purple-50'
+                                                    }`}
+                                            >
+                                                🔥 {t('difficulty.veryhard')}
                                             </button>
                                         </>
                                     ) : null}

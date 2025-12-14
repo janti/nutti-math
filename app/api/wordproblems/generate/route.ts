@@ -199,14 +199,24 @@ function getUserPrompt(operation: Operation, range: string): string {
   
   if (operation === 'multiplication') {
     minNum = 2
-    maxNum = range.includes('12') ? 12 : 10
+    if (range.includes('veryhard')) {
+      maxNum = 25  // Very hard: up to 25 for challenging mental math
+    } else {
+      maxNum = range.includes('12') ? 12 : 10
+    }
     return `Create a ${operation} word problem using numbers between ${minNum} and ${maxNum}. Make it engaging and appropriate for children.`
   } else if (operation === 'division') {
     minNum = 2
-    maxNum = range.includes('12') ? 12 : range.includes('10') ? 10 : 5
+    if (range.includes('veryhard')) {
+      maxNum = 25  // Very hard: up to 25, still doable for kids
+    } else {
+      maxNum = range.includes('12') ? 12 : range.includes('10') ? 10 : 5
+    }
     return `Create a ${operation} word problem using numbers between ${minNum} and ${maxNum}. CRITICAL: The division MUST result in a whole number (no remainders). Choose the dividend carefully so it divides evenly by the divisor. Example: 12 ÷ 3 = 4 (correct), NOT 10 ÷ 3 (incorrect - has remainder). Make it engaging and appropriate for children.`
   } else if (operation === 'addition' || operation === 'subtraction') {
-    if (range.includes('100')) {
+    if (range.includes('veryhard')) {
+      maxNum = 200  // Very hard: larger numbers for challenging mental math, but still reasonable
+    } else if (range.includes('100')) {
       maxNum = 100
     } else if (range.includes('50')) {
       maxNum = 50

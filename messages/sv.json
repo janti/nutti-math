@@ -26,7 +26,6 @@
     "alias": "Smeknamn",
     "difficulty": "Svårighetsgrad",
     "start": "Starta spelet",
-    "mix": "Blanda",
     "kb": "Tangentbord: 0–9, Enter, Backspace, H (ledtråd).",
     "kbStart": "Tips: Skriv ditt namn och tryck på Enter för att starta!",
     "roundCount": "Antal omgångar",
@@ -190,8 +189,9 @@
     "2-12": "2–12",
     "1-12": "1–12",
     "easy": "Lätt",
-    "medium": "Mellan",
-    "hard": "Svår"
+    "medium": "Medel",
+    "hard": "Svår",
+    "veryhard": "Mycket Svår"
   },
   "common": {
     "unknown": "Okänd",
@@ -277,7 +277,6 @@
     "difficulty6to10": "🌟",
     "difficulty1to12": "📚",
     "difficulty2to12": "🍪",
-    "difficultyMix": "🍬",
     "pointingDown": "👇"
   }
 }

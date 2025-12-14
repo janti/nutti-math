@@ -26,7 +26,6 @@
     "alias": "Nickname",
     "difficulty": "Difficulty",
     "start": "Start Game",
-    "mix": "Mix",
     "kb": "Keyboard: 0–9, Enter, Backspace, H (hint).",
     "kbStart": "Hint: Type name and press Enter to start!",
     "roundCount": "Rounds",
@@ -191,7 +190,8 @@
     "1-12": "1–12",
     "easy": "Easy",
     "medium": "Medium",
-    "hard": "Hard"
+    "hard": "Hard",
+    "veryhard": "Very Hard"
   },
   "common": {
     "unknown": "Unknown",
@@ -269,7 +269,6 @@
     "difficulty6to10": "🌟",
     "difficulty1to12": "📚",
     "difficulty2to12": "🍪",
-    "difficultyMix": "🍬",
     "pointingDown": "👇"
   }
 }

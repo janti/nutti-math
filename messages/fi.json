@@ -26,7 +26,6 @@
     "alias": "Nimimerkki",
     "difficulty": "Vaikeus",
     "start": "Aloita peli",
-    "mix": "Sekoitus",
     "kb": "Näppäimistö: 0–9, Enter, Backspace, H (vihje).",
     "kbStart": "Vihje: Kirjoita nimi ja paina Enter aloittaaksesi!",
     "roundCount": "Erämäärä",
@@ -191,7 +190,8 @@
     "1-12": "1–12",
     "easy": "Helppo",
     "medium": "Keskitaso",
-    "hard": "Vaikea"
+    "hard": "Vaikea",
+    "veryhard": "Tosivaikea"
   },
   "common": {
     "unknown": "Tuntematon",
@@ -269,7 +269,6 @@
     "difficulty6to10": "🌟",
     "difficulty1to12": "📚",
     "difficulty2to12": "🍪",
-    "difficultyMix": "🍬",
     "pointingDown": "👇"
   }
 }
