@@ -40,19 +40,19 @@ export default function Break() {
   const [aiRequested, setAiRequested] = useState(false)
   const aiRequestedRef = useRef(false)
   const [settings, setSettings] = useState<GameSettings>({ rounds: 10, range: '2-12' })
-  
+
   // Pre-fetch next word problems set if using word problems (only for current difficulty)
   useEffect(() => {
     const savedSettings = JSON.parse(localStorage.getItem('nutti.settings') || '{}')
     if (savedSettings.gameType === 'wordProblems' && savedSettings.range) {
       const currentLocale = loc || 'fi'
-      console.log('Pre-fetching next word problems set for next round, difficulty:', savedSettings.range)
+
       generateAndCacheWordProblems(currentLocale, savedSettings.range)
     }
   }, [loc])
 
   const generateAndCacheWordProblems = async (locale: string, range: string) => {
-    const operations: ('addition' | 'subtraction' | 'multiplication' | 'division')[] = 
+    const operations: ('addition' | 'subtraction' | 'multiplication' | 'division')[] =
       ['addition', 'subtraction', 'multiplication', 'division']
     const problems: any[] = []
 
@@ -64,7 +64,7 @@ export default function Break() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ locale, operation, range })
         })
-        
+
         if (response.ok) {
           const data = await response.json()
           problems.push({ ...data, operation })
@@ -77,12 +77,12 @@ export default function Break() {
     if (problems.length > 0) {
       const cacheKey = `nutti.wordproblems.${locale}.${range}`
       localStorage.setItem(cacheKey, JSON.stringify(problems))
-      console.log(`Pre-fetched and cached ${problems.length} word problems for next round`)
+
     }
   }
-  
+
   useEffect(() => {
-    console.log('Break useEffect running, aiRequested:', aiRequested)
+
 
     // Load data only once on mount
     if (data === null) {
@@ -120,9 +120,9 @@ export default function Break() {
           }
           allRounds = [...prevRounds, roundWithAcorns]
           localStorage.setItem('nutti.all-rounds', JSON.stringify(allRounds))
-          console.log('Break: Saved round', payload.roundNo, 'to localStorage with', roundWithAcorns.acorns, 'acorns. Total rounds:', allRounds.length)
+
         } else {
-          console.log('Break: Round', payload.roundNo, 'was already saved')
+
         }
       }
 
@@ -130,7 +130,7 @@ export default function Break() {
 
       // Load AI feedback in background - doesn't block navigation, 10s timeout  
       if (payload && !aiRequestedRef.current) {
-        console.log('Requesting AI feedback for round', payload.roundNo)
+
 
         aiRequestedRef.current = true
         setAiRequested(true)
@@ -160,7 +160,7 @@ export default function Break() {
           })
           .catch(err => {
             clearTimeout(timeoutId)
-            console.log('AI feedback skipped:', err.name === 'AbortError' ? 'timeout' : err.message)
+
             setAiLoading(false)
           })
       }
@@ -181,8 +181,8 @@ export default function Break() {
   const totalSeconds = (totalMs / 1000).toFixed(1)
 
   // Calculate acorns earned for this round
-  const acornsEarned = gameType === 'equations' ? 
-    calculateAcornsForEquations(correct, total, avgMs) : 
+  const acornsEarned = gameType === 'equations' ?
+    calculateAcornsForEquations(correct, total, avgMs) :
     calculateAcorns(correct, total, avgMs)
   return (
     <div className="h-[850px] bg-gradient-to-br from-green-50/40 via-white to-nutti-secondary/20 py-4 overflow-hidden">

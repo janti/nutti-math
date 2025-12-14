@@ -69,13 +69,13 @@ export default function Results() {
       if (!alreadyExists) {
         allRounds = [...prev, last]
         localStorage.setItem('nutti.all-rounds', JSON.stringify(allRounds))
-        console.log('Results: Saved last round', last.roundNo, 'to localStorage. Total rounds:', allRounds.length)
+
       } else {
-        console.log('Results: Last round', last.roundNo, 'was already saved')
+
       }
     }
 
-    console.log('Results: Loaded total', allRounds.length, 'rounds:', allRounds.map((r: Round) => `Round ${r.roundNo}`).join(', '))
+
 
     setRounds(allRounds)
 
@@ -89,7 +89,7 @@ export default function Results() {
     // Get final AI feedback
     const getAiFeedback = async () => {
       if (finalAiRequestedRef.current) {
-        console.log('Final AI already requested')
+
         return
       }
 
@@ -97,7 +97,7 @@ export default function Results() {
       setFinalAiLoading(true)
 
       try {
-        console.log('Requesting final AI feedback for rounds:', allRounds.length)
+
         const response = await fetch('/api/ai/final', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -112,7 +112,7 @@ export default function Results() {
         }
 
         const data = await response.json()
-        console.log('Final AI response received:', data)
+
         setFinalAi(data)
       } catch (error) {
         console.error('Error getting final AI feedback:', error)
@@ -159,7 +159,7 @@ export default function Results() {
             } else {
               correctAnswer = answer.a * answer.b
             }
-            
+
             return {
               a: answer.a,
               b: answer.b,
@@ -214,20 +214,16 @@ export default function Results() {
           roundResults: roundResults
         }
 
-        console.log('Saving game result (first time):', gameResult)
-        console.log('Time calculation: timeMs =', timeMs, 'seconds =', timeMs / 1000)
-        console.log('Total hints calculated:', totalHints)
-        console.log('All answers with time and hints:', allAnswers.map(a => ({
-          problem: `${a.a}×${a.b}`,
-          timeMs: a.ms,
-          hints: (a as any).hintsUsed || 0
-        })))
+
+
+
+
         GameStorage.saveResult(gameResult)
 
         // Mark this game as saved
         localStorage.setItem(`nutti.game-saved.${gameIdentifier}`, 'true')
       } else {
-        console.log('Game already saved, skipping duplicate save')
+
       }
     }
 
@@ -253,153 +249,153 @@ export default function Results() {
     <div className="h-[850px] bg-gradient-to-br from-nutti-secondary/30 via-white to-blue-50/40 py-4 overflow-hidden flex items-center justify-center">
       <div className="max-w-4xl mx-auto p-4 h-full">
         <div className="bg-white/90 backdrop-blur-sm border border-gray-200 shadow-xl rounded-2xl p-6 h-full flex flex-col">
-        {/* Header */}
-        <div className="mb-2">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-            <div className="flex items-center order-2 sm:order-1">
-              <NuttiBadge mood="excited" />
-            </div>
-            <div className="order-1 sm:order-2 w-full sm:w-auto">
-              <a
-                className="btn px-4 sm:px-6 py-2 bg-gradient-to-r from-nutti-primary to-blue-500 hover:from-nutti-primary/90 hover:to-blue-500/90 shadow-lg transform hover:scale-105 transition-all focus:ring-4 focus:ring-nutti-primary/30 text-sm sm:text-base whitespace-nowrap w-full sm:w-auto text-center inline-block"
-                href={`/${loc}`}
-              >
-                {t('icons.rocket')} {t('results.newGame')}
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Main content - grid layout with equal height columns */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0">
-
-          {/* Left column: Title and summary */}
-          <div className="flex flex-col h-full">
-            <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-nutti-primary/30 p-4 flex-1">
-              <div className="text-center mb-4">
-                <h2 className="text-4xl font-extrabold text-nutti-primary mb-2">{t('icons.party')} {t('results.title')}</h2>
+          {/* Header */}
+          <div className="mb-2">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+              <div className="flex items-center order-2 sm:order-1">
+                <NuttiBadge mood="excited" />
               </div>
-
-              {/* Summary text */}
-              <div className="p-4 bg-white/70 rounded-xl border border-nutti-secondary text-center">
-                <div className="text-2xl mb-2">{t('icons.medal')}</div>
-                <p className="text-lg font-semibold text-nutti-accent">
-                  {t('results.summary', { total: summary.total, correct: summary.correct, seconds: sec })}
-                </p>
-              </div>
-
-              {/* AI Final Feedback - optimized for better text display */}
-              <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl mt-4 flex-1">
-                <div className="text-center mb-3">
-                  <span className="text-xl">{t('icons.squirrel')}</span>
-                  <span className="text-lg font-bold text-green-700 ml-2">{t('results.finalFeedback')}</span>
-                </div>
-                <div className="bg-white/90 rounded-lg p-4 min-h-[100px] flex items-center justify-center">
-                  {finalAiLoading ? (
-                    <div className="text-center py-2">
-                      <div className="animate-pulse text-green-600">
-                        <div className="text-lg mb-1">{t('icons.hourglass')}</div>
-                        <p className="text-sm">{t('results.generatingFinalFeedback')}</p>
-                      </div>
-                    </div>
-                  ) : finalAi ? (
-                    <div className="text-center w-full">
-                      <p className="text-sm leading-relaxed text-gray-800 whitespace-pre-wrap break-words max-w-full font-medium">
-                        {finalAi.text}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="text-center py-1">
-                      <p className="text-xs text-gray-500">{t('results.finalFeedbackSkipped')}</p>
-                    </div>
-                  )}
-                </div>
+              <div className="order-1 sm:order-2 w-full sm:w-auto">
+                <a
+                  className="btn px-4 sm:px-6 py-2 bg-gradient-to-r from-nutti-primary to-blue-500 hover:from-nutti-primary/90 hover:to-blue-500/90 shadow-lg transform hover:scale-105 transition-all focus:ring-4 focus:ring-nutti-primary/30 text-sm sm:text-base whitespace-nowrap w-full sm:w-auto text-center inline-block"
+                  href={`/${loc}`}
+                >
+                  {t('icons.rocket')} {t('results.newGame')}
+                </a>
               </div>
             </div>
           </div>
 
-          {/* Right column: Stats and round details */}
-          <div className="flex flex-col h-full space-y-3">
-            {/* Stats cards - compact grid */}
-            <div className="grid grid-cols-2 gap-3">
-              {/* Total questions */}
-              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-4 rounded-xl border-2 border-nutti-primary/30 text-center">
-                <div className="text-2xl mb-1">{t('icons.books')}</div>
-                <div className="text-2xl font-bold text-nutti-primary">{summary.total}</div>
-                <div className="text-sm font-semibold text-nutti-primary">{t('results.tasks')}</div>
-              </div>
+          {/* Main content - grid layout with equal height columns */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0">
 
-              {/* Correct answers */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border-2 border-green-300 text-center">
-                <div className="text-2xl mb-1">{t('icons.checkmark')}</div>
-                <div className="text-2xl font-bold text-green-600">{summary.correct}</div>
-                <div className="text-sm font-semibold text-green-600">{t('results.correct')}</div>
-              </div>
-
-              {/* Accuracy percentage */}
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-xl border-2 border-purple-300 text-center">
-                <div className="text-2xl mb-1">{t('icons.bullseye')}</div>
-                <div className="text-2xl font-bold text-purple-600">{accuracy}%</div>
-                <div className="text-sm font-semibold text-purple-600">{t('results.accuracy')}</div>
-              </div>
-
-              {/* Acorns earned */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-xl border-2 border-blue-300 text-center">
-                <div className="text-2xl mb-1">🌰</div>
-                <div className="text-2xl font-bold text-nutti-accent">{totalAcorns}</div>
-                <div className="text-sm font-semibold text-nutti-accent">{t('acorns.acorns')}</div>
-              </div>
-            </div>
-
-            {/* Acorn collection display */}
-            <div className="card p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300">
-              <div className="text-center mb-3">
-                <span className="text-xl">🌰</span>
-                <span className="text-lg font-bold text-nutti-accent ml-2">{t('acorns.collection')}</span>
-              </div>
-              <div className="text-center">
-                <AcornDisplay
-                  acorns={totalAcorns}
-                  maxAcorns={totalAcorns}
-                  size="medium"
-                  showEmptySlots={false}
-                />
-                <p className="text-sm text-nutti-accent mt-2">
-                  {t('acorns.total', { total: totalAcorns, rounds: rounds.length })}
-                </p>
-              </div>
-            </div>
-
-            {/* Round details */}
-            {rounds.length > 0 && (
-              <div className="card p-4 bg-gradient-to-r from-indigo-50 to-blue-50 border-2 border-indigo-200 flex-1">
-                <div className="text-center mb-3">
-                  <span className="text-xl">{t('icons.chart')}</span>
-                  <p className="text-lg font-bold text-indigo-700 inline ml-2">{t('results.roundDetails')}</p>
+            {/* Left column: Title and summary */}
+            <div className="flex flex-col h-full">
+              <div className="card bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-nutti-primary/30 p-4 flex-1">
+                <div className="text-center mb-4">
+                  <h2 className="text-4xl font-extrabold text-nutti-primary mb-2">{t('icons.party')} {t('results.title')}</h2>
                 </div>
-                <div className="space-y-2 max-h-28 lg:max-h-32 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                  {rounds.map((round: any, index: number) => {
-                    const roundCorrect = round.answers?.filter((a: any) => a.isCorrect).length || 0
-                    const roundTotal = round.answers?.length || 0
-                    const roundTimeMs = round.answers?.reduce((s: any, a: any) => s + a.ms, 0) || 0
-                    const roundTimeSeconds = (roundTimeMs / 1000).toFixed(1)
-                    const roundAccuracy = roundTotal > 0 ? Math.round((roundCorrect / roundTotal) * 100) : 0
-                    return (
-                      <div key={index} className="bg-white/80 rounded-lg p-2 flex justify-between items-center text-sm">
-                        <span className="font-semibold text-indigo-600">{t('results.round', { number: round.roundNo })}</span>
-                        <div className="flex gap-3 text-xs text-gray-600">
-                          <span>{t('icons.checkmark')} {roundCorrect}/{roundTotal}</span>
-                          <span>{t('icons.bullseye')} {roundAccuracy}%</span>
-                          <span>{t('icons.timer')} {roundTimeSeconds}s</span>
+
+                {/* Summary text */}
+                <div className="p-4 bg-white/70 rounded-xl border border-nutti-secondary text-center">
+                  <div className="text-2xl mb-2">{t('icons.medal')}</div>
+                  <p className="text-lg font-semibold text-nutti-accent">
+                    {t('results.summary', { total: summary.total, correct: summary.correct, seconds: sec })}
+                  </p>
+                </div>
+
+                {/* AI Final Feedback - optimized for better text display */}
+                <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl mt-4 flex-1">
+                  <div className="text-center mb-3">
+                    <span className="text-xl">{t('icons.squirrel')}</span>
+                    <span className="text-lg font-bold text-green-700 ml-2">{t('results.finalFeedback')}</span>
+                  </div>
+                  <div className="bg-white/90 rounded-lg p-4 min-h-[100px] flex items-center justify-center">
+                    {finalAiLoading ? (
+                      <div className="text-center py-2">
+                        <div className="animate-pulse text-green-600">
+                          <div className="text-lg mb-1">{t('icons.hourglass')}</div>
+                          <p className="text-sm">{t('results.generatingFinalFeedback')}</p>
                         </div>
                       </div>
-                    )
-                  })}
+                    ) : finalAi ? (
+                      <div className="text-center w-full">
+                        <p className="text-sm leading-relaxed text-gray-800 whitespace-pre-wrap break-words max-w-full font-medium">
+                          {finalAi.text}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="text-center py-1">
+                        <p className="text-xs text-gray-500">{t('results.finalFeedbackSkipped')}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            )}
+            </div>
+
+            {/* Right column: Stats and round details */}
+            <div className="flex flex-col h-full space-y-3">
+              {/* Stats cards - compact grid */}
+              <div className="grid grid-cols-2 gap-3">
+                {/* Total questions */}
+                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-4 rounded-xl border-2 border-nutti-primary/30 text-center">
+                  <div className="text-2xl mb-1">{t('icons.books')}</div>
+                  <div className="text-2xl font-bold text-nutti-primary">{summary.total}</div>
+                  <div className="text-sm font-semibold text-nutti-primary">{t('results.tasks')}</div>
+                </div>
+
+                {/* Correct answers */}
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border-2 border-green-300 text-center">
+                  <div className="text-2xl mb-1">{t('icons.checkmark')}</div>
+                  <div className="text-2xl font-bold text-green-600">{summary.correct}</div>
+                  <div className="text-sm font-semibold text-green-600">{t('results.correct')}</div>
+                </div>
+
+                {/* Accuracy percentage */}
+                <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-xl border-2 border-purple-300 text-center">
+                  <div className="text-2xl mb-1">{t('icons.bullseye')}</div>
+                  <div className="text-2xl font-bold text-purple-600">{accuracy}%</div>
+                  <div className="text-sm font-semibold text-purple-600">{t('results.accuracy')}</div>
+                </div>
+
+                {/* Acorns earned */}
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-xl border-2 border-blue-300 text-center">
+                  <div className="text-2xl mb-1">🌰</div>
+                  <div className="text-2xl font-bold text-nutti-accent">{totalAcorns}</div>
+                  <div className="text-sm font-semibold text-nutti-accent">{t('acorns.acorns')}</div>
+                </div>
+              </div>
+
+              {/* Acorn collection display */}
+              <div className="card p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300">
+                <div className="text-center mb-3">
+                  <span className="text-xl">🌰</span>
+                  <span className="text-lg font-bold text-nutti-accent ml-2">{t('acorns.collection')}</span>
+                </div>
+                <div className="text-center">
+                  <AcornDisplay
+                    acorns={totalAcorns}
+                    maxAcorns={totalAcorns}
+                    size="medium"
+                    showEmptySlots={false}
+                  />
+                  <p className="text-sm text-nutti-accent mt-2">
+                    {t('acorns.total', { total: totalAcorns, rounds: rounds.length })}
+                  </p>
+                </div>
+              </div>
+
+              {/* Round details */}
+              {rounds.length > 0 && (
+                <div className="card p-4 bg-gradient-to-r from-indigo-50 to-blue-50 border-2 border-indigo-200 flex-1">
+                  <div className="text-center mb-3">
+                    <span className="text-xl">{t('icons.chart')}</span>
+                    <p className="text-lg font-bold text-indigo-700 inline ml-2">{t('results.roundDetails')}</p>
+                  </div>
+                  <div className="space-y-2 max-h-28 lg:max-h-32 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                    {rounds.map((round: any, index: number) => {
+                      const roundCorrect = round.answers?.filter((a: any) => a.isCorrect).length || 0
+                      const roundTotal = round.answers?.length || 0
+                      const roundTimeMs = round.answers?.reduce((s: any, a: any) => s + a.ms, 0) || 0
+                      const roundTimeSeconds = (roundTimeMs / 1000).toFixed(1)
+                      const roundAccuracy = roundTotal > 0 ? Math.round((roundCorrect / roundTotal) * 100) : 0
+                      return (
+                        <div key={index} className="bg-white/80 rounded-lg p-2 flex justify-between items-center text-sm">
+                          <span className="font-semibold text-indigo-600">{t('results.round', { number: round.roundNo })}</span>
+                          <div className="flex gap-3 text-xs text-gray-600">
+                            <span>{t('icons.checkmark')} {roundCorrect}/{roundTotal}</span>
+                            <span>{t('icons.bullseye')} {roundAccuracy}%</span>
+                            <span>{t('icons.timer')} {roundTimeSeconds}s</span>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </div>

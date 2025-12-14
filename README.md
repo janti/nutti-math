@@ -1,38 +1,63 @@
 # 🐿️ Nutti Math - AI-Powered Math Trainer
 
-A comprehensive, modern math trainer featuring AI-powered feedback, interactive storytelling, teacher analytics, and complete multilingual support. Now supports both multiplication tables and addition practice! Built with Next.js 15, TypeScript, and Tailwind CSS.
+A comprehensive, modern math trainer featuring AI-powered feedback, interactive storytelling, teacher analytics, and complete multilingual support. Supports six different math operations: multiplication, division, addition, subtraction, equations, and AI-generated word problems! Built with Next.js 15, TypeScript, and Tailwind CSS.
 
 ## ✨ Features
 
 ### 🎮 Game Mechanics
-- **Dual Math Operations**: Complete multiplication tables (1-12) and addition practice (1-100)
-- **Comprehensive Addition Ranges**: 
-  - 1-10 Addition: Basic single-digit addition
-  - 1-20 Addition: Teen number mastery
-  - 1-50 Addition: Extended range practice
-  - 50-100 Addition: Advanced two-digit addition
-  - 1-100 Addition: Complete addition mastery
-  - Mix Addition: Random practice across all ranges
-- **Multiplication Difficulty Levels**: 
-  - 🧸 Easy (1-5 tables)
-  - 🎯 Medium (6-10 tables)  
-  - 🌟 Advanced (1-10 tables)
-  - 🚀 Classic (2-12 tables)
-  - 🎲 Mix (1-12 tables)
+- **Six Math Operations**: Multiplication (✖️), Division (➗), Addition (➕), Subtraction (➖), Equations (📐), and Word Problems (📝)
+- **Multiplication Tables (1-20)**: 
+  - 🧸 1-5: Basic tables
+  - 1-10: Standard tables
+  - 🌟 6-10: Advanced tables
+  - 📚 1-12: Extended tables
+  - 🍪 2-12: Classic tables
+  - 🔥 1-20: Expert level
+- **Division Practice (1-20)**: 
+  - 🧸 1-5: Basic division
+  - 1-10: Standard division
+  - 1-12: Extended division
+  - 🔥 1-20: Expert division
+- **Addition Ranges (1-200)**: 
+  - 🧸 1-10: Basic single-digit addition
+  - 1-20: Teen number mastery
+  - 1-50: Extended range practice
+  - 50-100: Advanced two-digit addition
+  - 1-100: Complete addition mastery
+  - 🔥 1-200: Expert addition
+- **Subtraction Ranges (1-200)**: 
+  - 🧸 1-10: Basic subtraction
+  - 1-20: Teen number subtraction
+  - 1-50: Extended range
+  - 50-100: Advanced subtraction
+  - 1-100: Complete subtraction mastery
+  - 🔥 1-200: Expert subtraction
+- **Equation Solving (Variable-based)**: 
+  - 🍎 Easy: Simple 2-number equations with fruit variables
+  - 🍊 Medium: Mixed operations (×, ÷, +, -)
+  - 🍓 Hard: 3-number equations with complex operations
+  - 🔥 Very Hard: Advanced multi-step equations
+- **Word Problems (AI-Generated)**: 
+  - 📗 Easy: Simple story problems
+  - 📙 Medium: Multi-step problems
+  - 📕 Hard: Complex scenarios
+  - 🔥 Very Hard: Advanced reasoning
 - **Customizable Rounds**: Choose 1, 2, 3, 5, or 10 rounds
 - **Acorn Collection System**: Earn 1-5 acorns per round based on performance
-- **Performance-Based Rewards**: Acorns awarded for accuracy and speed
+- **Performance-Based Rewards**: Acorns awarded for accuracy and speed (adaptive for different game modes)
 - **Gamification Elements**: Visual acorn display and total collection tracking
 - **10 Questions per Round**: Perfectly balanced practice sessions
 - **Real-time Progress**: Visual progress bar and statistics
 - **Round-by-Round Analytics**: Detailed performance tracking per round
 
 ### 🤖 AI Integration
-- **Smart Hints**: Context-aware hints for both multiplication and addition during gameplay
-- **Operation-Aware AI**: AI system automatically detects multiplication vs addition problems
+- **Smart Hints**: Context-aware hints for all six math operations during gameplay
+- **Operation-Aware AI**: AI system automatically detects problem type (×, ÷, +, -, equations, word problems)
 - **Advanced H-Key Support**: Press 'H' during any question for instant AI assistance
 - **Loading Indicators**: Visual feedback during hint generation
-- **Round Feedback**: Personalized AI feedback after each round for both math operations
+- **AI-Generated Word Problems**: Real-time story problem generation in all three languages
+- **Word Problem Caching**: Pre-fetches and caches word problems for smooth gameplay
+- **Round Feedback**: Personalized AI feedback after each round for all math operations
 - **Final Assessment**: Comprehensive AI analysis of overall performance across all problem types
 - **Multi-language AI**: AI responds in Finnish, English, or Swedish
 - **OpenAI Integration**: Powered by GPT models for natural, contextual responses
@@ -171,7 +196,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ## 🎯 Game Flow
 
 1. **Welcome Story**: Optional interactive story introduction with modal interface
-2. **Setup**: Choose nickname, math operation (multiplication/addition), difficulty, and number of rounds
+2. **Setup**: Choose nickname, math operation (multiplication/division/addition/subtraction/equations/word problems), difficulty, and number of rounds
 3. **Play**: Solve 10 math problems per round with intelligent hints available via H-key or hint button
 4. **Break**: Review round statistics, acorn rewards, and receive personalized AI feedback
 5. **Repeat**: Continue for selected number of rounds with progress and acorn tracking
@@ -181,12 +206,19 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ## 🤖 AI Features
 
 ### Hint System
-- **Operation-Aware**: Automatically detects multiplication vs addition problems
+- **Operation-Aware**: Automatically detects all six problem types (multiplication, division, addition, subtraction, equations, word problems)
 - **Context-aware strategies**: Tailored hints for each operation type
 - **Mental math techniques**: Encourages learning strategies for all operations
 - **Multiple access methods**: Available via 'H' key or hint button during any question
 - **Loading indicators**: Visual feedback during hint generation
 - **Analytics tracking**: Tracks hint usage for comprehensive teacher analytics
+
+### Word Problem Generation
+- **AI-Powered Stories**: Real-time generation of contextual word problems
+- **Multi-language Support**: Problems generated in Finnish, English, or Swedish
+- **Smart Caching**: Pre-fetches and caches problems for all difficulty levels
+- **Varied Operations**: Covers addition, subtraction, multiplication, and division
+- **Difficulty Scaling**: Four levels from simple to complex reasoning
 
 ### Round Feedback
 - **Performance analysis**: Analyzes patterns with specific statistics
@@ -348,54 +380,47 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - **v0.1.5** - Complete localization, Round breakdown analytics
 - **v0.1.0** - Core multiplication trainer with AI feedback
 
-### Latest Features (November 2025)
-- **Enhanced Emoji System**: Consistent emoji iconography throughout the interface for playful, child-friendly design
-- **Fully Responsive Design**: Complete mobile-first redesign with adaptive layouts for all screen sizes
-- **Enhanced AI Hints**: Operation-aware AI system that properly handles both multiplication and addition problems
-- **Code Optimization**: Removed unnecessary audio/TTS code and streamlined the codebase
-- **UI Polish**: Improved spacing, button sizing, and layout consistency across all pages
-- **Loading Indicators**: Added visual feedback for AI hint generation
-- ✅ **Complete Addition Support**: Five difficulty ranges from 1-10 to 1-100
-- ✅ **Enhanced Landing Page**: Dual-image design with interactive help modal
-- ✅ **Advanced Focus Management**: Seamless input field control with virtual keypad
-- ✅ **Improved H-Key Functionality**: Reliable hint system with keyboard listener
-- ✅ **Smart Hint Display**: Adaptive positioning based on keypad visibility
-- ✅ **Layout Consistency**: Standardized 800px height across all game pages
-- ✅ **Results Page Optimization**: Enhanced layout with compact hint display
-- ✅ **Complete Localization**: All hardcoded texts replaced with translation keys
-- ✅ **UI Polish**: Compact, responsive design with improved visual hierarchy
-- ✅ **Acorn Gamification System**: Performance-based acorn collection (1-5 per round)
-- ✅ **Visual Reward Display**: Beautiful acorn graphics with fallback emoji support
-- ✅ **Teacher Acorn Analytics**: Track student motivation through gamification metrics
-- ✅ **Interactive Math Story**: 5-page illustrated story with AI narration
-- ✅ **AI Text-to-Speech**: Professional quality voice narration in 3 languages
+### Latest Features (December 2024)
+- ✅ **Six Math Operations**: Complete support for multiplication, division, addition, subtraction, equations, and word problems
+- ✅ **AI-Generated Word Problems**: Real-time story problem generation in all three languages
+- ✅ **Equation Solving**: Variable-based equations with fruit emojis (🍎, 🍊, 🍓) and 3-number support
+- ✅ **Extended Difficulty Ranges**: Up to 1-200 for addition/subtraction, 1-20 for multiplication/division
+- ✅ **Word Problem Caching**: Smart pre-fetching for smooth gameplay experience
+- ✅ **Adaptive Acorn Rewards**: Different time thresholds for equations and word problems
+- ✅ **Enhanced Emoji System**: Consistent emoji iconography throughout the interface
+- ✅ **Fully Responsive Design**: Complete mobile-first redesign with adaptive layouts
+- ✅ **Enhanced AI Hints**: Operation-aware AI system for all six math operations
+- ✅ **Code Optimization**: Streamlined codebase with improved performance
+- ✅ **UI Polish**: Improved spacing, button sizing, and layout consistency
+- ✅ **Complete Localization**: 270+ translation keys covering all game modes
+- ✅ **Interactive Math Story**: 5-page illustrated story about Nutti the Squirrel
 - ✅ **Teacher Analytics**: Comprehensive dashboard with round-by-round breakdown
 - ✅ **Next.js 15 Upgrade**: Latest framework features and performance improvements
 
 ## 🎯 Future Enhancements
 
-- [ ] Data export functionality for teacher reports
+- [ ] Data export functionality for teacher reports (CSV/PDF)
 - [ ] Extended story chapters and characters
 - [ ] Achievement badges and progress certificates
 - [ ] Parent/teacher email reporting
-- [ ] Offline mode support
-- [ ] Subtraction and division operations
-- [ ] Advanced multiplication tables (13-20)
-- [ ] Mixed operation practice sessions
-- [ ] Student progress tracking over time
+- [ ] Offline mode support with service workers
+- [ ] Mixed operation practice sessions (combining multiple operations)
+- [ ] Student progress tracking over time with charts
 - [ ] Customizable AI personality settings
 - [ ] Fraction and decimal support
-- [ ] Word problem integration
+- [ ] More word problem themes and contexts
+- [ ] Timed challenge modes
+- [ ] Multiplayer competition features
 
 ## 🏆 Key Metrics
 
-- **3 Languages**: Complete localization support
-- **230+ Translation Keys**: Comprehensive language coverage including math operations  
-- **2 Math Operations**: Multiplication tables (1-12) and Addition (1-100)
-- **11 Difficulty Levels**: 6 multiplication + 5 addition ranges
+- **3 Languages**: Complete localization support (Finnish, English, Swedish)
+- **270+ Translation Keys**: Comprehensive language coverage for all math operations  
+- **6 Math Operations**: Multiplication, Division, Addition, Subtraction, Equations, Word Problems
+- **26 Difficulty Levels**: 6 multiplication + 4 division + 6 addition + 6 subtraction + 4 equations + 4 word problems
 - **1000+ Results**: Teacher analytics storage capacity
 - **10 Questions/Round**: Optimal learning session length
-- **AI-Powered**: 4 different AI interaction types with dual operation support
+- **AI-Powered**: Smart hints, word problem generation, round feedback, and final assessment
 - **100% Accessible**: Full ARIA compliance and keyboard navigation
 
 ---

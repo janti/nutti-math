@@ -36,7 +36,7 @@ export default function MenuPage() {
         saveGameSettings()
         precomputeFirstRoundFacts()
 
-        console.log('Home: Started new game:', rounds, 'rounds,', range, 'multiplication tables')
+
         router.push(`/${currentLocale}/play`)
     }
 
@@ -62,7 +62,7 @@ export default function MenuPage() {
      */
     const saveGameSettings = () => {
         const gameSettings: GameSettings = { alias, range, rounds, gameType }
-        console.log('Saving game settings:', gameSettings)
+
         localStorage.setItem('nutti.settings', JSON.stringify(gameSettings))
         localStorage.setItem('nutti.roundNo', '1')
     }
@@ -73,13 +73,13 @@ export default function MenuPage() {
     const precomputeFirstRoundFacts = () => {
         if (gameType === 'equations') {
             // Don't precompute for equations as they are generated dynamically
-            console.log('Skipping precompute for equations gameType')
+
             return
         }
         import('@/lib/game').then(({ factPool, pickFacts }) => {
             const firstFacts = pickFacts(factPool(range, gameType), 10)
             localStorage.setItem(`nutti.facts.1.${range}`, JSON.stringify(firstFacts))
-            console.log('Home: Precomputed round 1 facts')
+
         })
     }
 
@@ -89,11 +89,11 @@ export default function MenuPage() {
     useEffect(() => {
         // Wait for locale to be available
         if (!locale) {
-            console.log('Locale not yet available, skipping word problems pre-fetch')
+
             return
         }
 
-        console.log('Pre-fetching word problems for locale:', locale)
+
         const difficulties = ['word-problems-easy', 'word-problems-medium', 'word-problems-hard', 'word-problems-veryhard']
         let needsFetch = false
 
@@ -102,7 +102,7 @@ export default function MenuPage() {
             const cachedKey = `nutti.wordproblems.${locale}.${diff}`
             if (!localStorage.getItem(cachedKey)) {
                 needsFetch = true
-                console.log('Need to fetch:', diff)
+
                 break
             }
         }
@@ -113,12 +113,12 @@ export default function MenuPage() {
 
             Promise.all(
                 difficulties.map(diff => {
-                    console.log('Starting fetch for:', diff, 'with locale:', locale)
+
                     return generateAndCacheWordProblems(locale, diff)
                 })
             ).finally(() => {
                 setIsLoadingWordProblems(false)
-                console.log('All word problem difficulty levels cached for locale:', locale)
+
             })
         }
     }, [locale])
@@ -127,7 +127,7 @@ export default function MenuPage() {
      * Generate and cache word problems
      */
     const generateAndCacheWordProblems = async (locale: string, range: string) => {
-        console.log('generateAndCacheWordProblems called with locale:', locale, 'range:', range)
+
         const operations: ('addition' | 'subtraction' | 'multiplication' | 'division')[] =
             ['addition', 'subtraction', 'multiplication', 'division']
         const problems: any[] = []
@@ -135,7 +135,7 @@ export default function MenuPage() {
         for (let i = 0; i < 10; i++) {
             const operation = operations[Math.floor(Math.random() * operations.length)]
             try {
-                console.log(`Generating problem ${i + 1}/10, locale: ${locale}, operation: ${operation}`)
+
                 const response = await fetch('/api/wordproblems/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -154,7 +154,7 @@ export default function MenuPage() {
         if (problems.length > 0) {
             const cacheKey = `nutti.wordproblems.${locale}.${range}`
             localStorage.setItem(cacheKey, JSON.stringify(problems))
-            console.log(`Cached ${problems.length} word problems for ${locale}/${range}`)
+
         }
     }
 
@@ -185,7 +185,7 @@ export default function MenuPage() {
 
     // Update gameType and reset range when topic changes
     const handleTopicChange = (topicId: string) => {
-        console.log('Topic changed to:', topicId)
+
         setTopic(topicId)
         if (topicId === 'addition') {
             setGameType('addition')
@@ -199,16 +199,16 @@ export default function MenuPage() {
         } else if (topicId === 'equations') {
             setGameType('equations')
             setRange('equations-easy')
-            console.log('Set equations gameType and range to equations-easy')
+
         } else if (topicId === 'division') {
             setGameType('division')
             setRange('1-5-div')
-            console.log('Set division gameType and range to 1-5-div')
+
         } else if (topicId === 'wordProblems') {
             setGameType('wordProblems' as any)
             const newRange = 'word-problems-easy' as any
             setRange(newRange)
-            console.log('Set wordProblems gameType and range to word-problems-easy')
+
 
             // Pre-fetch all difficulty levels if not in cache
             const difficulties = ['word-problems-easy', 'word-problems-medium', 'word-problems-hard', 'word-problems-veryhard']
@@ -620,10 +620,7 @@ export default function MenuPage() {
                                         const isWordProblemsLoading = tItem.id === 'wordProblems' && isLoadingWordProblems
                                         const isDisabled = !tItem.enabled || isWordProblemsLoading
 
-                                        // Don't hide word problems, just show loading state
-                                        // if (tItem.id === 'wordProblems' && isLoadingWordProblems) {
-                                        //     return null
-                                        // }
+
 
                                         return (
                                             <button
@@ -658,8 +655,8 @@ export default function MenuPage() {
                         <div className="text-center">
                             <button
                                 className={`text-base lg:text-lg px-6 lg:px-8 py-3 font-bold rounded-xl shadow-lg transform transition-all w-full max-w-xs mx-auto ${alias.trim()
-                                        ? 'bg-gradient-to-r from-nutti-primary to-blue-500 text-white hover:from-nutti-primary/90 hover:to-blue-500/90 hover:scale-105 focus:ring-4 focus:ring-nutti-primary/30'
-                                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                    ? 'bg-gradient-to-r from-nutti-primary to-blue-500 text-white hover:from-nutti-primary/90 hover:to-blue-500/90 hover:scale-105 focus:ring-4 focus:ring-nutti-primary/30'
+                                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                     }`}
                                 disabled={!alias.trim()}
                                 onClick={startNewGame}

@@ -77,7 +77,7 @@ export default function Play() {
 
   // Helper function to generate and cache word problems
   const generateAndCacheWordProblems = async (locale: string, range: string): Promise<WordProblem[]> => {
-    const operations: ('addition' | 'subtraction' | 'multiplication' | 'division')[] = 
+    const operations: ('addition' | 'subtraction' | 'multiplication' | 'division')[] =
       ['addition', 'subtraction', 'multiplication', 'division']
     const problems: WordProblem[] = []
 
@@ -89,7 +89,7 @@ export default function Play() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ locale, operation, range })
         })
-        
+
         if (response.ok) {
           const data = await response.json()
           problems.push({ ...data, operation })
@@ -102,7 +102,7 @@ export default function Play() {
     if (problems.length > 0) {
       const cacheKey = `nutti.wordproblems.${locale}.${range}`
       localStorage.setItem(cacheKey, JSON.stringify(problems))
-      console.log(`Cached ${problems.length} word problems for ${locale}/${range}`)
+
     }
 
     return problems
@@ -117,7 +117,7 @@ export default function Play() {
     // Prevent running multiple times
     if (isLoaded) return
     if (isGeneratingRef.current) return
-    
+
     // Reset hint counter when component mounts or facts change
     setCurrentHints(0)
 
@@ -128,60 +128,69 @@ export default function Play() {
     )
     const savedRoundNo = Number(localStorage.getItem('nutti.roundNo') || '1')
 
+    // Repair mismatched settings (e.g. if gameType is multiplication but range is equations)
+    if (savedSettings.range.startsWith('equations-') && savedSettings.gameType !== 'equations') {
+      savedSettings.gameType = 'equations'
+      localStorage.setItem('nutti.settings', JSON.stringify(savedSettings))
+    } else if (savedSettings.range.startsWith('word-problems-') && savedSettings.gameType !== 'wordProblems') {
+      savedSettings.gameType = 'wordProblems'
+      localStorage.setItem('nutti.settings', JSON.stringify(savedSettings))
+    }
+
     if (savedSettings.gameType === 'equations') {
       // Generate equation facts directly
-      console.log('Detected equations gameType, range:', savedSettings.range)
-      const difficulty = savedSettings.range === 'equations-easy' ? 'easy' : 
-                        savedSettings.range === 'equations-medium' ? 'medium' : 
-                        savedSettings.range === 'equations-hard' ? 'hard' :
-                        savedSettings.range === 'equations-veryhard' ? 'veryhard' : 'easy'
-      console.log('Generating equations with difficulty:', difficulty, 'range:', savedSettings.range)
+
+      const difficulty = savedSettings.range === 'equations-easy' ? 'easy' :
+        savedSettings.range === 'equations-medium' ? 'medium' :
+          savedSettings.range === 'equations-hard' ? 'hard' :
+            savedSettings.range === 'equations-veryhard' ? 'veryhard' : 'easy'
+
       const eqFacts = generateEquationFacts(difficulty, 10)
-      console.log('Generated equation facts:', eqFacts)
+
       setEquationFacts(eqFacts)
       setFacts([]) // Clear regular facts
       setFactsReady(true)
-      console.log('Play: Generated', eqFacts.length, 'equation facts for round', savedRoundNo, 'difficulty:', difficulty)
+
     } else if (savedSettings.gameType === 'wordProblems') {
       // Use cached word problems or generate new ones
-      console.log('Detected wordProblems gameType, range:', savedSettings.range, 'locale:', locale)
-      
+
+
       // Prevent duplicate generation
       if (isGeneratingRef.current) {
-        console.log('Already processing word problems, skipping...')
+
         return
       }
-      
+
       isGeneratingRef.current = true
       setFactsReady(false)
-      
+
       const cacheKey = `nutti.wordproblems.${locale}.${savedSettings.range}`
-      
+
       // Try to use cached problems first
       const cachedProblems = localStorage.getItem(cacheKey)
-      
+
       if (cachedProblems) {
-        console.log('Using cached word problems from:', cacheKey, 'locale:', locale)
+
         const problems = JSON.parse(cachedProblems)
         setWordProblems(problems)
         setFacts([])
         setEquationFacts([])
         setFactsReady(true)
         isGeneratingRef.current = false
-        
+
         // Start timer
         setTimeout(() => {
           questionStartTime.current = performance.now()
         }, 100)
-        
+
         // Pre-fetch next set for THIS SPECIFIC difficulty in background
-        console.log('Pre-fetching next word problem set for locale:', locale, 'range:', savedSettings.range)
+
         setTimeout(() => {
           generateAndCacheWordProblems(locale, savedSettings.range)
         }, 1000) // Small delay to not interfere with game start
       } else {
         // No cache, generate now
-        console.log('No cache found, generating word problems for locale:', locale)
+
         generateAndCacheWordProblems(locale, savedSettings.range).then(problems => {
           if (problems && problems.length > 0) {
             setWordProblems(problems)
@@ -210,7 +219,7 @@ export default function Play() {
       setFacts(roundFacts)
       setEquationFacts([]) // Clear equation facts
       setFactsReady(true)
-      console.log('Play: Loaded', roundFacts.length, 'facts for round', savedRoundNo, '- Expected: 10')
+
     }
 
     setSettings(savedSettings)
@@ -230,15 +239,7 @@ export default function Play() {
   const isWordProblemMode = settings.gameType === 'wordProblems'
   const totalQuestions = isEquationMode ? equationFacts.length : isWordProblemMode ? wordProblems.length : facts.length
 
-  // Debug log to see what's happening
-  console.log('Play render:', {
-    isEquationMode,
-    equationFactsLength: equationFacts.length,
-    factsLength: facts.length,
-    totalQuestions,
-    currentQuestionIndex,
-    isLoaded
-  })
+
 
   // Separate effect for keyboard listener to avoid dependency issues
   useEffect(() => {
@@ -271,10 +272,10 @@ export default function Play() {
     // Calculate answer metrics
     const timeSpentMs = Math.round(performance.now() - questionStartTime.current)
     const userAnswer = Number(userInput || NaN)
-    
+
     let correctAnswer: number
     let a: number, b: number
-    
+
     if (isWordProblemMode && currentWordProblem) {
       correctAnswer = currentWordProblem.answer
       // For word problems, we'll use dummy values for a and b in storage
@@ -288,17 +289,17 @@ export default function Play() {
       correctAnswer = settings.gameType === 'addition'
         ? currentQuestion.a + currentQuestion.b
         : settings.gameType === 'subtraction'
-        ? currentQuestion.a - currentQuestion.b
-        : settings.gameType === 'division'
-        ? currentQuestion.a / currentQuestion.b
-        : currentQuestion.a * currentQuestion.b
+          ? currentQuestion.a - currentQuestion.b
+          : settings.gameType === 'division'
+            ? currentQuestion.a / currentQuestion.b
+            : currentQuestion.a * currentQuestion.b
       a = currentQuestion.a
       b = currentQuestion.b
     } else {
       setIsSubmitting(false)
       return
     }
-    
+
     const isCorrect = userAnswer === correctAnswer
 
     const answerEntry: Answer = {
@@ -317,7 +318,7 @@ export default function Play() {
     }
 
     const operation = isEquationMode ? 'equation' : settings.gameType === 'addition' ? '+' : settings.gameType === 'subtraction' ? '−' : settings.gameType === 'division' ? '÷' : 'x'
-    console.log('Saving answer:', a, operation, b, '=', userAnswer, 'hints used:', currentHints, 'time:', timeSpentMs, 'ms')
+
 
     // Update state and prepare for next question
     const updatedAnswers = [...answers, answerEntry]
@@ -340,7 +341,7 @@ export default function Play() {
       }
     }, 150)
 
-    console.log('Question completed. Moving to next question, hints reset to 0')
+
   }
 
   /**
@@ -365,7 +366,7 @@ export default function Play() {
       answers: finalAnswers,
       alias: settings.alias
     }))
-    console.log('Play: Round', roundNo, 'complete. Going to break page.')
+
 
     // Always go to break page after completing a round
     router.push(`/${locale}/break`)
@@ -389,7 +390,7 @@ export default function Play() {
     setIsLoadingHint(true)
     try {
       let requestBody: any
-      
+
       if (isWordProblemMode && currentWordProblem) {
         // For word problems, send problem text and equation
         requestBody = {
@@ -419,7 +420,7 @@ export default function Play() {
         setIsLoadingHint(false)
         return
       }
-      
+
       const response = await fetch('/api/ai/hint', {
         method: 'POST',
         headers: {
@@ -435,12 +436,12 @@ export default function Play() {
       const { hint } = await response.json()
       setHint(hint)
       setCurrentHints(prev => prev + 1)
-      
+
       if (isEquationMode && currentEquation) {
-        console.log('Hint requested for equation:', formatEquation(currentEquation), '- Total hints for this question:', currentHints + 1)
+
       } else if (currentQuestion) {
         const operation = settings.gameType === 'addition' ? '+' : settings.gameType === 'division' ? '÷' : 'x'
-        console.log('Hint requested for', currentQuestion.a, operation, currentQuestion.b, '- Total hints for this question:', currentHints + 1)
+
       }
     } catch (error) {
       console.error('Error fetching hint:', error)
@@ -468,11 +469,11 @@ export default function Play() {
   if (isWordProblemMode && !currentWordProblem) {
     return <div className="card text-center"><p>{t('play.noTasks')}</p></div>
   }
-  
+
   if (isEquationMode && !currentEquation) {
     return <div className="card text-center"><p>{t('play.noTasks')}</p></div>
   }
-  
+
   if (!isEquationMode && !isWordProblemMode && !currentQuestion) {
     return <div className="card text-center"><p>{t('play.noTasks')}</p></div>
   }

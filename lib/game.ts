@@ -1,9 +1,9 @@
 export type Fact = { a: number; b: number }
 
 // Extended fact type for equations with variables
-export type EquationFact = { 
-  a: number; 
-  b: number; 
+export type EquationFact = {
+  a: number;
+  b: number;
   c?: number; // Third number for hard difficulty (optional)
   result: number;
   operation: 'addition' | 'multiplication' | 'subtraction' | 'division';
@@ -91,26 +91,26 @@ export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | '1-2
   if (gameType === 'addition') {
     return additionFactPool(range)
   }
-  
+
   if (gameType === 'subtraction') {
     return subtractionFactPool(range)
   }
-  
+
   if (gameType === 'division') {
     return divisionFactPool(range)
   }
-  
+
   // For equations, we still return Fact[] but they should be converted to EquationFact[] elsewhere
   if (gameType === 'equations' || range.startsWith('equations-')) {
     // Return empty array - equations will be generated separately
     return []
   }
-  
+
   // For word problems, return empty array - they will be generated via AI
   if (gameType === 'wordProblems' || range.startsWith('word-problems-')) {
     return []
   }
-  
+
   let start: number, end: number
 
   switch (range) {
@@ -137,7 +137,7 @@ export function factPool(range: '1-5' | '1-10' | '6-10' | '1-12' | '2-12' | '1-2
 
 function additionFactPool(range: string): Fact[] {
   const pool: Fact[] = []
-  
+
   switch (range) {
     case '1-10-add':
       // Generate addition facts with results 1-10
@@ -217,13 +217,13 @@ function additionFactPool(range: string): Fact[] {
       }
       break
   }
-  
+
   return pool
 }
 
 function divisionFactPool(range: string): Fact[] {
   const pool: Fact[] = []
-  
+
   switch (range) {
     case '1-5-div':
       // Generate division facts with divisors 1-5 and results 1-5
@@ -271,13 +271,13 @@ function divisionFactPool(range: string): Fact[] {
       }
       break
   }
-  
+
   return pool
 }
 
 function subtractionFactPool(range: string): Fact[] {
   const pool: Fact[] = []
-  
+
   switch (range) {
     case '1-10-sub':
       // Generate subtraction facts where minuend is 1-10, subtrahend is 1-10, and result is positive
@@ -350,14 +350,14 @@ function subtractionFactPool(range: string): Fact[] {
       }
       break
   }
-  
+
   return pool
 }
 
 export const shuffle = <T,>(arr: T[]) => arr.map(v => [Math.random(), v] as const).sort((a, b) => a[0] - b[0]).map(x => x[1])
 export const pickFacts = (pool: Fact[], n: number) => {
   const result = shuffle(pool).slice(0, n)
-  console.log('pickFacts: Requested', n, 'facts, returning', result.length, 'facts')
+
   return result
 }
 
@@ -366,22 +366,22 @@ const fruitIcons = ['🍎', '🍊', '🍌', '🍇', '🍓', '🍒', '🥝', '�
 
 // Generate equation-based problems with missing values (only on left side)
 export function generateEquationFacts(difficulty: 'easy' | 'medium' | 'hard' | 'veryhard', count: number = 10): EquationFact[] {
-  console.log('generateEquationFacts called with:', { difficulty, count })
+
   const facts: EquationFact[] = []
-  
+
   for (let i = 0; i < count; i++) {
     // Choose random operation (all 4 types)
-    const operations: Array<'addition' | 'multiplication' | 'subtraction' | 'division'> = 
+    const operations: Array<'addition' | 'multiplication' | 'subtraction' | 'division'> =
       ['addition', 'multiplication', 'subtraction', 'division']
     const operation = operations[Math.floor(Math.random() * operations.length)]
-    
+
     // Only allow missing values on left side (a or b, or c for hard difficulty)
     const missingOptions: Array<'a' | 'b'> = ['a', 'b']
     let missingValue: 'a' | 'b' | 'c' = missingOptions[Math.floor(Math.random() * missingOptions.length)]
     const variableIcon = fruitIcons[Math.floor(Math.random() * fruitIcons.length)]
-    
+
     let a: number, b: number, result: number
-    
+
     if (difficulty === 'easy') {
       if (operation === 'addition') {
         // Easy addition: ? + 1-10 = result (1-20)
@@ -404,6 +404,7 @@ export function generateEquationFacts(difficulty: 'easy' | 'medium' | 'hard' | '
         result = Math.floor(Math.random() * 5) + 1
         a = result * b // Ensure exact division
       }
+      facts.push({ a, b, result, operation, missingValue, variableIcon })
     } else if (difficulty === 'medium') {
       if (operation === 'addition') {
         // Medium addition: ? + 1-20 = result
@@ -426,15 +427,16 @@ export function generateEquationFacts(difficulty: 'easy' | 'medium' | 'hard' | '
         result = Math.floor(Math.random() * 10) + 1
         a = result * b
       }
+      facts.push({ a, b, result, operation, missingValue, variableIcon })
     } else if (difficulty === 'hard') {
       // 50% chance for 3-number equations on hard difficulty
       const useThreeNumbers = Math.random() < 0.5
-      
+
       if (useThreeNumbers && (operation === 'addition' || operation === 'subtraction')) {
         // Three-number equations: a + b + c = result or a - b - c = result
         const missingOptions: Array<'a' | 'b' | 'c'> = ['a', 'b', 'c']
         missingValue = missingOptions[Math.floor(Math.random() * missingOptions.length)] as 'a' | 'b' | 'c'
-        
+
         if (operation === 'addition') {
           // Three-number addition: ? + b + c = result
           b = Math.floor(Math.random() * 20) + 1
@@ -479,12 +481,12 @@ export function generateEquationFacts(difficulty: 'easy' | 'medium' | 'hard' | '
       // Very hard: More complex equations with larger numbers and more frequent 3-number equations
       // 70% chance for 3-number equations
       const useThreeNumbers = Math.random() < 0.7
-      
+
       if (useThreeNumbers && (operation === 'addition' || operation === 'subtraction')) {
         // Three-number equations: a + b + c = result or a - b - c = result
         const missingOptions: Array<'a' | 'b' | 'c'> = ['a', 'b', 'c']
         missingValue = missingOptions[Math.floor(Math.random() * missingOptions.length)] as 'a' | 'b' | 'c'
-        
+
         if (operation === 'addition') {
           // Very hard three-number addition: larger numbers (up to 50 each)
           b = Math.floor(Math.random() * 50) + 1
@@ -527,8 +529,8 @@ export function generateEquationFacts(difficulty: 'easy' | 'medium' | 'hard' | '
       }
     }
   }
-  
-  console.log('generateEquationFacts returning:', facts.length, 'facts:', facts)
+
+
   return facts
 }
 
@@ -570,7 +572,7 @@ export function formatEquation(fact: EquationFact): string {
   else if (fact.operation === 'multiplication') op = '×'
   else if (fact.operation === 'subtraction') op = '-'
   else op = '÷' // division
-  
+
   if (fact.c) {
     // Three-number equations
     switch (fact.missingValue) {
