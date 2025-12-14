@@ -42,10 +42,10 @@ export default async function LocaleLayout({
   const messages = await getMessages()
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className="h-[100dvh] flex flex-col overflow-hidden">
+      <body className="h-[100dvh] flex flex-col gap-2 overflow-hidden">
         <NextIntlClientProvider messages={messages} locale={locale}>
           <Header locale={locale} />
-          <main className="mx-auto w-full max-w-3xl px-4 pb-4 flex-1 flex flex-col overflow-hidden">{children}</main>
+          <main className="mx-auto w-full max-w-3xl px-4 py-4 flex-1 flex flex-col overflow-hidden">{children}</main>
         </NextIntlClientProvider>
       </body>
     </html>
