@@ -32,12 +32,12 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="h-[850px] bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
+    <div className="h-full bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute top-10 left-10 w-16 h-16 bg-yellow-200 rounded-full opacity-20 animate-pulse"></div>
       <div className="absolute top-32 right-16 w-12 h-12 bg-pink-200 rounded-full opacity-30 animate-bounce delay-1000"></div>
       <div className="absolute bottom-20 left-20 w-10 h-10 bg-green-200 rounded-full opacity-25 animate-pulse delay-2000"></div>
-      
+
       <div className="max-w-4xl mx-auto h-full px-4">
         <div className="h-full flex flex-col py-4">
           {/* Header Section */}
@@ -53,128 +53,128 @@ export default function LandingPage() {
             </p>
           </div>      <div className="container mx-auto px-4 py-4 h-full flex flex-col">
 
-        {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-3 gap-8 lg:gap-6 items-center mb-8 flex-1">
-          {/* Left - Nutti Iso */}
-          <div className="lg:col-span-1 flex justify-center order-1 lg:order-none">
-            <div className="relative transform hover:scale-105 transition-transform duration-500">
-              <div className="absolute -inset-2 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 rounded-2xl blur opacity-20 animate-pulse"></div>
-              <Image
-                src={nuttiIsoImage}
-                alt="Nutti Squirrel character"
-                width={200}
-                height={240}
-                className="relative rounded-xl shadow-lg"
-                style={{ height: 'auto' }}
-                priority
-                sizes="(max-width: 768px) 60vw, (max-width: 1200px) 25vw, 20vw"
-              />
-            </div>
-          </div>
+            {/* Main Content Grid */}
+            <div className="grid lg:grid-cols-3 gap-8 lg:gap-6 items-center mb-8 flex-1">
+              {/* Left - Nutti Iso */}
+              <div className="lg:col-span-1 flex justify-center order-1 lg:order-none">
+                <div className="relative transform hover:scale-105 transition-transform duration-500">
+                  <div className="absolute -inset-2 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 rounded-2xl blur opacity-20 animate-pulse"></div>
+                  <Image
+                    src={nuttiIsoImage}
+                    alt="Nutti Squirrel character"
+                    width={200}
+                    height={240}
+                    className="relative rounded-xl shadow-lg"
+                    style={{ height: 'auto' }}
+                    priority
+                    sizes="(max-width: 768px) 60vw, (max-width: 1200px) 25vw, 20vw"
+                  />
+                </div>
+              </div>
 
-          {/* Center - Features & CTA */}
-          <div className="lg:col-span-1 space-y-8 lg:space-y-6 order-3 lg:order-none">
-            {/* Main CTA */}
-            <div className="text-center">
-              <Link
-                href={`/${locale}/menu`}
-                className="group inline-flex items-center justify-center bg-gradient-to-r from-nutti-primary via-blue-500 to-purple-600 text-white text-lg md:text-xl font-bold px-6 md:px-8 py-4 md:py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
+              {/* Center - Features & CTA */}
+              <div className="lg:col-span-1 space-y-8 lg:space-y-6 order-3 lg:order-none">
+                {/* Main CTA */}
+                <div className="text-center">
+                  <Link
+                    href={`/${locale}/menu`}
+                    className="group inline-flex items-center justify-center bg-gradient-to-r from-nutti-primary via-blue-500 to-purple-600 text-white text-lg md:text-xl font-bold px-6 md:px-8 py-4 md:py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
+                  >
+                    <span className="mr-2 text-xl">🎮</span>
+                    {t('cta')}
+                    <span className="ml-2 group-hover:animate-bounce text-xl">🚀</span>
+                  </Link>
+                </div>
+
+                {/* Enhanced Features */}
+                <div className="space-y-4 lg:space-y-3">
+                  <div className="group p-4 lg:p-3 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 transition-all duration-300 hover:scale-105 border border-blue-200">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl group-hover:animate-bounce">🎯</span>
+                      <div>
+                        <h3 className="font-bold text-gray-800 text-sm">{t('feature1')}</h3>
+                        <p className="text-xs text-gray-600">{tFeatures('multiplication')}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="group p-4 lg:p-3 rounded-xl bg-gradient-to-r from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 transition-all duration-300 hover:scale-105 border border-green-200">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl group-hover:animate-bounce">🐿️</span>
+                      <div>
+                        <h3 className="font-bold text-gray-800 text-sm">{t('feature2')}</h3>
+                        <p className="text-xs text-gray-600">{tFeatures('interactive')}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="group p-4 lg:p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-yellow-100 hover:from-yellow-100 hover:to-yellow-200 transition-all duration-300 hover:scale-105 border border-yellow-200">
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl group-hover:animate-bounce">🏆</span>
+                      <div>
+                        <h3 className="font-bold text-gray-800 text-sm">{t('feature3')}</h3>
+                        <p className="text-xs text-gray-600">{tFeatures('tracking')}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right - Nutti Taulu */}
+              <div className="lg:col-span-1 flex justify-center order-2 lg:order-none">
+                <div className="relative transform hover:scale-105 transition-transform duration-500">
+                  <div className="absolute -inset-2 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 rounded-2xl blur opacity-20 animate-pulse delay-1000"></div>
+                  <Image
+                    src={nuttiTauluImage}
+                    alt="Nutti with multiplication table"
+                    width={240}
+                    height={200}
+                    className="relative rounded-xl shadow-lg"
+                    priority
+                    sizes="(max-width: 768px) 60vw, (max-width: 1200px) 25vw, 20vw"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons Row */}
+            <div className="flex flex-col sm:flex-row justify-center gap-4 pb-6 lg:pb-4">
+              <button
+                onClick={() => setShowStory(true)}
+                className="group bg-gradient-to-r from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 text-purple-700 hover:text-purple-800 px-4 py-3 rounded-xl border border-purple-200 hover:border-purple-300 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
               >
-                <span className="mr-2 text-xl">🎮</span>
-                {t('cta')}
-                <span className="ml-2 group-hover:animate-bounce text-xl">🚀</span>
-              </Link>
-            </div>
+                <span className="text-lg group-hover:animate-spin">📚</span>
+                <div className="text-left">
+                  <div className="font-bold text-sm">{tHome('readStory')}</div>
+                  <div className="text-xs opacity-75">{tFeatures('storyDescription')}</div>
+                </div>
+              </button>
 
-            {/* Enhanced Features */}
-            <div className="space-y-4 lg:space-y-3">
-              <div className="group p-4 lg:p-3 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 transition-all duration-300 hover:scale-105 border border-blue-200">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl group-hover:animate-bounce">🎯</span>
-                  <div>
-                    <h3 className="font-bold text-gray-800 text-sm">{t('feature1')}</h3>
-                    <p className="text-xs text-gray-600">{tFeatures('multiplication')}</p>
-                  </div>
+              <button
+                onClick={() => setShowTeacherView(true)}
+                className="group bg-gradient-to-r from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 text-gray-700 hover:text-gray-800 px-4 py-3 rounded-xl border border-gray-200 hover:border-gray-300 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
+              >
+                <span className="text-lg group-hover:animate-bounce">👨‍🏫</span>
+                <div className="text-left">
+                  <div className="font-bold text-sm">{t('teacherView')}</div>
+                  <div className="text-xs opacity-75">{tFeatures('teacherDescription')}</div>
                 </div>
-              </div>
-              
-              <div className="group p-4 lg:p-3 rounded-xl bg-gradient-to-r from-green-50 to-green-100 hover:from-green-100 hover:to-green-200 transition-all duration-300 hover:scale-105 border border-green-200">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl group-hover:animate-bounce">🐿️</span>
-                  <div>
-                    <h3 className="font-bold text-gray-800 text-sm">{t('feature2')}</h3>
-                    <p className="text-xs text-gray-600">{tFeatures('interactive')}</p>
-                  </div>
+              </button>
+
+              <button
+                onClick={() => setShowHelp(true)}
+                className="group bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 text-blue-700 hover:text-blue-800 px-4 py-3 rounded-xl border border-blue-200 hover:border-blue-300 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
+              >
+                <span className="text-lg group-hover:animate-pulse">⌨️</span>
+                <div className="text-left">
+                  <div className="font-bold text-sm">{t('help')}</div>
+                  <div className="text-xs opacity-75">{tFeatures('helpDescription')}</div>
                 </div>
-              </div>
-              
-              <div className="group p-4 lg:p-3 rounded-xl bg-gradient-to-r from-yellow-50 to-yellow-100 hover:from-yellow-100 hover:to-yellow-200 transition-all duration-300 hover:scale-105 border border-yellow-200">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl group-hover:animate-bounce">🏆</span>
-                  <div>
-                    <h3 className="font-bold text-gray-800 text-sm">{t('feature3')}</h3>
-                    <p className="text-xs text-gray-600">{tFeatures('tracking')}</p>
-                  </div>
-                </div>
-              </div>
+              </button>
             </div>
           </div>
-
-          {/* Right - Nutti Taulu */}
-          <div className="lg:col-span-1 flex justify-center order-2 lg:order-none">
-            <div className="relative transform hover:scale-105 transition-transform duration-500">
-              <div className="absolute -inset-2 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 rounded-2xl blur opacity-20 animate-pulse delay-1000"></div>
-              <Image
-                src={nuttiTauluImage}
-                alt="Nutti with multiplication table"
-                width={240}
-                height={200}
-                className="relative rounded-xl shadow-lg"
-                priority
-                sizes="(max-width: 768px) 60vw, (max-width: 1200px) 25vw, 20vw"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Action Buttons Row */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 pb-6 lg:pb-4">
-          <button
-            onClick={() => setShowStory(true)}
-            className="group bg-gradient-to-r from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 text-purple-700 hover:text-purple-800 px-4 py-3 rounded-xl border border-purple-200 hover:border-purple-300 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
-          >
-            <span className="text-lg group-hover:animate-spin">📚</span>
-            <div className="text-left">
-              <div className="font-bold text-sm">{tHome('readStory')}</div>
-              <div className="text-xs opacity-75">{tFeatures('storyDescription')}</div>
-            </div>
-          </button>
-
-          <button
-            onClick={() => setShowTeacherView(true)}
-            className="group bg-gradient-to-r from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 text-gray-700 hover:text-gray-800 px-4 py-3 rounded-xl border border-gray-200 hover:border-gray-300 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
-          >
-            <span className="text-lg group-hover:animate-bounce">👨‍🏫</span>
-            <div className="text-left">
-              <div className="font-bold text-sm">{t('teacherView')}</div>
-              <div className="text-xs opacity-75">{tFeatures('teacherDescription')}</div>
-            </div>
-          </button>
-
-          <button
-            onClick={() => setShowHelp(true)}
-            className="group bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 text-blue-700 hover:text-blue-800 px-4 py-3 rounded-xl border border-blue-200 hover:border-blue-300 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
-          >
-            <span className="text-lg group-hover:animate-pulse">⌨️</span>
-            <div className="text-left">
-              <div className="font-bold text-sm">{t('help')}</div>
-              <div className="text-xs opacity-75">{tFeatures('helpDescription')}</div>
-            </div>
-          </button>
-        </div>
         </div>
       </div>
-    </div>
 
       {/* Help Modal */}
       {showHelp && (

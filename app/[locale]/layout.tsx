@@ -31,10 +31,10 @@ export function generateStaticParams() {
 }
 
 export default async function LocaleLayout({
-  children, 
+  children,
   params
-}: { 
-  children: React.ReactNode; 
+}: {
+  children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
   const resolvedParams = await params
@@ -42,10 +42,10 @@ export default async function LocaleLayout({
   const messages = await getMessages()
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className="min-h-screen">
+      <body className="h-[100dvh] flex flex-col overflow-hidden">
         <NextIntlClientProvider messages={messages} locale={locale}>
           <Header locale={locale} />
-          <main className="mx-auto max-w-3xl px-4 pb-4">{children}</main>
+          <main className="mx-auto w-full max-w-3xl px-4 pb-4 flex-1 flex flex-col overflow-hidden">{children}</main>
         </NextIntlClientProvider>
       </body>
     </html>
