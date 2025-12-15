@@ -32,14 +32,14 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="h-full bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
+    <div className="min-h-full bg-white relative">
       {/* Decorative background elements */}
       <div className="absolute top-10 left-10 w-16 h-16 bg-yellow-200 rounded-full opacity-20 animate-pulse"></div>
       <div className="absolute top-32 right-16 w-12 h-12 bg-pink-200 rounded-full opacity-30 animate-bounce delay-1000"></div>
       <div className="absolute bottom-20 left-20 w-10 h-10 bg-green-200 rounded-full opacity-25 animate-pulse delay-2000"></div>
 
-      <div className="max-w-4xl mx-auto h-full px-4">
-        <div className="h-full flex flex-col py-4">
+      <div className="max-w-4xl mx-auto min-h-full px-4">
+        <div className="min-h-full flex flex-col py-4">
           {/* Header Section */}
           <div className="text-center mb-2">
             <div className="mb-3">
@@ -51,7 +51,7 @@ export default function LandingPage() {
             <p className="text-base md:text-lg text-gray-700 font-medium leading-relaxed max-w-2xl mx-auto">
               {t('subtitle')}
             </p>
-          </div>      <div className="container mx-auto px-4 py-4 h-full flex flex-col">
+          </div>      <div className="container mx-auto px-4 py-4 min-h-full flex flex-col">
 
             {/* Main Content Grid */}
             <div className="grid lg:grid-cols-3 gap-8 lg:gap-6 items-center mb-8 flex-1">
