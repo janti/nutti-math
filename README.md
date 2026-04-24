@@ -117,7 +117,7 @@ A comprehensive, modern math trainer featuring AI-powered feedback, interactive 
 ### Prerequisites
 - Node.js 18+ 
 - npm or yarn
-- OpenAI API key or Azure OpenAI Service access
+- Optional: OpenAI API key or Azure OpenAI Service access (app also works without AI keys)
 
 ### Installation
 
@@ -146,6 +146,8 @@ AZURE_OPENAI_DEPLOYMENT=your-deployment-name
 # Optional: Production URL for metadata
 NEXT_PUBLIC_BASE_URL=https://your-domain.com
 ```
+
+If no OpenAI/Azure keys are provided, the game still runs normally with built-in fallback hints, feedback, and word-problem generation.
 
 4. **Run the development server**
 ```bash
@@ -290,6 +292,29 @@ Stored in localStorage as `nutti.settings`:
 - **Round Precomputation**: Next round prepared in background
 - **localStorage**: Efficient state persistence
 - **Duplicate Prevention**: Smart deduplication systems
+
+## ▲ Vercel Deployment
+
+### Recommended Environment Variables
+
+**Required**
+- None (app works without AI provider keys)
+
+**Optional**
+- `OPENAI_API_KEY`
+- `AZURE_OPENAI_API_KEY`
+- `AZURE_OPENAI_ENDPOINT`
+- `AZURE_OPENAI_DEPLOYMENT`
+- `NEXT_PUBLIC_BASE_URL` (recommended for correct metadata/canonical URLs in production)
+
+### Quick Deploy Steps
+1. Push the project to GitHub.
+2. Import the repository in Vercel.
+3. (Optional) Add OpenAI or Azure OpenAI variables in Vercel Project Settings -> Environment Variables.
+4. Set `NEXT_PUBLIC_BASE_URL` to your production URL.
+5. Deploy.
+
+If AI keys are missing, gameplay still works and API routes return built-in fallback hints, feedback, and word problems instead of failing.
 
 ## 🛠️ Development
 

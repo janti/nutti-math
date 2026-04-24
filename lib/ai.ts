@@ -4,6 +4,7 @@ import OpenAI from 'openai'
 const REQUEST_TIMEOUT_MS = 8000
 const hasOpenAI = !!process.env.OPENAI_API_KEY
 const hasAzure = !!process.env.AZURE_OPENAI_API_KEY
+const hasAIProvider = hasOpenAI || hasAzure
 
 /**
  * Creates OpenAI client instance based on available API configuration
@@ -130,21 +131,101 @@ function userFeedback(stats: any, locale: Locale) {
   }
 }
 
+function fallbackHint(locale: Locale, gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems' = 'multiplication') {
+  if (locale === 'en') {
+    if (gameType === 'wordProblems') return 'Read the problem slowly and find what is asked.'
+    if (gameType === 'equations') return 'Solve one step at a time and check both sides.'
+    if (gameType === 'addition') return 'Add in parts: tens first, then ones.'
+    if (gameType === 'subtraction') return 'Count backward or use a number line.'
+    if (gameType === 'division') return 'Think: what times the divisor gives the dividend?'
+    return 'Use skip counting to find the product.'
+  }
+
+  if (locale === 'sv') {
+    if (gameType === 'wordProblems') return 'Läs uppgiften långsamt och hitta vad som frågas.'
+    if (gameType === 'equations') return 'Lös ett steg i taget och kontrollera båda sidor.'
+    if (gameType === 'addition') return 'Addera i delar: tiotal först, sedan ental.'
+    if (gameType === 'subtraction') return 'Räkna bakåt eller använd tallinje.'
+    if (gameType === 'division') return 'Tänk: vilket tal gånger delaren ger det första talet?'
+    return 'Använd hopp-räkning för att hitta produkten.'
+  }
+
+  if (gameType === 'wordProblems') return 'Lue tehtävä hitaasti ja etsi mitä kysytään.'
+  if (gameType === 'equations') return 'Ratkaise askel kerrallaan ja tarkista molemmat puolet.'
+  if (gameType === 'addition') return 'Laske osissa: ensin kymmenet, sitten ykköset.'
+  if (gameType === 'subtraction') return 'Laske taaksepäin tai käytä lukusuoraa.'
+  if (gameType === 'division') return 'Mieti: mikä luku kertaa jakaja on jaettava?'
+  return 'Hyödynnä hyppylaskua tulon löytämiseen.'
+}
+
+function fallbackRoundFeedback(stats: { correct: number, total: number }, locale: Locale) {
+  const ratio = stats.total > 0 ? stats.correct / stats.total : 0
+
+  if (locale === 'en') {
+    if (ratio >= 0.8) return 'Great work! Keep the same focus in the next round.'
+    if (ratio >= 0.5) return 'Nice effort! You are improving step by step.'
+    return 'Good try! Practice a bit more and you will get stronger.'
+  }
+
+  if (locale === 'sv') {
+    if (ratio >= 0.8) return 'Jättebra jobbat! Behåll samma fokus i nästa runda.'
+    if (ratio >= 0.5) return 'Bra kämpat! Du blir bättre steg för steg.'
+    return 'Bra försök! Öva lite till så blir du ännu säkrare.'
+  }
+
+  if (ratio >= 0.8) return 'Hienoa työtä! Jatka samalla keskittymisellä seuraavaan kierrokseen.'
+  if (ratio >= 0.5) return 'Hyvä yritys! Kehityt askel askeleelta.'
+  return 'Hyvä yritys! Pieni lisäharjoittelu tekee sinusta vielä varmemman.'
+}
+
+function fallbackFinalFeedback(stats: any, locale: Locale) {
+  const total = stats.totalQuestions || stats.totalAnswered || 0
+  const correct = stats.totalCorrect || 0
+  const percentage = total > 0 ? Math.round((correct / total) * 100) : 0
+
+  if (locale === 'en') {
+    if (percentage >= 80) return `Excellent result: ${percentage}% correct. You are doing really well!`
+    if (percentage >= 60) return `Nice progress: ${percentage}% correct. Keep practicing, you are close!`
+    return `You got ${percentage}% correct. Keep going, every round helps you improve.`
+  }
+
+  if (locale === 'sv') {
+    if (percentage >= 80) return `Toppenresultat: ${percentage}% rätt. Du jobbar riktigt bra!`
+    if (percentage >= 60) return `Fin utveckling: ${percentage}% rätt. Fortsätt öva, du är nära!`
+    return `Du fick ${percentage}% rätt. Fortsätt, varje runda gör dig bättre.`
+  }
+
+  if (percentage >= 80) return `Loistava tulos: ${percentage}% oikein. Teet todella hyvää työtä!`
+  if (percentage >= 60) return `Hienoa edistystä: ${percentage}% oikein. Jatka harjoittelua, olet lähellä!`
+  return `Sait ${percentage}% oikein. Jatka vaan, jokainen kierros kehittää taitojasi.`
+}
+
 export async function aiHint(a: number, b: number, locale: Locale = 'fi', gameType: 'multiplication' | 'addition' | 'subtraction' | 'equations' | 'division' | 'wordProblems' = 'multiplication', equation?: string) {
-  const c = createOpenAIClient()
-  const r = await (c as any).chat.completions.create({
-    model: MODEL,
-    messages: [{ role: 'user', content: `${sysHint(locale, gameType)} ${userHint(a, b, locale, gameType, equation)}` }],
-    temperature: 0.4,
-    max_tokens: 60,
-    presence_penalty: 0.1,
-    frequency_penalty: 0.1
-  })
-  return r.choices?.[0]?.message?.content?.trim() ?? ''
+  if (!hasAIProvider) {
+    return fallbackHint(locale, gameType)
+  }
+
+  try {
+    const c = createOpenAIClient()
+    const r = await (c as any).chat.completions.create({
+      model: MODEL,
+      messages: [{ role: 'user', content: `${sysHint(locale, gameType)} ${userHint(a, b, locale, gameType, equation)}` }],
+      temperature: 0.4,
+      max_tokens: 60,
+      presence_penalty: 0.1,
+      frequency_penalty: 0.1
+    })
+    return r.choices?.[0]?.message?.content?.trim() ?? fallbackHint(locale, gameType)
+  } catch (error) {
+    console.error('aiHint fallback triggered:', error)
+    return fallbackHint(locale, gameType)
+  }
 }
 
 export async function aiRoundFeedback(stats: { correct: number, total: number, avgMs: number, mistakes: Array<{ a: number, b: number }> }, locale: Locale = 'fi') {
-  const c = createOpenAIClient()
+  if (!hasAIProvider) {
+    return fallbackRoundFeedback(stats, locale)
+  }
 
   const systemMsg = sysFeedback(locale)
   const userMsg = userFeedback(stats, locale)
@@ -154,20 +235,26 @@ export async function aiRoundFeedback(stats: { correct: number, total: number, a
   console.log('System:', systemMsg)
   console.log('User:', userMsg)
 
-  const r = await (c as any).chat.completions.create({
-    model: MODEL,
-    messages: [
-      { role: 'system', content: systemMsg },
-      { role: 'user', content: userMsg }
-    ],
-    temperature: 0.5,
-    max_tokens: 100,
-    presence_penalty: 0.2
-  })
+  try {
+    const c = createOpenAIClient()
+    const r = await (c as any).chat.completions.create({
+      model: MODEL,
+      messages: [
+        { role: 'system', content: systemMsg },
+        { role: 'user', content: userMsg }
+      ],
+      temperature: 0.5,
+      max_tokens: 100,
+      presence_penalty: 0.2
+    })
 
-  const result = r.choices?.[0]?.message?.content?.trim() ?? ''
-  console.log('AI Response:', result)
-  return result
+    const result = r.choices?.[0]?.message?.content?.trim() ?? ''
+    console.log('AI Response:', result)
+    return result || fallbackRoundFeedback(stats, locale)
+  } catch (error) {
+    console.error('aiRoundFeedback fallback triggered:', error)
+    return fallbackRoundFeedback(stats, locale)
+  }
 }
 
 function sysFinalFeedback(locale: Locale) {
@@ -193,16 +280,25 @@ function userFinalFeedback(stats: any, locale: Locale) {
 }
 
 export async function aiFinalFeedback(stats: any, locale: Locale = 'fi') {
-  const c = createOpenAIClient()
-  const r = await (c as any).chat.completions.create({
-    model: MODEL,
-    messages: [
-      { role: 'system', content: sysFinalFeedback(locale) },
-      { role: 'user', content: userFinalFeedback(stats, locale) }
-    ],
-    temperature: 0.5,
-    max_tokens: 150,
-    presence_penalty: 0.2
-  })
-  return r.choices?.[0]?.message?.content?.trim() ?? ''
+  if (!hasAIProvider) {
+    return fallbackFinalFeedback(stats, locale)
+  }
+
+  try {
+    const c = createOpenAIClient()
+    const r = await (c as any).chat.completions.create({
+      model: MODEL,
+      messages: [
+        { role: 'system', content: sysFinalFeedback(locale) },
+        { role: 'user', content: userFinalFeedback(stats, locale) }
+      ],
+      temperature: 0.5,
+      max_tokens: 150,
+      presence_penalty: 0.2
+    })
+    return r.choices?.[0]?.message?.content?.trim() ?? fallbackFinalFeedback(stats, locale)
+  } catch (error) {
+    console.error('aiFinalFeedback fallback triggered:', error)
+    return fallbackFinalFeedback(stats, locale)
+  }
 }

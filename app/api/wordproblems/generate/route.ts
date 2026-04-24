@@ -4,6 +4,7 @@ import OpenAI from 'openai'
 const REQUEST_TIMEOUT_MS = 10000
 const hasOpenAI = !!process.env.OPENAI_API_KEY
 const hasAzure = !!process.env.AZURE_OPENAI_API_KEY
+const hasAIProvider = hasOpenAI || hasAzure
 
 function createOpenAIClient(): OpenAI {
   if (hasOpenAI) {
@@ -31,6 +32,90 @@ const MODEL = hasOpenAI ? 'gpt-4o-mini' : (process.env.AZURE_OPENAI_DEPLOYMENT |
 
 type Locale = 'fi' | 'en' | 'sv'
 type Operation = 'addition' | 'subtraction' | 'multiplication' | 'division'
+
+function randomInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+function getRangeMax(operation: Operation, range: string): number {
+  if (operation === 'multiplication') {
+    if (range.includes('veryhard')) return 25
+    return range.includes('12') ? 12 : 10
+  }
+  if (operation === 'division') {
+    if (range.includes('veryhard')) return 25
+    if (range.includes('12')) return 12
+    if (range.includes('10')) return 10
+    return 5
+  }
+  if (range.includes('veryhard')) return 200
+  if (range.includes('100')) return 100
+  if (range.includes('50')) return 50
+  if (range.includes('20')) return 20
+  return 10
+}
+
+function getFallbackWordProblem(locale: Locale, operation: Operation, range: string) {
+  const max = getRangeMax(operation, range)
+  let a = 0
+  let b = 0
+  let symbol = '+'
+  let answer = 0
+
+  if (operation === 'subtraction') {
+    a = randomInt(2, max)
+    b = randomInt(1, a - 1)
+    symbol = '-'
+    answer = a - b
+  } else if (operation === 'multiplication') {
+    a = randomInt(2, max)
+    b = randomInt(2, max)
+    symbol = '×'
+    answer = a * b
+  } else if (operation === 'division') {
+    b = randomInt(2, max)
+    const multiplier = randomInt(2, max)
+    a = b * multiplier
+    symbol = '÷'
+    answer = a / b
+  } else {
+    a = randomInt(1, max)
+    b = randomInt(1, max)
+    symbol = '+'
+    answer = a + b
+  }
+
+  if (locale === 'en') {
+    const problem = operation === 'addition'
+      ? `Emma has ${a} stickers and gets ${b} more. How many stickers does Emma have now?`
+      : operation === 'subtraction'
+        ? `Tom has ${a} apples and gives ${b} away. How many apples are left?`
+        : operation === 'multiplication'
+          ? `There are ${a} boxes with ${b} pencils in each. How many pencils are there altogether?`
+          : `${a} cookies are shared equally among ${b} children. How many cookies does each child get?`
+    return { problem, equation: `${a} ${symbol} ${b}`, answer }
+  }
+
+  if (locale === 'sv') {
+    const problem = operation === 'addition'
+      ? `Lisa har ${a} klistermärken och får ${b} till. Hur många klistermärken har Lisa nu?`
+      : operation === 'subtraction'
+        ? `Erik har ${a} äpplen och ger bort ${b}. Hur många äpplen är kvar?`
+        : operation === 'multiplication'
+          ? `Det finns ${a} lådor med ${b} pennor i varje. Hur många pennor finns det totalt?`
+          : `${a} kakor delas lika mellan ${b} barn. Hur många kakor får varje barn?`
+    return { problem, equation: `${a} ${symbol} ${b}`, answer }
+  }
+
+  const problem = operation === 'addition'
+    ? `Ainolla on ${a} tarraa ja hän saa ${b} lisää. Kuinka monta tarraa Ainolla on nyt?`
+    : operation === 'subtraction'
+      ? `Matilla on ${a} omenaa ja hän antaa ${b} pois. Kuinka monta omenaa jää?`
+      : operation === 'multiplication'
+        ? `On ${a} laatikkoa, ja jokaisessa on ${b} kynää. Kuinka monta kynää on yhteensä?`
+        : `${a} keksiä jaetaan tasan ${b} lapselle. Kuinka monta keksiä jokainen lapsi saa?`
+  return { problem, equation: `${a} ${symbol} ${b}`, answer }
+}
 
 function getSystemPrompt(locale: Locale, operation: Operation): string {
   const operationSymbols = {
@@ -296,13 +381,23 @@ function parseAIResponse(response: string): { problem: string; equation: string;
 }
 
 export async function POST(request: NextRequest) {
+  let locale: Locale = 'fi'
+  let operation: Operation = 'addition'
+  let range = '1-20-add'
+
   try {
     const body = await request.json()
-    const { locale = 'fi', operation = 'addition', range = '1-20-add' } = body
+    locale = (body.locale || 'fi') as Locale
+    operation = (body.operation || 'addition') as Operation
+    range = body.range || '1-20-add'
+
+    if (!hasAIProvider) {
+      return NextResponse.json(getFallbackWordProblem(locale, operation, range))
+    }
 
     const client = createOpenAIClient()
-    const systemPrompt = getSystemPrompt(locale as Locale, operation as Operation)
-    const userPrompt = getUserPrompt(operation as Operation, range)
+    const systemPrompt = getSystemPrompt(locale, operation)
+    const userPrompt = getUserPrompt(operation, range)
 
     // Retry logic for incomplete responses
     let attempts = 0
@@ -336,16 +431,13 @@ export async function POST(request: NextRequest) {
       parsed = parseAIResponse(aiText)
     }
 
-    if (!parsed) {
-      throw new Error(`Failed to parse AI response after ${maxAttempts} attempts`)
+    if (parsed) {
+      return NextResponse.json(parsed)
     }
 
-    return NextResponse.json(parsed)
+    return NextResponse.json(getFallbackWordProblem(locale, operation, range))
   } catch (error) {
     console.error('Error generating word problem:', error)
-    return NextResponse.json(
-      { error: 'Failed to generate word problem' },
-      { status: 500 }
-    )
+    return NextResponse.json(getFallbackWordProblem(locale, operation, range))
   }
 }
