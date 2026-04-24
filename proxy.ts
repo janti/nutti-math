@@ -1,13 +1,12 @@
-
-import createMiddleware from 'next-intl/middleware';
-import { locales, defaultLocale } from './i18n';
+import createMiddleware from 'next-intl/middleware'
+import { defaultLocale } from './i18n'
 
 export default createMiddleware({
   // A list of all locales that are supported
   locales: ['en', 'fi', 'sv'],
   defaultLocale,
-  localePrefix: 'always'
-});
+  localePrefix: 'always',
+})
 
 export const config = {
   matcher: [
@@ -21,4 +20,4 @@ export const config = {
      */
     '/((?!api|_next/static|_next/image|favicon.ico|nutti.png|apple-touch-icon.png|pahkina.png|pahkina_reunukset.png).*)',
   ],
-};
+}
